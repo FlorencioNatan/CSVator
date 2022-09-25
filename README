@@ -1,0 +1,6 @@
+The CSVator language is defined on file `src/CSVatorParser.sable`.
+
+The package org.csvator.core is not on the project because it can be compiled
+from source.
+
+This project was made with SableCC 3.7
