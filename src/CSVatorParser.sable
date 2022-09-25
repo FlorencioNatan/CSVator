@@ -1,0 +1,214 @@
+/* simpleAdder.sable - A very simple program that recognizes two integers being added. */
+Package org.csvator.core ;
+
+Helpers
+	/* Our helpers */
+	all = [0..0xffff];
+	digit = ['0' .. '9'] ;
+	sp = ' ' ;
+	lf = 10 ;
+	cr = 13 ;
+	tab = 9;
+	eol = cr lf | cr | lf;
+	blank = cr lf | cr | lf| sp | tab;
+	dot = '.';
+	letter = [['a' .. 'z'] + ['A' .. 'Z']];
+	not_eol = [all - [cr + lf]];
+	string_char = [all - '"'];
+
+Tokens
+	/* Our simple token definition(s). */
+	blank = blank;
+	comment = 
+		('//' not_eol* eol) |
+		('#' not_eol* eol);
+	kw_int = 'int';
+	kw_bool = 'bool';
+	kw_double = 'double';
+	kw_string = 'string';
+	kw_date = 'date';
+	kw_datetime = 'datetime';
+	kw_void = 'void';
+	integer = digit+;
+	double =  digit+ dot digit+;
+	kw_true = 'true';
+	kw_false = 'false';
+	tok_double_quote = '"';
+	tok_plus_plus = '++';
+	tok_plus = '+';
+	tok_min = '-';
+	tok_mult = '*';
+	tok_div = '/';
+	tok_op_paren = '(';
+	tok_cl_paren = ')';
+	tok_op_square = '[';
+	tok_cl_square = ']';
+	tok_greater = '>';
+	tok_greater_equal = '>=';
+	tok_less = '<';
+	tok_less_equal = '<=';
+	tok_equal = '=';
+	tok_different = '<>';
+	kw_and = 'and';
+	kw_or = 'or';
+	kw_xor = 'xor';
+	kw_not = 'not';
+	kw_implies = 'implies';
+	tok_semicolon = ';';
+	tok_colon = ':';
+	tok_comma = ',';
+	tok_right_arrow = '->';
+	tok_attribution = ':=';
+	identifier = letter (letter | '_')*;
+	string_literal = '"' string_char* '"';
+
+Ignored Tokens
+	comment,
+	blank;
+
+Productions
+	/* Our super-simple grammar */
+	program = line* {-> New program([line])};
+
+	line =
+		{expression_line} expression tok_semicolon {-> New line.expression_line(expression)} |
+		{function_definition} function_definition tok_semicolon {-> New line.function_definition(function_definition)} |
+		{variable_definition} variable_definition tok_semicolon {-> New line.variable_definition(variable_definition)} ;
+
+	expression {-> expression} = 
+		{concat_expression} concat_expression {-> concat_expression.expression};
+
+	concat_expression {-> expression} = 
+		{concat} [left]:concat_expression tok_plus_plus [right]:not_expression {-> New expression.string_concat(left.expression, right.expression)} |
+		{not_expression} not_expression {-> not_expression.expression};
+
+	not_expression {-> expression} =
+		{not} kw_not not_expression {-> New expression.not(not_expression.expression)} |
+		xor_expression {-> xor_expression.expression};
+
+	xor_expression {-> expression} = 
+		{xor} xor_expression kw_xor implies_expression {-> New expression.xor(xor_expression.expression, implies_expression.expression)} |
+		implies_expression {-> implies_expression.expression};
+
+	implies_expression {-> expression} = 
+		{implies} implies_expression kw_implies or_expression {-> New expression.implies(implies_expression.expression, or_expression.expression)} |
+		or_expression {-> or_expression.expression};
+
+	or_expression {-> expression} =
+		{or} or_expression kw_or and_expression {-> New expression.or(or_expression.expression, and_expression.expression)} |
+		and_expression {-> and_expression.expression};
+
+	and_expression {-> expression} =
+		{and} and_expression kw_and equal_expression {-> New expression.and(and_expression.expression, equal_expression.expression)} |
+		equal_expression {-> equal_expression.expression};
+
+	equal_expression {-> expression} = 
+		{equal} [left]:comparsion_expression tok_equal [right]:comparsion_expression {-> New expression.equal(left.expression, right.expression)} |
+		{different} [left]:comparsion_expression tok_different [right]:comparsion_expression {-> New expression.different(left.expression, right.expression)} |
+		comparsion_expression {-> comparsion_expression.expression};
+
+	comparsion_expression {-> expression} = 
+		{greater} [left]:aditive_expression tok_greater [right]:aditive_expression {-> New expression.greater(left.expression, right.expression)} |
+		{greater_equal} [left]:aditive_expression tok_greater_equal [right]:aditive_expression {-> New expression.greater_equal(left.expression, right.expression)} |
+		{less} [left]:aditive_expression tok_less [right]:aditive_expression {-> New expression.less(left.expression, right.expression)} |
+		{less_equal} [left]:aditive_expression tok_less_equal [right]:aditive_expression {-> New expression.less_equal(left.expression, right.expression)} |
+		aditive_expression {-> aditive_expression.expression};
+
+	aditive_expression {-> expression} = 
+		{sum} aditive_expression tok_plus multiplicative_expression {-> New expression.sum(aditive_expression.expression, multiplicative_expression.expression)} |
+		{sub} aditive_expression tok_min multiplicative_expression {-> New expression.sub(aditive_expression.expression, multiplicative_expression.expression)} |
+		{multiplicative_expression} multiplicative_expression {-> multiplicative_expression.expression};
+
+	multiplicative_expression {-> expression} = 
+		{mult} multiplicative_expression tok_mult function_application_expression {-> New expression.mult(multiplicative_expression.expression, function_application_expression.expression)} |
+		{div} multiplicative_expression tok_div function_application_expression {-> New expression.div(multiplicative_expression.expression, function_application_expression.expression)} |
+		function_application_expression {-> function_application_expression.expression};
+
+	function_application_expression {-> expression} =
+		{with_argument} [function_identifier]:identifier tok_op_paren expression expression_list* tok_cl_paren {-> New expression.function_application_with_argument(function_identifier, expression, [expression_list.expression])} |
+		{without_argument} [function_identifier]:identifier tok_op_paren tok_cl_paren {-> New expression.function_application_without_argument(function_identifier)} |
+		{primitive_expression} primitive_expression {-> primitive_expression.expression};
+
+	primitive_expression {-> expression} = 
+		{paren} tok_op_paren expression tok_cl_paren {-> New expression.paren(expression)} |
+		{int} integer {-> New expression.int(integer)} |
+		{identifier} identifier {-> New expression.var(identifier)} |
+		{true} kw_true {-> New expression.true(kw_true)} |
+		{false} kw_false {-> New expression.false(kw_false)} |
+		{string_literal} string_literal {-> New expression.string_literal(string_literal)};
+
+	function_definition =
+		{declaration} [function_identifier]:identifier tok_colon tok_right_arrow type_specifier {-> New function_definition.declaration(function_identifier)} |
+		{declaration_with_argument} [function_identifier]:identifier tok_colon argument argument_list* tok_right_arrow type_specifier {-> New function_definition.declaration_with_argument(function_identifier, argument, [argument_list.argument])} |
+		{body_guard} [function_identifier]:identifier tok_op_square [condition]:expression tok_cl_square tok_colon [result]:expression {-> New function_definition.body_guard(function_identifier, condition, result)} |
+		{body} [function_identifier]:identifier tok_colon [result]:expression {-> New function_definition.body(function_identifier, result)};
+
+	argument = type_specifier identifier {-> New argument(identifier)} ;
+
+	argument_list {-> argument} = tok_comma argument {-> argument} ;
+
+	expression_list {-> expression} = tok_comma expression {-> expression};
+
+	type_specifier = 
+		{int} kw_int {-> New type_specifier.int()} |
+		{bool} kw_bool {-> New type_specifier.bool()} |
+		{double} kw_double {-> New type_specifier.double()} |
+		{string} kw_string {-> New type_specifier.string()} |
+		{date} kw_date {-> New type_specifier.date()} |
+		{datetime} kw_datetime {-> New type_specifier.datetime()} |
+		{void} kw_void {-> New type_specifier.void()};
+
+	variable_definition = [variable]:identifier tok_attribution expression {-> New variable_definition(variable, expression)};
+
+Abstract Syntax Tree
+	program = line*;
+
+	line =
+		{expression_line} expression |
+		{function_definition} function_definition |
+		{variable_definition} variable_definition;
+
+	expression = 
+		{sum} [left]:expression [right]:expression |
+		{sub} [left]:expression [right]:expression |
+		{mult} [left]:expression [right]:expression |
+		{div} [left]:expression [right]:expression |
+		{paren} expression |
+		{int} integer |
+		{var} identifier |
+		{not} expression |
+		{xor} [left]:expression [right]:expression |
+		{implies} [left]:expression [right]:expression |
+		{or} [left]:expression [right]:expression |
+		{and} [left]:expression [right]:expression |
+		{equal} [left]:expression [right]:expression |
+		{different} [left]:expression [right]:expression |
+		{greater} [left]:expression [right]:expression |
+		{greater_equal} [left]:expression [right]:expression |
+		{less} [left]:expression [right]:expression |
+		{less_equal} [left]:expression [right]:expression |
+		{true} kw_true |
+		{false} kw_false |
+		{string_concat} [left]:expression [right]:expression |
+		{string_literal} [string]:string_literal |
+		{function_application_with_argument} [function_identifier]:identifier [first]:expression [rest]:expression* |
+		{function_application_without_argument} [function_identifier]:identifier;
+
+	type_specifier = 
+		{int} |
+		{bool} |
+		{double} |
+		{string} |
+		{date} |
+		{datetime} |
+		{void};
+
+	function_definition = 
+		{declaration} [function_identifier]:identifier |
+		{declaration_with_argument} [function_identifier]:identifier [first]:argument [rest]:argument* |
+		{body_guard} [function_identifier]:identifier [condition]:expression [result]:expression |
+		{body} [function_identifier]:identifier [result]:expression;
+
+	variable_definition = [variable]:identifier expression;
+
+	argument = identifier;
