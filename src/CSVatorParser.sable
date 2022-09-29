@@ -79,7 +79,7 @@ Productions
 		{concat_expression} concat_expression {-> concat_expression.expression};
 
 	concat_expression {-> expression} = 
-		{concat} [left]:concat_expression tok_plus_plus [right]:not_expression {-> New expression.string_concat(left.expression, right.expression)} |
+		{concat} [left]:concat_expression tok_plus_plus [right]:not_expression {-> New expression.concat_expression(left.expression, right.expression)} |
 		{not_expression} not_expression {-> not_expression.expression};
 
 	not_expression {-> expression} =
@@ -189,7 +189,7 @@ Abstract Syntax Tree
 		{less_equal} [left]:expression [right]:expression |
 		{true} kw_true |
 		{false} kw_false |
-		{string_concat} [left]:expression [right]:expression |
+		{concat_expression} [left]:expression [right]:expression |
 		{string_literal} [string]:string_literal |
 		{function_application_with_argument} [function_identifier]:identifier [first]:expression [rest]:expression* |
 		{function_application_without_argument} [function_identifier]:identifier;
