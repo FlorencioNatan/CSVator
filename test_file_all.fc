@@ -94,6 +94,9 @@ repeticao [i = 6] : a;
 repeticao(0, 1, 1);
 
 
-str := "Ola mundo";
+ola := "Olá";
+mundo := "mundo";
 
-str;
+ola;
+mundo;
+ola ++ " " ++ mundo;
