@@ -95,6 +95,7 @@ public class Interpreter extends DepthFirstAdapter {
 		super.outAStringLiteralExpression(node);
 
 		String value = node.getString().getText();
+		value = value.substring(1, value.length() - 1);
 		StringValue strVal = new StringValue(node.toString(), value);
 		NullaryExpressionValue expression = new NullaryExpressionValue(node.toString(), strVal);
 		parsingTable.putValue(node, expression);
