@@ -464,8 +464,6 @@ public class Interpreter extends DepthFirstAdapter {
 			expressions.add(value);
 		}
 
-//		Environment local = function.createLocalEnvironment(expressions, global);
-//		ValueInterface result = function.evaluate(local);
 		FunctionExpressionValue functionExpression = new FunctionExpressionValue(functionIdentifier, function, expressions);
 		parsingTable.putValue(node, functionExpression);
 	}
