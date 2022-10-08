@@ -28,4 +28,9 @@ public class FunctionExpressionValue implements ExpressionValueInterface {
 		return function.evaluate(local);
 	}
 
+	@Override
+	public Class getTypeClass() {
+		return FunctionValue.class;
+	}
+
 }

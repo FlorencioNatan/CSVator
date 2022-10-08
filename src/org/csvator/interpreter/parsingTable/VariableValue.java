@@ -27,4 +27,12 @@ public class VariableValue implements ValueInterface {
 		return env.getValueOf(id).evaluate(env);
 	}
 
+	@Override
+	public Class getTypeClass() {
+		if (this.value != null) {
+			return this.value.getTypeClass();
+		}
+		return this.getClass();
+	}
+
 }

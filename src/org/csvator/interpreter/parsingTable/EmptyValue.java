@@ -20,4 +20,9 @@ public class EmptyValue implements ValueInterface {
 		throw new NullPointerException("A variável " + id + " não foi definida.");
 	}
 
+	@Override
+	public Class getTypeClass() {
+		return this.getClass();
+	}
+
 }

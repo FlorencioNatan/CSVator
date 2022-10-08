@@ -32,4 +32,9 @@ public class StringValue implements ValueInterface {
 		return this.value;
 	}
 
+	@Override
+	public Class getTypeClass() {
+		return this.getClass();
+	}
+
 }

@@ -8,4 +8,6 @@ public interface ValueInterface {
 
 	public ValueInterface evaluate(Environment env);
 
+	public Class getTypeClass();
+
 }
