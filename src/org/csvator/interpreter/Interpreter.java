@@ -428,7 +428,6 @@ public class Interpreter extends DepthFirstAdapter {
 		FunctionValue function = (FunctionValue) global.getValueOf(functionIdentifier);
 		ExpressionValueInterface condition = (ExpressionValueInterface) parsingTable.getValueOf(node.getCondition());
 
-		// (ExpressionValue) parsingTable.getValueOf(node.getResult());
 		ExpressionValueInterface result = (ExpressionValueInterface) parsingTable.getValueOf(node.getResult());
 
 		function.addExpression(condition, result);
@@ -442,7 +441,7 @@ public class Interpreter extends DepthFirstAdapter {
 		String functionIdentifier = node.getFunctionIdentifier().getText();
 		FunctionValue function = (FunctionValue) global.getValueOf(functionIdentifier);
 		NullaryExpressionValue condition = new NullaryExpressionValue("Tautology", new BooleanValue("True", true));
-		// (ExpressionValue) parsingTable.getValueOf(node.getResult());
+
 		ExpressionValueInterface result = (ExpressionValueInterface) parsingTable.getValueOf(node.getResult());
 
 		function.addExpression(condition, result);
