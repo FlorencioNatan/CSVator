@@ -56,6 +56,7 @@ public class FunctionValue implements ValueInterface {
 		return new EmptyValue("Empty");
 	}
 
+	@SuppressWarnings("rawtypes")
 	@Override
 	public Class getTypeClass() {
 		return this.getClass();

@@ -22,6 +22,7 @@ public class NullaryExpressionValue implements ExpressionValueInterface {
 		return value.evaluate(env);
 	}
 
+	@SuppressWarnings("rawtypes")
 	@Override
 	public Class getTypeClass() {
 		return this.value.getTypeClass();

@@ -27,6 +27,7 @@ public class VariableValue implements ValueInterface {
 		return env.getValueOf(id).evaluate(env);
 	}
 
+	@SuppressWarnings("rawtypes")
 	@Override
 	public Class getTypeClass() {
 		if (this.value != null) {

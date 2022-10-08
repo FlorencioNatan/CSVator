@@ -25,6 +25,7 @@ public class UnaryExpressionValue implements ExpressionValueInterface {
 		return operator.apply(lho.evaluate(env), null, env).evaluate(env);
 	}
 
+	@SuppressWarnings("rawtypes")
 	@Override
 	public Class getTypeClass() {
 		return this.lho.getTypeClass();

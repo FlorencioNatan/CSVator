@@ -29,6 +29,7 @@ public class IntTypeValue implements TypeValueInterface {
 		return "int";
 	}
 
+	@SuppressWarnings("rawtypes")
 	@Override
 	public Class getTypeClass() {
 		return IntegerValue.class;

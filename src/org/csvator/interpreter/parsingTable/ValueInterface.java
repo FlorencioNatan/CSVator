@@ -8,6 +8,7 @@ public interface ValueInterface {
 
 	public ValueInterface evaluate(Environment env);
 
+	@SuppressWarnings("rawtypes")
 	public Class getTypeClass();
 
 }

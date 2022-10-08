@@ -29,6 +29,7 @@ public class BoolTypeValue implements TypeValueInterface {
 		return "bool";
 	}
 
+	@SuppressWarnings("rawtypes")
 	@Override
 	public Class getTypeClass() {
 		return BooleanValue.class;

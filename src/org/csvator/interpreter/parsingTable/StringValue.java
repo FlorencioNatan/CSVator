@@ -32,6 +32,7 @@ public class StringValue implements ValueInterface {
 		return this.value;
 	}
 
+	@SuppressWarnings("rawtypes")
 	@Override
 	public Class getTypeClass() {
 		return this.getClass();

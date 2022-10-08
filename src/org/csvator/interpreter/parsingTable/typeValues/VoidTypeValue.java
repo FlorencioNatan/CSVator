@@ -28,6 +28,7 @@ public class VoidTypeValue implements TypeValueInterface {
 		return "string";
 	}
 
+	@SuppressWarnings("rawtypes")
 	@Override
 	public Class getTypeClass() {
 		return EmptyValue.class;

@@ -37,6 +37,7 @@ public class IntegerValue implements ValueInterface {
 		return Integer.toString(value);
 	}
 
+	@SuppressWarnings("rawtypes")
 	@Override
 	public Class getTypeClass() {
 		return this.getClass();

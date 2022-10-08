@@ -27,6 +27,7 @@ public class BinaryExpressionValue implements ExpressionValueInterface {
 		return operator.apply(lho.evaluate(env), rho.evaluate(env), env).evaluate(env);
 	}
 
+	@SuppressWarnings("rawtypes")
 	@Override
 	public Class getTypeClass() {
 		if (lho.getTypeClass() == rho.getTypeClass()) {

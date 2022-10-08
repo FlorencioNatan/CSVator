@@ -37,6 +37,7 @@ public class BooleanValue implements ValueInterface {
 		return Boolean.toString(value);
 	}
 
+	@SuppressWarnings("rawtypes")
 	@Override
 	public Class getTypeClass() {
 		return this.getClass();

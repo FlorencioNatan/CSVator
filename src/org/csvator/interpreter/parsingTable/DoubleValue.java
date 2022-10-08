@@ -37,6 +37,7 @@ public class DoubleValue implements ValueInterface {
 		return Double.toString(value);
 	}
 
+	@SuppressWarnings("rawtypes")
 	@Override
 	public Class getTypeClass() {
 		return this.getClass();

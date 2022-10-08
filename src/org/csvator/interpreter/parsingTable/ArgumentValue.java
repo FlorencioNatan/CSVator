@@ -29,6 +29,7 @@ public class ArgumentValue implements ValueInterface {
 		return env.getValueOf(idVariable).evaluate(env);
 	}
 
+	@SuppressWarnings("rawtypes")
 	@Override
 	public Class getTypeClass() {
 		return this.type.getTypeClass();
