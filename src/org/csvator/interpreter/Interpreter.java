@@ -344,11 +344,48 @@ public class Interpreter extends DepthFirstAdapter {
 	}
 
 	@Override
+	public void outAIntTypeSpecifier(AIntTypeSpecifier node) {
+		// TODO Auto-generated method stub
+		super.outAIntTypeSpecifier(node);
+
+		IntTypeValue type = new IntTypeValue(node.toString());
+		parsingTable.putValue(node, type);
+	}
+
+	@Override
+	public void outADoubleTypeSpecifier(ADoubleTypeSpecifier node) {
+		// TODO Auto-generated method stub
+		super.outADoubleTypeSpecifier(node);
+
+		DoubleTypeValue type = new DoubleTypeValue(node.toString());
+		parsingTable.putValue(node, type);
+	}
+
+	@Override
+	public void outABoolTypeSpecifier(ABoolTypeSpecifier node) {
+		// TODO Auto-generated method stub
+		super.outABoolTypeSpecifier(node);
+
+		BoolTypeValue type = new BoolTypeValue(node.toString());
+		parsingTable.putValue(node, type);
+	}
+
+	@Override
+	public void outAStringTypeSpecifier(AStringTypeSpecifier node) {
+		// TODO Auto-generated method stub
+		super.outAStringTypeSpecifier(node);
+
+		StringTypeValue type = new StringTypeValue(node.toString());
+		parsingTable.putValue(node, type);
+	}
+
+	@Override
 	public void outAArgument(AArgument node) {
 		// TODO Auto-generated method stub
 		super.outAArgument(node);
 
-		ArgumentValue identifier = new ArgumentValue(node.toString(), node.getIdentifier().getText());
+		TypeValueInterface type = (TypeValueInterface) parsingTable.getValueOf(node.getTypeSpecifier());
+		ArgumentValue identifier = new ArgumentValue(node.toString(), node.getIdentifier().getText(), type);
 		parsingTable.putValue(node, identifier);
 	}
 
