@@ -132,6 +132,7 @@ Productions
 	primitive_expression {-> expression} = 
 		{paren} tok_op_paren expression tok_cl_paren {-> New expression.paren(expression)} |
 		{int} integer {-> New expression.int(integer)} |
+		{double} double {-> New expression.double(double)} |
 		{identifier} identifier {-> New expression.var(identifier)} |
 		{true} kw_true {-> New expression.true(kw_true)} |
 		{false} kw_false {-> New expression.false(kw_false)} |
@@ -143,7 +144,7 @@ Productions
 		{body_guard} [function_identifier]:identifier tok_op_square [condition]:expression tok_cl_square tok_colon [result]:expression {-> New function_definition.body_guard(function_identifier, condition, result)} |
 		{body} [function_identifier]:identifier tok_colon [result]:expression {-> New function_definition.body(function_identifier, result)};
 
-	argument = type_specifier identifier {-> New argument(identifier)} ;
+	argument = type_specifier identifier {-> New argument(type_specifier, identifier)} ;
 
 	argument_list {-> argument} = tok_comma argument {-> argument} ;
 
@@ -175,6 +176,7 @@ Abstract Syntax Tree
 		{div} [left]:expression [right]:expression |
 		{paren} expression |
 		{int} integer |
+		{double} double |
 		{var} identifier |
 		{not} expression |
 		{xor} [left]:expression [right]:expression |
@@ -211,4 +213,4 @@ Abstract Syntax Tree
 
 	variable_definition = [variable]:identifier expression;
 
-	argument = identifier;
+	argument = type_specifier identifier;
