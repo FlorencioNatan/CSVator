@@ -1,18 +1,16 @@
-package org.csvator.interpreter.environment.operators.integer;
+package org.csvator.interpreter.environment.operators.arithmetic;
 
-import org.csvator.interpreter.environment.Environment;
-import org.csvator.interpreter.parsingTable.IntegerValue;
-import org.csvator.interpreter.parsingTable.ValueInterface;
 
 public class Sum extends IntegerOperator {
 
 	@Override
-	public ValueInterface apply(ValueInterface lho, ValueInterface rho, Environment env) {
-		IntegerValue intLho = this.castToIntegerValue(lho);
-		IntegerValue intRho = this.castToIntegerValue(rho);
-		int result = intLho.getIntValue(env) + intRho.getIntValue(env);
+	protected int operationOnInt(int lho, int rho) {
+		return lho + rho;
+	}
 
-		return this.createResult(intLho, intRho, result, env);
+	@Override
+	protected double operationOnDouble(double lho, double rho) {
+		return lho + rho;
 	}
 
 }
