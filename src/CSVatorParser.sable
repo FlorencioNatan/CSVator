@@ -139,8 +139,8 @@ Productions
 		{string_literal} string_literal {-> New expression.string_literal(string_literal)};
 
 	function_definition =
-		{declaration} [function_identifier]:identifier tok_colon tok_right_arrow type_specifier {-> New function_definition.declaration(function_identifier)} |
-		{declaration_with_argument} [function_identifier]:identifier tok_colon argument argument_list* tok_right_arrow type_specifier {-> New function_definition.declaration_with_argument(function_identifier, argument, [argument_list.argument])} |
+		{declaration} [function_identifier]:identifier tok_colon tok_right_arrow type_specifier {-> New function_definition.declaration(function_identifier, type_specifier)} |
+		{declaration_with_argument} [function_identifier]:identifier tok_colon argument argument_list* tok_right_arrow type_specifier {-> New function_definition.declaration_with_argument(function_identifier, argument, [argument_list.argument], type_specifier)} |
 		{body_guard} [function_identifier]:identifier tok_op_square [condition]:expression tok_cl_square tok_colon [result]:expression {-> New function_definition.body_guard(function_identifier, condition, result)} |
 		{body} [function_identifier]:identifier tok_colon [result]:expression {-> New function_definition.body(function_identifier, result)};
 
@@ -206,8 +206,8 @@ Abstract Syntax Tree
 		{void};
 
 	function_definition = 
-		{declaration} [function_identifier]:identifier |
-		{declaration_with_argument} [function_identifier]:identifier [first]:argument [rest]:argument* |
+		{declaration} [function_identifier]:identifier [return_type]:type_specifier |
+		{declaration_with_argument} [function_identifier]:identifier [first]:argument [rest]:argument* [return_type]:type_specifier |
 		{body_guard} [function_identifier]:identifier [condition]:expression [result]:expression |
 		{body} [function_identifier]:identifier [result]:expression;
 
