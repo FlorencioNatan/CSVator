@@ -4,6 +4,7 @@ import org.csvator.interpreter.environment.Environment;
 import org.csvator.interpreter.parsingTable.BooleanValue;
 import org.csvator.interpreter.parsingTable.DoubleValue;
 import org.csvator.interpreter.parsingTable.IntegerValue;
+import org.csvator.interpreter.parsingTable.StringValue;
 import org.csvator.interpreter.parsingTable.ValueInterface;
 
 public class Different extends EqualityOperator {
@@ -30,6 +31,10 @@ public class Different extends EqualityOperator {
 
 		if (lho instanceof DoubleValue) {
 			result = ((DoubleValue) lho).getDoubleValue(env) != ((DoubleValue) rho).getDoubleValue(env);
+		}
+
+		if (lho instanceof StringValue) {
+			result = !((StringValue) lho).getStrValue(env).equals(((StringValue) rho).getStrValue(env));
 		}
 
 		if (lho instanceof BooleanValue) {

@@ -128,4 +128,17 @@ ola ++ " " ++ mundo;
 5.0 >= 4.9;
 5.0 > 3.9;
 
+"text" = "text";
+"text" = "text ";
+"text" <> "text";
+"text" <> "text ";
 
+"close" < "open";
+"close" <= "open";
+"programming" > "language";
+"programming" >= "language";
+
+"open" < "close";
+"close" <= "close";
+"language" > "programming";
+"programming" >= "language";

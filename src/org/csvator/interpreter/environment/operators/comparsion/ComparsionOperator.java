@@ -5,6 +5,7 @@ import org.csvator.interpreter.environment.operators.OperatorInterface;
 import org.csvator.interpreter.parsingTable.BooleanValue;
 import org.csvator.interpreter.parsingTable.DoubleValue;
 import org.csvator.interpreter.parsingTable.IntegerValue;
+import org.csvator.interpreter.parsingTable.StringValue;
 import org.csvator.interpreter.parsingTable.ValueInterface;
 
 public abstract class ComparsionOperator implements OperatorInterface {
@@ -16,6 +17,14 @@ public abstract class ComparsionOperator implements OperatorInterface {
 			boolean result = this.operationOnInt(intLho.getIntValue(env), intRho.getIntValue(env));
 
 			return this.createResult(intLho, intRho, result, env);
+		}
+
+		if (lho.getTypeClass() == rho.getTypeClass() && lho.getTypeClass() == StringValue.class) {
+			StringValue strLho = this.castToStringValue(lho);
+			StringValue strRho = this.castToStringValue(rho);
+			boolean result = this.operationOnString(strLho.getStrValue(env), strRho.getStrValue(env));
+
+			return this.createResult(strLho, strRho, result, env);
 		}
 
 		double doubleLho = 0.0;
@@ -38,6 +47,7 @@ public abstract class ComparsionOperator implements OperatorInterface {
 
 	abstract protected boolean operationOnInt(int lho, int rho);
 	abstract protected boolean operationOnDouble(double lho, double rho);
+	abstract protected boolean operationOnString(String lho, String rho);
 
 	protected IntegerValue castToIntegerValue(ValueInterface value) {
 		return (IntegerValue) value;
@@ -45,6 +55,10 @@ public abstract class ComparsionOperator implements OperatorInterface {
 
 	protected DoubleValue castToDoubleValue(ValueInterface value) {
 		return (DoubleValue) value;
+	}
+
+	protected StringValue castToStringValue(ValueInterface value) {
+		return (StringValue) value;
 	}
 
 	protected BooleanValue createResult(ValueInterface lho, ValueInterface rho, boolean result, Environment env) {

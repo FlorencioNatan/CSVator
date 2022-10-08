@@ -10,4 +10,9 @@ public class LessEqual extends ComparsionOperator {
 		return lho <= rho;
 	}
 
+	protected boolean operationOnString(String lho, String rho) {
+		int comparsion = lho.compareTo(rho);
+		return comparsion <= 0;
+	}
+
 }
