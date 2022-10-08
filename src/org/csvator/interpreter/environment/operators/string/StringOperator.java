@@ -2,7 +2,6 @@ package org.csvator.interpreter.environment.operators.string;
 
 import org.csvator.interpreter.environment.Environment;
 import org.csvator.interpreter.environment.operators.OperatorInterface;
-import org.csvator.interpreter.parsingTable.IntegerValue;
 import org.csvator.interpreter.parsingTable.StringValue;
 import org.csvator.interpreter.parsingTable.ValueInterface;
 
