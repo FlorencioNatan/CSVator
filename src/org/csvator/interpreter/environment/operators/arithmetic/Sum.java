@@ -1,7 +1,7 @@
 package org.csvator.interpreter.environment.operators.arithmetic;
 
 
-public class Sum extends IntegerOperator {
+public class Sum extends ArithmeticOperator {
 
 	@Override
 	protected int operationOnInt(int lho, int rho) {

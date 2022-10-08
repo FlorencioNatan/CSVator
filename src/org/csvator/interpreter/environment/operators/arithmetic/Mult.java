@@ -1,6 +1,6 @@
 package org.csvator.interpreter.environment.operators.arithmetic;
 
-public class Mult extends IntegerOperator {
+public class Mult extends ArithmeticOperator {
 
 	@Override
 	protected int operationOnInt(int lho, int rho) {

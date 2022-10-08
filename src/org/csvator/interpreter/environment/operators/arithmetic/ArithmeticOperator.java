@@ -6,7 +6,7 @@ import org.csvator.interpreter.parsingTable.DoubleValue;
 import org.csvator.interpreter.parsingTable.IntegerValue;
 import org.csvator.interpreter.parsingTable.ValueInterface;
 
-public abstract class IntegerOperator implements OperatorInterface {
+public abstract class ArithmeticOperator implements OperatorInterface {
 
 	public ValueInterface apply(ValueInterface lho, ValueInterface rho, Environment env) {
 		if (lho.getTypeClass() == rho.getTypeClass() && lho.getTypeClass() == IntegerValue.class) {

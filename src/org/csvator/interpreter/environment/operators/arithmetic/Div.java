@@ -1,6 +1,6 @@
 package org.csvator.interpreter.environment.operators.arithmetic;
 
-public class Div extends IntegerOperator {
+public class Div extends ArithmeticOperator {
 
 	@Override
 	protected int operationOnInt(int lho, int rho) {
