@@ -102,6 +102,17 @@ public class Interpreter extends DepthFirstAdapter {
 	}
 
 	@Override
+	public void outADoubleExpression(ADoubleExpression node) {
+		// TODO Auto-generated method stub
+		super.outADoubleExpression(node);
+
+		String textDouble = node.getDouble().getText().trim();
+		DoubleValue doubleVal = new DoubleValue(node.toString(), textDouble);
+		NullaryExpressionValue expression = new NullaryExpressionValue(node.toString(), doubleVal);
+		parsingTable.putValue(node, expression);
+	}
+
+	@Override
 	public void outAStringLiteralExpression(AStringLiteralExpression node) {
 		// TODO Auto-generated method stub
 		super.outAStringLiteralExpression(node);
