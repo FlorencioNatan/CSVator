@@ -395,8 +395,9 @@ public class Interpreter extends DepthFirstAdapter {
 		super.outADeclarationFunctionDefinition(node);
 
 		String functionIdentifier = node.getFunctionIdentifier().getText();
+		TypeValueInterface returnType = (TypeValueInterface) parsingTable.getValueOf(node.getReturnType());
 
-		FunctionValue function = new FunctionValue(functionIdentifier);
+		FunctionValue function = new FunctionValue(functionIdentifier, returnType);
 		global.putValue(functionIdentifier, function);
 	}
 
@@ -406,6 +407,7 @@ public class Interpreter extends DepthFirstAdapter {
 		super.outADeclarationWithArgumentFunctionDefinition(node);
 
 		String functionIdentifier = node.getFunctionIdentifier().getText();
+		TypeValueInterface returnType = (TypeValueInterface) parsingTable.getValueOf(node.getReturnType());
 		LinkedList<ArgumentValue> arguments = new LinkedList<>();
 
 		ArgumentValue value = (ArgumentValue) parsingTable.getValueOf(node.getFirst());
@@ -415,7 +417,7 @@ public class Interpreter extends DepthFirstAdapter {
 			arguments.add(value);
 		}
 
-		FunctionValue function = new FunctionValue(functionIdentifier, arguments);
+		FunctionValue function = new FunctionValue(functionIdentifier, returnType, arguments);
 		global.putValue(functionIdentifier, function);
 	}
 

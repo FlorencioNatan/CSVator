@@ -7,21 +7,25 @@ import org.csvator.interpreter.parsingTable.ArgumentValue;
 import org.csvator.interpreter.parsingTable.EmptyValue;
 import org.csvator.interpreter.parsingTable.ExpressionValueInterface;
 import org.csvator.interpreter.parsingTable.ValueInterface;
+import org.csvator.interpreter.parsingTable.typeValues.TypeValueInterface;
 
 public class FunctionValue implements ValueInterface {
 
 	String id;
+	TypeValueInterface returnType;
 	LinkedList<ArgumentValue> arguments;
 	LinkedList<Guard> expressions;
 
-	public FunctionValue(String id, LinkedList<ArgumentValue> arguments) {
+	public FunctionValue(String id, TypeValueInterface returnType, LinkedList<ArgumentValue> arguments) {
 		this.id = id;
+		this.returnType = returnType;
 		this.arguments = arguments;
 		this.expressions = new LinkedList<>();
 	}
 
-	public FunctionValue(String id) {
+	public FunctionValue(String id, TypeValueInterface returnType) {
 		this.id = id;
+		this.returnType = returnType;
 		this.arguments = new LinkedList<>();
 		this.expressions = new LinkedList<>();
 	}
@@ -44,6 +48,11 @@ public class FunctionValue implements ValueInterface {
 	@Override
 	public String getId() {
 		return this.id;
+	}
+
+	@SuppressWarnings("rawtypes")
+	public Class getReturnType() {
+		return this.returnType.getTypeClass();
 	}
 
 	@Override
