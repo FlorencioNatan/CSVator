@@ -4,6 +4,7 @@ import java.util.LinkedList;
 
 import org.csvator.interpreter.environment.Environment;
 import org.csvator.interpreter.parsingTable.function.FunctionValue;
+import org.csvator.interpreter.parsingTable.function.TypeMismatchException;
 
 public class FunctionExpressionValue implements ExpressionValueInterface {
 
@@ -25,6 +26,10 @@ public class FunctionExpressionValue implements ExpressionValueInterface {
 	@Override
 	public ValueInterface evaluate(Environment env) {
 		Environment local = function.createLocalEnvironment(expressions, env);
+		ValueInterface result = function.evaluate(local);
+		if (result.getTypeClass() != function.getReturnType()) {
+			throw new TypeMismatchException("Type mismatch on function " + this.id.trim() + " return. Expected " + function.getReturnType() + " found " + result.getTypeClass());
+		}
 		return function.evaluate(local);
 	}
 

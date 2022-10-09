@@ -142,3 +142,11 @@ ola ++ " " ++ mundo;
 "close" <= "close";
 "language" > "programming";
 "programming" >= "language";
+
+
+secondSoma: double a, double b -> double;
+secondSoma: a + b;
+
+secondSoma(1.0, 1);
+secondSoma(1.0, 1.1);
+

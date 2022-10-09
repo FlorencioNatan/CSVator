@@ -4,8 +4,10 @@ import java.util.LinkedList;
 
 import org.csvator.interpreter.environment.Environment;
 import org.csvator.interpreter.parsingTable.ArgumentValue;
+import org.csvator.interpreter.parsingTable.DoubleValue;
 import org.csvator.interpreter.parsingTable.EmptyValue;
 import org.csvator.interpreter.parsingTable.ExpressionValueInterface;
+import org.csvator.interpreter.parsingTable.IntegerValue;
 import org.csvator.interpreter.parsingTable.ValueInterface;
 import org.csvator.interpreter.parsingTable.typeValues.TypeValueInterface;
 
@@ -35,11 +37,20 @@ public class FunctionValue implements ValueInterface {
 		this.expressions.add(guarda);
 	}
 
-	public Environment createLocalEnvironment(LinkedList<ValueInterface> values, Environment father) {
+	public Environment createLocalEnvironment(LinkedList<ValueInterface> values, Environment father) throws TypeMismatchException {
 		Environment local = new Environment();
 		local.setFatherEnvironment(father);
 		for (int i = 0; i < arguments.size(); i++) {
-			local.putValue(arguments.get(i).getIdVariable(), values.get(i).evaluate(father));
+			ValueInterface parameterValue = values.get(i).evaluate(father);
+			if (arguments.get(i).getTypeClass() == DoubleValue.class && parameterValue.getTypeClass() == IntegerValue.class) {
+				int parameterContet = ((IntegerValue) parameterValue).getIntValue(father);
+				parameterValue = new DoubleValue(parameterValue.getId(), parameterContet);
+			}
+
+			if (arguments.get(i).getTypeClass() != parameterValue.getTypeClass()) {
+				throw new TypeMismatchException("Type mismatch on function " + this.id.trim() + " parameter " + (i + 1) + ". Expected " + arguments.get(i).getTypeClass() + " found " + parameterValue.getTypeClass());
+			}
+			local.putValue(arguments.get(i).getIdVariable(), parameterValue);
 		}
 
 		return local;
