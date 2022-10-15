@@ -31,7 +31,7 @@ public class VoidTypeValue implements TypeValueInterface {
 	@SuppressWarnings("rawtypes")
 	@Override
 	public Class getTypeClass() {
-		return EmptyValue.class;
+		return this.getClass();
 	}
 
 }

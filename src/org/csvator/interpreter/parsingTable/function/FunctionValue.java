@@ -9,6 +9,8 @@ import org.csvator.interpreter.parsingTable.EmptyValue;
 import org.csvator.interpreter.parsingTable.ExpressionValueInterface;
 import org.csvator.interpreter.parsingTable.IntegerValue;
 import org.csvator.interpreter.parsingTable.ValueInterface;
+import org.csvator.interpreter.parsingTable.typeValues.DoubleTypeValue;
+import org.csvator.interpreter.parsingTable.typeValues.IntTypeValue;
 import org.csvator.interpreter.parsingTable.typeValues.TypeValueInterface;
 
 public class FunctionValue implements ValueInterface {
@@ -42,7 +44,7 @@ public class FunctionValue implements ValueInterface {
 		local.setFatherEnvironment(father);
 		for (int i = 0; i < arguments.size(); i++) {
 			ValueInterface parameterValue = values.get(i).evaluate(father);
-			if (arguments.get(i).getTypeClass() == DoubleValue.class && parameterValue.getTypeClass() == IntegerValue.class) {
+			if (arguments.get(i).getTypeClass() == DoubleTypeValue.class && parameterValue.getTypeClass() == IntTypeValue.class) {
 				int parameterContet = ((IntegerValue) parameterValue).getIntValue(father);
 				parameterValue = new DoubleValue(parameterValue.getId(), parameterContet);
 			}

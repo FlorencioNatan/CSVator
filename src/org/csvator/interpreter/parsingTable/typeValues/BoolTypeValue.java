@@ -1,7 +1,6 @@
 package org.csvator.interpreter.parsingTable.typeValues;
 
 import org.csvator.interpreter.environment.Environment;
-import org.csvator.interpreter.parsingTable.BooleanValue;
 import org.csvator.interpreter.parsingTable.EmptyValue;
 import org.csvator.interpreter.parsingTable.ValueInterface;
 
@@ -32,7 +31,7 @@ public class BoolTypeValue implements TypeValueInterface {
 	@SuppressWarnings("rawtypes")
 	@Override
 	public Class getTypeClass() {
-		return BooleanValue.class;
+		return this.getClass();
 	}
 
 }

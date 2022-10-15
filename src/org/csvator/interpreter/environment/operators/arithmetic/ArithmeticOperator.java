@@ -5,11 +5,12 @@ import org.csvator.interpreter.environment.operators.OperatorInterface;
 import org.csvator.interpreter.parsingTable.DoubleValue;
 import org.csvator.interpreter.parsingTable.IntegerValue;
 import org.csvator.interpreter.parsingTable.ValueInterface;
+import org.csvator.interpreter.parsingTable.typeValues.IntTypeValue;
 
 public abstract class ArithmeticOperator implements OperatorInterface {
 
 	public ValueInterface apply(ValueInterface lho, ValueInterface rho, Environment env) {
-		if (lho.getTypeClass() == rho.getTypeClass() && lho.getTypeClass() == IntegerValue.class) {
+		if (lho.getTypeClass() == rho.getTypeClass() && lho.getTypeClass() == IntTypeValue.class) {
 			IntegerValue intLho = this.castToIntegerValue(lho);
 			IntegerValue intRho = this.castToIntegerValue(rho);
 			int result = this.operationOnInt(intLho.getIntValue(env), intRho.getIntValue(env));
@@ -18,14 +19,14 @@ public abstract class ArithmeticOperator implements OperatorInterface {
 		}
 
 		double doubleLho = 0.0;
-		if (lho.getTypeClass() == IntegerValue.class) {
+		if (lho.getTypeClass() == IntTypeValue.class) {
 			doubleLho = this.castToIntegerValue(lho).getIntValue(env);
 		} else {
 			doubleLho = this.castToDoubleValue(lho).getDoubleValue(env);
 		}
 
 		double doubleRho = 0.0;
-		if (rho.getTypeClass() == IntegerValue.class) {
+		if (rho.getTypeClass() == IntTypeValue.class) {
 			doubleRho = this.castToIntegerValue(rho).getIntValue(env);
 		} else {
 			doubleRho = this.castToDoubleValue(rho).getDoubleValue(env);

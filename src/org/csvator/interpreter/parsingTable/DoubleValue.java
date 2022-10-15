@@ -1,6 +1,7 @@
 package org.csvator.interpreter.parsingTable;
 
 import org.csvator.interpreter.environment.Environment;
+import org.csvator.interpreter.parsingTable.typeValues.DoubleTypeValue;
 
 public class DoubleValue implements ValueInterface {
 
@@ -40,7 +41,7 @@ public class DoubleValue implements ValueInterface {
 	@SuppressWarnings("rawtypes")
 	@Override
 	public Class getTypeClass() {
-		return this.getClass();
+		return DoubleTypeValue.class;
 	}
 
 }

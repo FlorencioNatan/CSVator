@@ -1,6 +1,7 @@
 package org.csvator.interpreter.parsingTable;
 
 import org.csvator.interpreter.environment.Environment;
+import org.csvator.interpreter.parsingTable.typeValues.VoidTypeValue;
 
 public class EmptyValue implements ValueInterface {
 
@@ -23,7 +24,7 @@ public class EmptyValue implements ValueInterface {
 	@SuppressWarnings("rawtypes")
 	@Override
 	public Class getTypeClass() {
-		return this.getClass();
+		return VoidTypeValue.class;
 	}
 
 }

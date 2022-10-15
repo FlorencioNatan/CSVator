@@ -1,6 +1,7 @@
 package org.csvator.interpreter.parsingTable;
 
 import org.csvator.interpreter.environment.Environment;
+import org.csvator.interpreter.parsingTable.typeValues.IntTypeValue;
 
 public class IntegerValue implements ValueInterface {
 
@@ -40,7 +41,7 @@ public class IntegerValue implements ValueInterface {
 	@SuppressWarnings("rawtypes")
 	@Override
 	public Class getTypeClass() {
-		return this.getClass();
+		return IntTypeValue.class;
 	}
 
 }

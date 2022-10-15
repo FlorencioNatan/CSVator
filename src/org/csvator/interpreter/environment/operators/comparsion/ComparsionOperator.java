@@ -7,11 +7,13 @@ import org.csvator.interpreter.parsingTable.DoubleValue;
 import org.csvator.interpreter.parsingTable.IntegerValue;
 import org.csvator.interpreter.parsingTable.StringValue;
 import org.csvator.interpreter.parsingTable.ValueInterface;
+import org.csvator.interpreter.parsingTable.typeValues.IntTypeValue;
+import org.csvator.interpreter.parsingTable.typeValues.StringTypeValue;
 
 public abstract class ComparsionOperator implements OperatorInterface {
 
 	public ValueInterface apply(ValueInterface lho, ValueInterface rho, Environment env) {
-		if (lho.getTypeClass() == rho.getTypeClass() && lho.getTypeClass() == IntegerValue.class) {
+		if (lho.getTypeClass() == rho.getTypeClass() && lho.getTypeClass() == IntTypeValue.class) {
 			IntegerValue intLho = this.castToIntegerValue(lho);
 			IntegerValue intRho = this.castToIntegerValue(rho);
 			boolean result = this.operationOnInt(intLho.getIntValue(env), intRho.getIntValue(env));
@@ -19,7 +21,7 @@ public abstract class ComparsionOperator implements OperatorInterface {
 			return this.createResult(intLho, intRho, result, env);
 		}
 
-		if (lho.getTypeClass() == rho.getTypeClass() && lho.getTypeClass() == StringValue.class) {
+		if (lho.getTypeClass() == rho.getTypeClass() && lho.getTypeClass() == StringTypeValue.class) {
 			StringValue strLho = this.castToStringValue(lho);
 			StringValue strRho = this.castToStringValue(rho);
 			boolean result = this.operationOnString(strLho.getStrValue(env), strRho.getStrValue(env));
@@ -28,14 +30,14 @@ public abstract class ComparsionOperator implements OperatorInterface {
 		}
 
 		double doubleLho = 0.0;
-		if (lho.getTypeClass() == IntegerValue.class) {
+		if (lho.getTypeClass() == IntTypeValue.class) {
 			doubleLho = this.castToIntegerValue(lho).getIntValue(env);
 		} else {
 			doubleLho = this.castToDoubleValue(lho).getDoubleValue(env);
 		}
 
 		double doubleRho = 0.0;
-		if (rho.getTypeClass() == IntegerValue.class) {
+		if (rho.getTypeClass() == IntTypeValue.class) {
 			doubleRho = this.castToIntegerValue(rho).getIntValue(env);
 		} else {
 			doubleRho = this.castToDoubleValue(rho).getDoubleValue(env);
