@@ -19,6 +19,10 @@ public class ArgumentValue implements ValueInterface {
 		return idVariable;
 	}
 
+	public TypeValueInterface getArgumentType() {
+		return type;
+	}
+
 	@Override
 	public String getId() {
 		return id;
