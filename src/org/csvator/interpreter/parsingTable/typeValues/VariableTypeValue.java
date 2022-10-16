@@ -4,22 +4,21 @@ import org.csvator.interpreter.environment.Environment;
 import org.csvator.interpreter.parsingTable.EmptyValue;
 import org.csvator.interpreter.parsingTable.ValueInterface;
 
-public class IntTypeValue implements TypeValueInterface {
+public class VariableTypeValue implements TypeValueInterface {
 
-	private static IntTypeValue instance;
+	private static VariableTypeValue instance;
 	String id;
 
-	private IntTypeValue() {
-		this.id = "int";
+	private VariableTypeValue() {
+		this.id = "var";
 	}
 
-	public static IntTypeValue getInstace() {
-		if (IntTypeValue.instance == null) {
-			IntTypeValue.instance = new IntTypeValue();
+	public static VariableTypeValue getInstace() {
+		if (VariableTypeValue.instance == null) {
+			VariableTypeValue.instance = new VariableTypeValue();
 		}
-		return IntTypeValue.instance;
+		return VariableTypeValue.instance;
 	}
-
 
 	@Override
 	public String getId() {
@@ -34,7 +33,7 @@ public class IntTypeValue implements TypeValueInterface {
 	@Override
 	public String toString() {
 		// TODO Auto-generated method stub
-		return "int";
+		return "var";
 	}
 
 	@Override

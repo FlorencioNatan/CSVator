@@ -2,6 +2,8 @@ package org.csvator.interpreter.parsingTable;
 
 import org.csvator.interpreter.environment.Environment;
 import org.csvator.interpreter.environment.operators.OperatorInterface;
+import org.csvator.interpreter.parsingTable.typeValues.DoubleTypeValue;
+import org.csvator.interpreter.parsingTable.typeValues.TypeValueInterface;
 
 public class BinaryExpressionValue implements ExpressionValueInterface {
 
@@ -27,18 +29,17 @@ public class BinaryExpressionValue implements ExpressionValueInterface {
 		return operator.apply(lho.evaluate(env), rho.evaluate(env), env).evaluate(env);
 	}
 
-	@SuppressWarnings("rawtypes")
 	@Override
-	public Class getTypeClass() {
-		if (lho.getTypeClass() == rho.getTypeClass()) {
-			return lho.getTypeClass();
+	public TypeValueInterface getType() {
+		if (lho.getType() == rho.getType()) {
+			return lho.getType();
 		}
 
-		if (lho.getTypeClass() == DoubleValue.class || rho.getTypeClass() == DoubleValue.class) {
-			return DoubleValue.class;
+		if (lho.getType() == DoubleTypeValue.getInstace() || rho.getType() == DoubleTypeValue.getInstace()) {
+			return DoubleTypeValue.getInstace();
 		}
 
-		return lho.getTypeClass();
+		return lho.getType();
 	}
 
 }

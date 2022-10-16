@@ -2,6 +2,7 @@ package org.csvator.interpreter.parsingTable;
 
 import org.csvator.interpreter.environment.Environment;
 import org.csvator.interpreter.environment.operators.OperatorInterface;
+import org.csvator.interpreter.parsingTable.typeValues.TypeValueInterface;
 
 public class UnaryExpressionValue implements ExpressionValueInterface {
 
@@ -25,10 +26,9 @@ public class UnaryExpressionValue implements ExpressionValueInterface {
 		return operator.apply(lho.evaluate(env), null, env).evaluate(env);
 	}
 
-	@SuppressWarnings("rawtypes")
 	@Override
-	public Class getTypeClass() {
-		return this.lho.getTypeClass();
+	public TypeValueInterface getType() {
+		return this.lho.getType();
 	}
 
 }

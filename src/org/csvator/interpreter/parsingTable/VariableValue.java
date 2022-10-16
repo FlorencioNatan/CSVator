@@ -1,6 +1,8 @@
 package org.csvator.interpreter.parsingTable;
 
 import org.csvator.interpreter.environment.Environment;
+import org.csvator.interpreter.parsingTable.typeValues.TypeValueInterface;
+import org.csvator.interpreter.parsingTable.typeValues.VariableTypeValue;
 
 public class VariableValue implements ValueInterface {
 
@@ -27,13 +29,12 @@ public class VariableValue implements ValueInterface {
 		return env.getValueOf(id).evaluate(env);
 	}
 
-	@SuppressWarnings("rawtypes")
 	@Override
-	public Class getTypeClass() {
+	public TypeValueInterface getType() {
 		if (this.value != null) {
-			return this.value.getTypeClass();
+			return this.value.getType();
 		}
-		return this.getClass();
+		return VariableTypeValue.getInstace();
 	}
 
 }

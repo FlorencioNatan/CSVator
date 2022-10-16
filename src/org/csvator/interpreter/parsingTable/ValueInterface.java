@@ -1,6 +1,7 @@
 package org.csvator.interpreter.parsingTable;
 
 import org.csvator.interpreter.environment.Environment;
+import org.csvator.interpreter.parsingTable.typeValues.TypeValueInterface;
 
 public interface ValueInterface {
 
@@ -8,7 +9,6 @@ public interface ValueInterface {
 
 	public ValueInterface evaluate(Environment env);
 
-	@SuppressWarnings("rawtypes")
-	public Class getTypeClass();
+	public TypeValueInterface getType();
 
 }

@@ -348,7 +348,7 @@ public class Interpreter extends DepthFirstAdapter {
 		// TODO Auto-generated method stub
 		super.outAIntTypeSpecifier(node);
 
-		IntTypeValue type = new IntTypeValue(node.toString());
+		IntTypeValue type = IntTypeValue.getInstace();
 		parsingTable.putValue(node, type);
 	}
 
@@ -357,7 +357,7 @@ public class Interpreter extends DepthFirstAdapter {
 		// TODO Auto-generated method stub
 		super.outADoubleTypeSpecifier(node);
 
-		DoubleTypeValue type = new DoubleTypeValue(node.toString());
+		DoubleTypeValue type = DoubleTypeValue.getInstace();
 		parsingTable.putValue(node, type);
 	}
 
@@ -366,7 +366,7 @@ public class Interpreter extends DepthFirstAdapter {
 		// TODO Auto-generated method stub
 		super.outABoolTypeSpecifier(node);
 
-		BoolTypeValue type = new BoolTypeValue(node.toString());
+		BoolTypeValue type = BoolTypeValue.getInstace();
 		parsingTable.putValue(node, type);
 	}
 

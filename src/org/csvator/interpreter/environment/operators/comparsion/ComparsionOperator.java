@@ -13,7 +13,7 @@ import org.csvator.interpreter.parsingTable.typeValues.StringTypeValue;
 public abstract class ComparsionOperator implements OperatorInterface {
 
 	public ValueInterface apply(ValueInterface lho, ValueInterface rho, Environment env) {
-		if (lho.getTypeClass() == rho.getTypeClass() && lho.getTypeClass() == IntTypeValue.class) {
+		if (lho.getType() == rho.getType() && lho.getType() == IntTypeValue.getInstace()) {
 			IntegerValue intLho = this.castToIntegerValue(lho);
 			IntegerValue intRho = this.castToIntegerValue(rho);
 			boolean result = this.operationOnInt(intLho.getIntValue(env), intRho.getIntValue(env));
@@ -21,7 +21,7 @@ public abstract class ComparsionOperator implements OperatorInterface {
 			return this.createResult(intLho, intRho, result, env);
 		}
 
-		if (lho.getTypeClass() == rho.getTypeClass() && lho.getTypeClass() == StringTypeValue.class) {
+		if (lho.getType() == rho.getType() && lho.getType() == StringTypeValue.getInstace()) {
 			StringValue strLho = this.castToStringValue(lho);
 			StringValue strRho = this.castToStringValue(rho);
 			boolean result = this.operationOnString(strLho.getStrValue(env), strRho.getStrValue(env));
@@ -30,14 +30,14 @@ public abstract class ComparsionOperator implements OperatorInterface {
 		}
 
 		double doubleLho = 0.0;
-		if (lho.getTypeClass() == IntTypeValue.class) {
+		if (lho.getType() == IntTypeValue.getInstace()) {
 			doubleLho = this.castToIntegerValue(lho).getIntValue(env);
 		} else {
 			doubleLho = this.castToDoubleValue(lho).getDoubleValue(env);
 		}
 
 		double doubleRho = 0.0;
-		if (rho.getTypeClass() == IntTypeValue.class) {
+		if (rho.getType() == IntTypeValue.getInstace()) {
 			doubleRho = this.castToIntegerValue(rho).getIntValue(env);
 		} else {
 			doubleRho = this.castToDoubleValue(rho).getDoubleValue(env);

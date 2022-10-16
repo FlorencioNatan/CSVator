@@ -2,6 +2,7 @@ package org.csvator.interpreter.parsingTable;
 
 import org.csvator.interpreter.environment.Environment;
 import org.csvator.interpreter.parsingTable.typeValues.DoubleTypeValue;
+import org.csvator.interpreter.parsingTable.typeValues.TypeValueInterface;
 
 public class DoubleValue implements ValueInterface {
 
@@ -38,10 +39,9 @@ public class DoubleValue implements ValueInterface {
 		return Double.toString(value);
 	}
 
-	@SuppressWarnings("rawtypes")
 	@Override
-	public Class getTypeClass() {
-		return DoubleTypeValue.class;
+	public TypeValueInterface getType() {
+		return DoubleTypeValue.getInstace();
 	}
 
 }

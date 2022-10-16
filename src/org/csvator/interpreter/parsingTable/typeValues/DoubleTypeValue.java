@@ -36,10 +36,9 @@ public class DoubleTypeValue implements TypeValueInterface {
 		return "double";
 	}
 
-	@SuppressWarnings("rawtypes")
 	@Override
-	public Class getTypeClass() {
-		return this.getClass();
+	public TypeValueInterface getType() {
+		return this;
 	}
 
 }

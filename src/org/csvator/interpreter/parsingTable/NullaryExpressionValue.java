@@ -1,6 +1,7 @@
 package org.csvator.interpreter.parsingTable;
 
 import org.csvator.interpreter.environment.Environment;
+import org.csvator.interpreter.parsingTable.typeValues.TypeValueInterface;
 
 public class NullaryExpressionValue implements ExpressionValueInterface {
 
@@ -22,10 +23,9 @@ public class NullaryExpressionValue implements ExpressionValueInterface {
 		return value.evaluate(env);
 	}
 
-	@SuppressWarnings("rawtypes")
 	@Override
-	public Class getTypeClass() {
-		return this.value.getTypeClass();
+	public TypeValueInterface getType() {
+		return this.value.getType();
 	}
 
 }

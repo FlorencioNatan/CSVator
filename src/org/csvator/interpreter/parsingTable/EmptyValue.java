@@ -1,6 +1,7 @@
 package org.csvator.interpreter.parsingTable;
 
 import org.csvator.interpreter.environment.Environment;
+import org.csvator.interpreter.parsingTable.typeValues.TypeValueInterface;
 import org.csvator.interpreter.parsingTable.typeValues.VoidTypeValue;
 
 public class EmptyValue implements ValueInterface {
@@ -21,10 +22,9 @@ public class EmptyValue implements ValueInterface {
 		throw new NullPointerException("A variável " + id + " não foi definida.");
 	}
 
-	@SuppressWarnings("rawtypes")
 	@Override
-	public Class getTypeClass() {
-		return VoidTypeValue.class;
+	public TypeValueInterface getType() {
+		return VoidTypeValue.getInstace();
 	}
 
 }

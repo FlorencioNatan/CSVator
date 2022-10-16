@@ -36,10 +36,9 @@ public class StringTypeValue implements TypeValueInterface {
 		return "string";
 	}
 
-	@SuppressWarnings("rawtypes")
 	@Override
-	public Class getTypeClass() {
-		return this.getClass();
+	public TypeValueInterface getType() {
+		return this;
 	}
 
 }

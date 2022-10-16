@@ -36,10 +36,9 @@ public class BoolTypeValue implements TypeValueInterface {
 		return "bool";
 	}
 
-	@SuppressWarnings("rawtypes")
 	@Override
-	public Class getTypeClass() {
-		return this.getClass();
+	public TypeValueInterface getType() {
+		return this;
 	}
 
 }

@@ -2,6 +2,7 @@ package org.csvator.interpreter.parsingTable;
 
 import org.csvator.interpreter.environment.Environment;
 import org.csvator.interpreter.parsingTable.typeValues.BoolTypeValue;
+import org.csvator.interpreter.parsingTable.typeValues.TypeValueInterface;
 
 public class BooleanValue implements ValueInterface {
 
@@ -38,10 +39,9 @@ public class BooleanValue implements ValueInterface {
 		return Boolean.toString(value);
 	}
 
-	@SuppressWarnings("rawtypes")
 	@Override
-	public Class getTypeClass() {
-		return BoolTypeValue.class;
+	public TypeValueInterface getType() {
+		return BoolTypeValue.getInstace();
 	}
 
 }
