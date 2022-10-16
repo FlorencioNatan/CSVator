@@ -157,7 +157,14 @@ Productions
 		{string} kw_string {-> New type_specifier.string()} |
 		{date} kw_date {-> New type_specifier.date()} |
 		{datetime} kw_datetime {-> New type_specifier.datetime()} |
-		{void} kw_void {-> New type_specifier.void()};
+		{void} kw_void {-> New type_specifier.void()} |
+		{function_type_specifier} function_type_specifier {-> function_type_specifier.type_specifier};
+
+	function_type_specifier {-> type_specifier} =
+		{function_type_specifier_no_parameters} tok_right_arrow type_specifier {-> New type_specifier.function_type_specifier_no_parameters(type_specifier)} |
+		{function_type_specifier_with_parameters} tok_op_paren [first]:type_specifier type_specifier_list* tok_right_arrow [result]:type_specifier tok_cl_paren {-> New type_specifier.function_type_specifier_with_parameters(first, [type_specifier_list.type_specifier], result)};
+
+	type_specifier_list {-> type_specifier} = tok_comma type_specifier {-> type_specifier} ;
 
 	variable_definition = [variable]:identifier tok_attribution expression {-> New variable_definition(variable, expression)};
 
@@ -203,7 +210,9 @@ Abstract Syntax Tree
 		{string} |
 		{date} |
 		{datetime} |
-		{void};
+		{void} |
+		{function_type_specifier_no_parameters} [result]:type_specifier |
+		{function_type_specifier_with_parameters} [first]:type_specifier [rest]:type_specifier* [result]:type_specifier;
 
 	function_definition = 
 		{declaration} [function_identifier]:identifier [return_type]:type_specifier |
