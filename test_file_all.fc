@@ -150,3 +150,13 @@ secondSoma: a + b;
 secondSoma(1.0, 1);
 secondSoma(1.0, 1.1);
 
+
+sum: int a, int b -> int;
+sum: a + b;
+
+higherOrderFunction: (int, int -> int) f, int a, int b -> int;
+higherOrderFunction: f(a, b);
+
+higherOrderFunction(sum, 1, 2);
+
+

@@ -33,9 +33,11 @@ import org.csvator.interpreter.parsingTable.StringValue;
 import org.csvator.interpreter.parsingTable.UnaryExpressionValue;
 import org.csvator.interpreter.parsingTable.ValueInterface;
 import org.csvator.interpreter.parsingTable.VariableValue;
+import org.csvator.interpreter.parsingTable.function.FunctionCall;
 import org.csvator.interpreter.parsingTable.function.FunctionValue;
 import org.csvator.interpreter.parsingTable.typeValues.BoolTypeValue;
 import org.csvator.interpreter.parsingTable.typeValues.DoubleTypeValue;
+import org.csvator.interpreter.parsingTable.typeValues.FunctionTypeValue;
 import org.csvator.interpreter.parsingTable.typeValues.IntTypeValue;
 import org.csvator.interpreter.parsingTable.typeValues.StringTypeValue;
 import org.csvator.interpreter.parsingTable.typeValues.TypeValueInterface;
@@ -57,6 +59,8 @@ import org.csvator.core.node.AExpressionLineLine;
 import org.csvator.core.node.AFalseExpression;
 import org.csvator.core.node.AFunctionApplicationWithArgumentExpression;
 import org.csvator.core.node.AFunctionApplicationWithoutArgumentExpression;
+import org.csvator.core.node.AFunctionTypeSpecifierNoParametersTypeSpecifier;
+import org.csvator.core.node.AFunctionTypeSpecifierWithParametersTypeSpecifier;
 import org.csvator.core.node.AGreaterEqualExpression;
 import org.csvator.core.node.AGreaterExpression;
 import org.csvator.core.node.AImpliesExpression;
@@ -79,6 +83,7 @@ import org.csvator.core.node.AXorExpression;
 import org.csvator.core.node.Node;
 import org.csvator.core.node.PArgument;
 import org.csvator.core.node.PExpression;
+import org.csvator.core.node.PTypeSpecifier;
 
 public class Interpreter extends DepthFirstAdapter {
 
@@ -375,7 +380,36 @@ public class Interpreter extends DepthFirstAdapter {
 		// TODO Auto-generated method stub
 		super.outAStringTypeSpecifier(node);
 
-		StringTypeValue type = new StringTypeValue(node.toString());
+		StringTypeValue type = StringTypeValue.getInstace();
+		parsingTable.putValue(node, type);
+	}
+
+	@Override
+	public void outAFunctionTypeSpecifierNoParametersTypeSpecifier(
+			AFunctionTypeSpecifierNoParametersTypeSpecifier node) {
+		// TODO Auto-generated method stub
+		super.outAFunctionTypeSpecifierNoParametersTypeSpecifier(node);
+
+		TypeValueInterface result = (TypeValueInterface) parsingTable.getValueOf(node.getResult());
+		FunctionTypeValue type = new FunctionTypeValue(result);
+		parsingTable.putValue(node, type);
+	}
+
+	@Override
+	public void outAFunctionTypeSpecifierWithParametersTypeSpecifier(
+			AFunctionTypeSpecifierWithParametersTypeSpecifier node) {
+		// TODO Auto-generated method stub
+		super.outAFunctionTypeSpecifierWithParametersTypeSpecifier(node);
+
+		LinkedList<TypeValueInterface> parametersTypes = new LinkedList<>();
+		TypeValueInterface result = (TypeValueInterface) parsingTable.getValueOf(node.getResult());
+		TypeValueInterface pType = (TypeValueInterface) parsingTable.getValueOf(node.getFirst());
+		parametersTypes.add(pType);
+		for (PTypeSpecifier specifier : node.getRest()) {
+			pType = (TypeValueInterface) parsingTable.getValueOf(specifier);
+			parametersTypes.add(pType);
+		}
+		FunctionTypeValue type = new FunctionTypeValue(parametersTypes, result);
 		parsingTable.putValue(node, type);
 	}
 
@@ -455,7 +489,7 @@ public class Interpreter extends DepthFirstAdapter {
 		super.outAFunctionApplicationWithArgumentExpression(node);
 
 		String functionIdentifier = node.getFunctionIdentifier().getText();
-		FunctionValue function = (FunctionValue) global.getValueOf(functionIdentifier);
+		FunctionCall call = new FunctionCall(functionIdentifier);
 		ValueInterface value = parsingTable.getValueOf(node.getFirst());
 		LinkedList<ValueInterface> expressions = new LinkedList<>();
 		expressions.add(value);
@@ -465,7 +499,7 @@ public class Interpreter extends DepthFirstAdapter {
 			expressions.add(value);
 		}
 
-		FunctionExpressionValue functionExpression = new FunctionExpressionValue(functionIdentifier, function, expressions);
+		FunctionExpressionValue functionExpression = new FunctionExpressionValue(functionIdentifier, call, expressions);
 		parsingTable.putValue(node, functionExpression);
 	}
 

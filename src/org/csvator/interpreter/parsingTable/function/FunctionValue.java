@@ -10,8 +10,10 @@ import org.csvator.interpreter.parsingTable.ExpressionValueInterface;
 import org.csvator.interpreter.parsingTable.IntegerValue;
 import org.csvator.interpreter.parsingTable.ValueInterface;
 import org.csvator.interpreter.parsingTable.typeValues.DoubleTypeValue;
+import org.csvator.interpreter.parsingTable.typeValues.FunctionTypeValue;
 import org.csvator.interpreter.parsingTable.typeValues.IntTypeValue;
 import org.csvator.interpreter.parsingTable.typeValues.TypeValueInterface;
+import org.csvator.interpreter.parsingTable.typeValues.VariableTypeValue;
 
 public class FunctionValue implements ValueInterface {
 
@@ -43,14 +45,27 @@ public class FunctionValue implements ValueInterface {
 		Environment local = new Environment();
 		local.setFatherEnvironment(father);
 		for (int i = 0; i < arguments.size(); i++) {
-			ValueInterface parameterValue = values.get(i).evaluate(father);
-			if (arguments.get(i).getTypeClass() == DoubleTypeValue.class && parameterValue.getTypeClass() == IntTypeValue.class) {
+			ValueInterface parameterValue = values.get(i);
+			if (arguments.get(i).getType().getClass() != FunctionTypeValue.class) {
+				parameterValue = parameterValue.evaluate(father);
+			}
+
+			boolean functionsHaveSameType = false;
+			if (arguments.get(i).getType().getClass() == FunctionTypeValue.class && parameterValue.getType() == VariableTypeValue.getInstace()) {
+				FunctionValue paramenterFunction = (FunctionValue) father.getValueOf(parameterValue.getId());
+				FunctionTypeValue paramenterType = (FunctionTypeValue) paramenterFunction.getType();
+				FunctionTypeValue argumentType = (FunctionTypeValue) arguments.get(i).getType();
+				functionsHaveSameType = paramenterType.compareToFunctionType(argumentType);
+				parameterValue = paramenterFunction;
+			}
+
+			if (arguments.get(i).getType() == DoubleTypeValue.getInstace() && parameterValue.getType() == IntTypeValue.getInstace()) {
 				int parameterContet = ((IntegerValue) parameterValue).getIntValue(father);
 				parameterValue = new DoubleValue(parameterValue.getId(), parameterContet);
 			}
 
-			if (arguments.get(i).getTypeClass() != parameterValue.getTypeClass()) {
-				throw new TypeMismatchException("Type mismatch on function " + this.id.trim() + " parameter " + (i + 1) + ". Expected " + arguments.get(i).getTypeClass() + " found " + parameterValue.getTypeClass());
+			if (arguments.get(i).getType() != parameterValue.getType() && !functionsHaveSameType) {
+				throw new TypeMismatchException("Type mismatch on function " + this.id.trim() + " parameter " + (i + 1) + ". Expected " + arguments.get(i).getType().getClass() + " found " + parameterValue.getType().getClass());
 			}
 			local.putValue(arguments.get(i).getIdVariable(), parameterValue);
 		}
@@ -63,9 +78,8 @@ public class FunctionValue implements ValueInterface {
 		return this.id;
 	}
 
-	@SuppressWarnings("rawtypes")
-	public Class getReturnType() {
-		return this.returnType.getTypeClass();
+	public TypeValueInterface getReturnType() {
+		return this.returnType;
 	}
 
 	@Override
@@ -78,10 +92,20 @@ public class FunctionValue implements ValueInterface {
 		return new EmptyValue("Empty");
 	}
 
-	@SuppressWarnings("rawtypes")
 	@Override
-	public Class getTypeClass() {
-		return this.getClass();
+	public TypeValueInterface getType() {
+		FunctionTypeValue type;
+		if (arguments.size() == 0) {
+			type = new FunctionTypeValue(returnType);
+		} else {
+			LinkedList<TypeValueInterface> parametersType = new LinkedList<>();
+			for (ArgumentValue argument: arguments) {
+				parametersType.add(argument.getType());
+			}
+
+			type = new FunctionTypeValue(parametersType, returnType);
+		}
+		return type;
 	}
 
 }
