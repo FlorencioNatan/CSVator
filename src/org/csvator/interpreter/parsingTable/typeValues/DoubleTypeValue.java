@@ -6,10 +6,18 @@ import org.csvator.interpreter.parsingTable.ValueInterface;
 
 public class DoubleTypeValue implements TypeValueInterface {
 
+	private static DoubleTypeValue instance;
 	String id;
 
-	public DoubleTypeValue(String id) {
-		this.id = id;
+	private DoubleTypeValue() {
+		this.id = "double";
+	}
+
+	public static DoubleTypeValue getInstace() {
+		if (DoubleTypeValue.instance == null) {
+			DoubleTypeValue.instance = new DoubleTypeValue();
+		}
+		return DoubleTypeValue.instance;
 	}
 
 	@Override

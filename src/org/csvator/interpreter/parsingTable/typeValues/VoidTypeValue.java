@@ -6,10 +6,18 @@ import org.csvator.interpreter.parsingTable.ValueInterface;
 
 public class VoidTypeValue implements TypeValueInterface {
 
+	private static VoidTypeValue instance;
 	String id;
 
-	public VoidTypeValue(String id) {
-		this.id = id;
+	private VoidTypeValue() {
+		this.id = "void";
+	}
+
+	public static VoidTypeValue getInstace() {
+		if (VoidTypeValue.instance == null) {
+			VoidTypeValue.instance = new VoidTypeValue();
+		}
+		return VoidTypeValue.instance;
 	}
 
 	@Override
