@@ -160,3 +160,19 @@ higherOrderFunction: f(a, b);
 higherOrderFunction(sum, 1, 2);
 
 
+sum: int a, int b -> int;
+sum: a + b;
+
+sub: int a, int b -> int;
+sub: a - b;
+
+firstOrSecond: bool first, (int, int -> int) f, (int, int -> int) s -> (int, int -> int);
+firstOrSecond [first] : f;
+firstOrSecond [not first] : s;
+
+newSum := firstOrSecond(true, sum, sub);
+newSum(1,2);
+
+newSub := firstOrSecond(false, sum, sub);
+newSub(1,2);
+
