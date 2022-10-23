@@ -29,8 +29,16 @@ public class FunctionExpressionValue implements ExpressionValueInterface {
 	public ValueInterface evaluate(Environment env) {
 		Environment local = call.createLocalEnvironment(expressions, env);
 		ValueInterface result = call.evaluate(local);
-		if (result.getType() != call.getReturnType(env)) {
-			throw new TypeMismatchException("Type mismatch on function " + this.id.trim() + " return. Expected " + call.getReturnType(env) + " found " + result.getType().getId().getClass());
+
+		boolean functionsHaveSameType = false;
+		if (result.getType().getClass() == FunctionTypeValue.class && call.getReturnType(env).getClass() == FunctionTypeValue.class) {
+			FunctionTypeValue resultType = (FunctionTypeValue) result.getType();
+			FunctionTypeValue callType = (FunctionTypeValue) call.getReturnType(env);
+			functionsHaveSameType = resultType.compareToFunctionType(callType);
+		}
+
+		if (result.getType() != call.getReturnType(env) && !functionsHaveSameType) {
+			throw new TypeMismatchException("Type mismatch on function " + this.id.trim() + " return. Expected " + call.getReturnType(env) + " found " + result.getType());
 		}
 		return call.evaluate(local);
 	}
