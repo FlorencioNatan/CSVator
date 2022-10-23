@@ -84,6 +84,10 @@ public class FunctionValue implements ValueInterface {
 
 	@Override
 	public ValueInterface evaluate(Environment env) {
+		return this;
+	}
+
+	public ValueInterface apply(Environment env) {
 		for (Guard guard : expressions) {
 			if (guard.isConditionValid(env) ) {
 				return guard.evaluate(env);
