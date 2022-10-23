@@ -127,6 +127,10 @@ Productions
 	function_application_expression {-> expression} =
 		{with_argument} [function_identifier]:identifier tok_op_paren expression expression_list* tok_cl_paren {-> New expression.function_application_with_argument(function_identifier, expression, [expression_list.expression])} |
 		{without_argument} [function_identifier]:identifier tok_op_paren tok_cl_paren {-> New expression.function_application_without_argument(function_identifier)} |
+		{unary_expression} unary_expression {-> unary_expression.expression};
+
+	unary_expression {-> expression} =
+		{negative} tok_min primitive_expression {-> New expression.negative(primitive_expression.expression)} |
 		{primitive_expression} primitive_expression {-> primitive_expression.expression};
 
 	primitive_expression {-> expression} = 
@@ -181,6 +185,7 @@ Abstract Syntax Tree
 		{sub} [left]:expression [right]:expression |
 		{mult} [left]:expression [right]:expression |
 		{div} [left]:expression [right]:expression |
+		{negative} expression |
 		{paren} expression |
 		{int} integer |
 		{double} double |

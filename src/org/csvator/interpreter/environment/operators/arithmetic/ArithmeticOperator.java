@@ -10,6 +10,10 @@ import org.csvator.interpreter.parsingTable.typeValues.IntTypeValue;
 public abstract class ArithmeticOperator implements OperatorInterface {
 
 	public ValueInterface apply(ValueInterface lho, ValueInterface rho, Environment env) {
+		if (rho == null) {
+			return this.applyOnUnaryOperator(lho, env);
+		}
+
 		if (lho.getType() == rho.getType() && lho.getType() == IntTypeValue.getInstace()) {
 			IntegerValue intLho = this.castToIntegerValue(lho);
 			IntegerValue intRho = this.castToIntegerValue(rho);
@@ -36,6 +40,20 @@ public abstract class ArithmeticOperator implements OperatorInterface {
 		return this.createDoubleResult(lho, rho, result, env);
 	}
 
+	private ValueInterface applyOnUnaryOperator(ValueInterface lho, Environment env) {
+		if (lho.getType() == IntTypeValue.getInstace()) {
+			IntegerValue intLho = this.castToIntegerValue(lho);
+			int result = this.operationOnInt(intLho.getIntValue(env), 0);
+
+			return this.createIntegerResult(intLho, result, env);
+		}
+
+		double doubleLho = this.castToDoubleValue(lho).getDoubleValue(env);
+		double result = this.operationOnDouble(doubleLho, 0);
+
+		return this.createDoubleResult(lho, result, env);
+	}
+
 	abstract protected int operationOnInt(int lho, int rho);
 	abstract protected double operationOnDouble(double lho, double rho);
 
@@ -51,8 +69,16 @@ public abstract class ArithmeticOperator implements OperatorInterface {
 		return new IntegerValue(lho.evaluate(env) + " " + rho.evaluate(env), result);
 	}
 
+	protected IntegerValue createIntegerResult(IntegerValue lho, int result, Environment env) {
+		return new IntegerValue(lho.evaluate(env).toString(), result);
+	}
+
 	protected DoubleValue createDoubleResult(ValueInterface lho, ValueInterface rho, double result, Environment env) {
 		return new DoubleValue(lho.evaluate(env) + " " + rho.evaluate(env), result);
+	}
+
+	protected DoubleValue createDoubleResult(ValueInterface lho, double result, Environment env) {
+		return new DoubleValue(lho.evaluate(env).toString(), result);
 	}
 
 }

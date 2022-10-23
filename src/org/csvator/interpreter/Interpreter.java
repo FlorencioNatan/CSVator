@@ -11,6 +11,7 @@ import org.csvator.interpreter.environment.operators.Boolean.Or;
 import org.csvator.interpreter.environment.operators.Boolean.Xor;
 import org.csvator.interpreter.environment.operators.arithmetic.Div;
 import org.csvator.interpreter.environment.operators.arithmetic.Mult;
+import org.csvator.interpreter.environment.operators.arithmetic.Negative;
 import org.csvator.interpreter.environment.operators.arithmetic.Sub;
 import org.csvator.interpreter.environment.operators.arithmetic.Sum;
 import org.csvator.interpreter.environment.operators.comparsion.Different;
@@ -69,6 +70,7 @@ import org.csvator.core.node.AIntTypeSpecifier;
 import org.csvator.core.node.ALessEqualExpression;
 import org.csvator.core.node.ALessExpression;
 import org.csvator.core.node.AMultExpression;
+import org.csvator.core.node.ANegativeExpression;
 import org.csvator.core.node.ANotExpression;
 import org.csvator.core.node.AOrExpression;
 import org.csvator.core.node.AParenExpression;
@@ -186,6 +188,16 @@ public class Interpreter extends DepthFirstAdapter {
 		super.outADivExpression(node);
 
 		BinaryExpressionValue expression = buildExpression(node.toString(), node.getLeft(), node.getRight(), new Div());
+
+		parsingTable.putValue(node, expression);
+	}
+
+	@Override
+	public void outANegativeExpression(ANegativeExpression node) {
+		// TODO Auto-generated method stub
+		super.outANegativeExpression(node);
+
+		UnaryExpressionValue expression = buildExpression(node.toString(), node.getExpression(), new Negative());
 
 		parsingTable.putValue(node, expression);
 	}
