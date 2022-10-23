@@ -38,4 +38,9 @@ public class ArgumentValue implements ValueInterface {
 		return this.type.getType();
 	}
 
+	@Override
+	public String toString() {
+		return type.toString() + " " + idVariable;
+	}
+
 }

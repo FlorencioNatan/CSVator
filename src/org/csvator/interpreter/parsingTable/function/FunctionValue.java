@@ -112,4 +112,18 @@ public class FunctionValue implements ValueInterface {
 		return type;
 	}
 
+	@Override
+	public String toString() {
+		StringBuffer typeString = new StringBuffer();
+		typeString.append("function " + id + ": ");
+		for (ArgumentValue argument : arguments) {
+			typeString.append(argument);
+			typeString.append(", ");
+		}
+		typeString.delete(typeString.length() - 2, typeString.length());
+		typeString.append(" -> ");
+		typeString.append(returnType);
+		return typeString.toString();
+	}
+
 }

@@ -35,8 +35,17 @@ public class FunctionTypeValue implements TypeValueInterface {
 
 	@Override
 	public String toString() {
-		// TODO Auto-generated method stub
-		return "bool";
+		StringBuffer typeString = new StringBuffer();
+		typeString.append("(");
+		for (TypeValueInterface parameter : parametersTypes) {
+			typeString.append(parameter);
+			typeString.append(", ");
+		}
+		typeString.delete(typeString.length() - 2, typeString.length());
+		typeString.append(" -> ");
+		typeString.append(returnType);
+		typeString.append(")");
+		return typeString.toString();
 	}
 
 	@Override
