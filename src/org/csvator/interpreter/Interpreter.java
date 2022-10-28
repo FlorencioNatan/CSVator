@@ -355,7 +355,13 @@ public class Interpreter extends DepthFirstAdapter {
 		super.outAVariableDefinition(node);
 
 		ValueInterface value = parsingTable.getValueOf(node.getExpression());
-		VariableValue variableValue = new VariableValue(node.getVariable().getText(), value);
+		VariableValue variableValue;
+		if (value instanceof FunctionExpressionValue || value instanceof FunctionCall) {
+			value = value.evaluate(global);
+			variableValue = new VariableValue(node.getVariable().getText(), value);
+		} else {
+			variableValue = new VariableValue(node.getVariable().getText(), value);
+		}
 		parsingTable.putValue(node.getVariable(), variableValue);
 		global.putValue(node.getVariable().getText(), value);
 	}

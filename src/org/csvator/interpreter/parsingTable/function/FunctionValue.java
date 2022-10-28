@@ -7,6 +7,7 @@ import org.csvator.interpreter.parsingTable.ArgumentValue;
 import org.csvator.interpreter.parsingTable.DoubleValue;
 import org.csvator.interpreter.parsingTable.EmptyValue;
 import org.csvator.interpreter.parsingTable.ExpressionValueInterface;
+import org.csvator.interpreter.parsingTable.FunctionExpressionValue;
 import org.csvator.interpreter.parsingTable.IntegerValue;
 import org.csvator.interpreter.parsingTable.ValueInterface;
 import org.csvator.interpreter.parsingTable.typeValues.DoubleTypeValue;
@@ -52,7 +53,13 @@ public class FunctionValue implements ValueInterface {
 
 			boolean functionsHaveSameType = false;
 			if (arguments.get(i).getType().getClass() == FunctionTypeValue.class && parameterValue.getType() == VariableTypeValue.getInstace()) {
-				FunctionValue paramenterFunction = (FunctionValue) father.getValueOf(parameterValue.getId());
+				ValueInterface parameterValueValue = father.getValueOf(parameterValue.getId());
+				FunctionValue paramenterFunction;
+				if (parameterValueValue instanceof FunctionExpressionValue) {
+					paramenterFunction = (FunctionValue) father.getValueOf(parameterValueValue.getId());
+				} else {
+					paramenterFunction = (FunctionValue) parameterValueValue;
+				}
 				FunctionTypeValue paramenterType = (FunctionTypeValue) paramenterFunction.getType();
 				FunctionTypeValue argumentType = (FunctionTypeValue) arguments.get(i).getType();
 				functionsHaveSameType = paramenterType.compareToFunctionType(argumentType);
