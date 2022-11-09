@@ -28,6 +28,7 @@ import org.csvator.interpreter.parsingTable.DoubleValue;
 import org.csvator.interpreter.parsingTable.ExpressionValueInterface;
 import org.csvator.interpreter.parsingTable.FunctionExpressionValue;
 import org.csvator.interpreter.parsingTable.IntegerValue;
+import org.csvator.interpreter.parsingTable.NullValue;
 import org.csvator.interpreter.parsingTable.NullaryExpressionValue;
 import org.csvator.interpreter.parsingTable.ParsingTable;
 import org.csvator.interpreter.parsingTable.StringValue;
@@ -74,6 +75,7 @@ import org.csvator.core.node.ALessExpression;
 import org.csvator.core.node.AMultExpression;
 import org.csvator.core.node.ANegativeExpression;
 import org.csvator.core.node.ANotExpression;
+import org.csvator.core.node.ANullExpression;
 import org.csvator.core.node.AOrExpression;
 import org.csvator.core.node.AParenExpression;
 import org.csvator.core.node.AStringLiteralExpression;
@@ -131,6 +133,15 @@ public class Interpreter extends DepthFirstAdapter {
 		StringValue strVal = new StringValue(node.toString(), value);
 		NullaryExpressionValue expression = new NullaryExpressionValue(node.toString(), strVal);
 		parsingTable.putValue(node, expression);
+	}
+
+	@Override
+	public void outANullExpression(ANullExpression node) {
+		// TODO Auto-generated method stub
+		super.outANullExpression(node);
+
+		NullValue boolVal = NullValue.getInstace();
+		parsingTable.putValue(node, boolVal);
 	}
 
 	@Override

@@ -55,6 +55,7 @@ Tokens
 	kw_xor = 'xor';
 	kw_not = 'not';
 	kw_implies = 'implies';
+	kw_null = 'null';
 	tok_semicolon = ';';
 	tok_colon = ':';
 	tok_comma = ',';
@@ -141,6 +142,7 @@ Productions
 		{identifier} identifier {-> New expression.var(identifier)} |
 		{true} kw_true {-> New expression.true(kw_true)} |
 		{false} kw_false {-> New expression.false(kw_false)} |
+		{null} kw_null {-> New expression.null(kw_null)} |
 		{string_literal} string_literal {-> New expression.string_literal(string_literal)};
 
 	function_definition =
@@ -205,6 +207,7 @@ Abstract Syntax Tree
 		{less_equal} [left]:expression [right]:expression |
 		{true} kw_true |
 		{false} kw_false |
+		{null} kw_null |
 		{concat_expression} [left]:expression [right]:expression |
 		{string_literal} [string]:string_literal |
 		{function_application_with_argument} [function_identifier]:identifier [first]:expression [rest]:expression* |
