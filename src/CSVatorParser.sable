@@ -29,6 +29,7 @@ Tokens
 	kw_date = 'date';
 	kw_datetime = 'datetime';
 	kw_void = 'void';
+	kw_any = 'any';
 	integer = digit+;
 	double =  digit+ dot digit+;
 	kw_true = 'true';
@@ -162,6 +163,7 @@ Productions
 		{date} kw_date {-> New type_specifier.date()} |
 		{datetime} kw_datetime {-> New type_specifier.datetime()} |
 		{void} kw_void {-> New type_specifier.void()} |
+		{any} kw_any {-> New type_specifier.any()} |
 		{function_type_specifier} function_type_specifier {-> function_type_specifier.type_specifier};
 
 	function_type_specifier {-> type_specifier} =
@@ -216,6 +218,7 @@ Abstract Syntax Tree
 		{date} |
 		{datetime} |
 		{void} |
+		{any} |
 		{function_type_specifier_no_parameters} [result]:type_specifier |
 		{function_type_specifier_with_parameters} [first]:type_specifier [rest]:type_specifier* [result]:type_specifier;
 

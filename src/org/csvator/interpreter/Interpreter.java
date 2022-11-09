@@ -36,6 +36,7 @@ import org.csvator.interpreter.parsingTable.ValueInterface;
 import org.csvator.interpreter.parsingTable.VariableValue;
 import org.csvator.interpreter.parsingTable.function.FunctionCall;
 import org.csvator.interpreter.parsingTable.function.FunctionValue;
+import org.csvator.interpreter.parsingTable.typeValues.AnyTypeValue;
 import org.csvator.interpreter.parsingTable.typeValues.BoolTypeValue;
 import org.csvator.interpreter.parsingTable.typeValues.DoubleTypeValue;
 import org.csvator.interpreter.parsingTable.typeValues.FunctionTypeValue;
@@ -44,6 +45,7 @@ import org.csvator.interpreter.parsingTable.typeValues.StringTypeValue;
 import org.csvator.interpreter.parsingTable.typeValues.TypeValueInterface;
 import org.csvator.core.analysis.DepthFirstAdapter;
 import org.csvator.core.node.AAndExpression;
+import org.csvator.core.node.AAnyTypeSpecifier;
 import org.csvator.core.node.AArgument;
 import org.csvator.core.node.ABodyFunctionDefinition;
 import org.csvator.core.node.ABodyGuardFunctionDefinition;
@@ -399,6 +401,15 @@ public class Interpreter extends DepthFirstAdapter {
 		super.outAStringTypeSpecifier(node);
 
 		StringTypeValue type = StringTypeValue.getInstace();
+		parsingTable.putValue(node, type);
+	}
+
+	@Override
+	public void outAAnyTypeSpecifier(AAnyTypeSpecifier node) {
+		// TODO Auto-generated method stub
+		super.outAAnyTypeSpecifier(node);
+
+		AnyTypeValue type = AnyTypeValue.getInstace();
 		parsingTable.putValue(node, type);
 	}
 
