@@ -26,7 +26,7 @@ import org.csvator.interpreter.parsingTable.BinaryExpressionValue;
 import org.csvator.interpreter.parsingTable.BooleanValue;
 import org.csvator.interpreter.parsingTable.DoubleValue;
 import org.csvator.interpreter.parsingTable.ExpressionValueInterface;
-import org.csvator.interpreter.parsingTable.FunctionExpressionValue;
+import org.csvator.interpreter.parsingTable.FunctionCallExpressionValue;
 import org.csvator.interpreter.parsingTable.IntegerValue;
 import org.csvator.interpreter.parsingTable.NullValue;
 import org.csvator.interpreter.parsingTable.NullaryExpressionValue;
@@ -369,7 +369,7 @@ public class Interpreter extends DepthFirstAdapter {
 
 		ValueInterface value = parsingTable.getValueOf(node.getExpression());
 		VariableValue variableValue;
-		if (value instanceof FunctionExpressionValue || value instanceof FunctionCall) {
+		if (value instanceof FunctionCallExpressionValue || value instanceof FunctionCall) {
 			value = value.evaluate(global);
 			variableValue = new VariableValue(node.getVariable().getText(), value);
 		} else {
@@ -539,7 +539,7 @@ public class Interpreter extends DepthFirstAdapter {
 			expressions.add(value);
 		}
 
-		FunctionExpressionValue functionExpression = new FunctionExpressionValue(functionIdentifier, call, expressions);
+		FunctionCallExpressionValue functionExpression = new FunctionCallExpressionValue(functionIdentifier, call, expressions);
 		parsingTable.putValue(node, functionExpression);
 	}
 

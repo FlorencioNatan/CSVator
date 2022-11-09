@@ -3,7 +3,7 @@ package org.csvator.interpreter.parsingTable.function;
 import java.util.LinkedList;
 
 import org.csvator.interpreter.environment.Environment;
-import org.csvator.interpreter.parsingTable.FunctionExpressionValue;
+import org.csvator.interpreter.parsingTable.FunctionCallExpressionValue;
 import org.csvator.interpreter.parsingTable.ValueInterface;
 import org.csvator.interpreter.parsingTable.typeValues.FunctionTypeValue;
 import org.csvator.interpreter.parsingTable.typeValues.TypeValueInterface;
@@ -19,7 +19,7 @@ public class FunctionCall implements ValueInterface {
 	public Environment createLocalEnvironment(LinkedList<ValueInterface> values, Environment father) throws TypeMismatchException {
 		ValueInterface value = father.getValueOf(id);
 		FunctionValue functionValue;
-		if (value instanceof FunctionExpressionValue) {
+		if (value instanceof FunctionCallExpressionValue) {
 			functionValue = (FunctionValue) value.evaluate(father);
 		} else {
 			functionValue = (FunctionValue) value;
@@ -36,7 +36,7 @@ public class FunctionCall implements ValueInterface {
 	public ValueInterface evaluate(Environment env) {
 		ValueInterface value = env.getValueOf(id);
 		FunctionValue functionValue;
-		if (value instanceof FunctionExpressionValue) {
+		if (value instanceof FunctionCallExpressionValue) {
 			functionValue = (FunctionValue) value.evaluate(env);
 		} else {
 			functionValue = (FunctionValue) value;
@@ -47,7 +47,7 @@ public class FunctionCall implements ValueInterface {
 	public TypeValueInterface getReturnType(Environment env) {
 		ValueInterface value = env.getValueOf(id);
 		FunctionValue functionValue;
-		if (value instanceof FunctionExpressionValue) {
+		if (value instanceof FunctionCallExpressionValue) {
 			functionValue = (FunctionValue) value.evaluate(env);
 		} else {
 			functionValue = (FunctionValue) value;
