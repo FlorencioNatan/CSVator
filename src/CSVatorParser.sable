@@ -61,6 +61,8 @@ Tokens
 	tok_comma = ',';
 	tok_right_arrow = '->';
 	tok_attribution = ':=';
+	tok_lambda = '\';
+	tok_pipe = '|';
 	identifier = letter (letter | '_')*;
 	string_literal = '"' string_char* '"';
 
@@ -143,7 +145,22 @@ Productions
 		{true} kw_true {-> New expression.true(kw_true)} |
 		{false} kw_false {-> New expression.false(kw_false)} |
 		{null} kw_null {-> New expression.null(kw_null)} |
-		{string_literal} string_literal {-> New expression.string_literal(string_literal)};
+		{string_literal} string_literal {-> New expression.string_literal(string_literal)} |
+		{anonymous_function} anonymous_function_definition_expression {-> anonymous_function_definition_expression.expression};
+
+	anonymous_function_definition_expression {-> expression} =
+		{declaration} tok_lambda tok_op_paren tok_right_arrow type_specifier tok_colon anonymous_function_body tok_cl_paren {-> New expression.anonymous_function_without_argument(type_specifier, anonymous_function_body)} |
+		{declaration_with_argument} tok_lambda tok_op_paren argument argument_list* tok_right_arrow type_specifier tok_colon anonymous_function_body tok_cl_paren {-> New expression.anonymous_function_with_argument(argument, [argument_list.argument], type_specifier, anonymous_function_body)};
+
+	anonymous_function_body {-> anonymous_function_body} =
+		{body} expression {-> New anonymous_function_body.single_expression(expression)} |
+		{body_guard} anonymous_function_body_guard anonymous_function_body_guard_list* {-> New anonymous_function_body.body_guard(anonymous_function_body_guard, [anonymous_function_body_guard_list.anonymous_function_body_guard])};
+
+	anonymous_function_body_guard {-> anonymous_function_body_guard} =
+		tok_op_square [condition]:expression tok_cl_square [result]:expression {-> New anonymous_function_body_guard(condition, result)};
+
+	anonymous_function_body_guard_list {-> anonymous_function_body_guard} =
+		tok_pipe anonymous_function_body_guard {-> anonymous_function_body_guard};
 
 	function_definition =
 		{declaration} [function_identifier]:identifier tok_colon tok_right_arrow type_specifier {-> New function_definition.declaration(function_identifier, type_specifier)} |
@@ -211,7 +228,16 @@ Abstract Syntax Tree
 		{concat_expression} [left]:expression [right]:expression |
 		{string_literal} [string]:string_literal |
 		{function_application_with_argument} [function_identifier]:identifier [first]:expression [rest]:expression* |
-		{function_application_without_argument} [function_identifier]:identifier;
+		{function_application_without_argument} [function_identifier]:identifier |
+		{anonymous_function_without_argument} [return_type]:type_specifier [body]:anonymous_function_body |
+		{anonymous_function_with_argument} [first]:argument [rest]:argument* [return_type]:type_specifier [body]:anonymous_function_body;
+
+		anonymous_function_body =
+			{single_expression} expression |
+			{body_guard} [first]:anonymous_function_body_guard [rest]:anonymous_function_body_guard*;
+
+		anonymous_function_body_guard =
+			[condition]:expression [result]:expression;
 
 	type_specifier = 
 		{int} |
