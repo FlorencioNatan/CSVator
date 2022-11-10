@@ -1,5 +1,6 @@
 package org.csvator.interpreter.parsingTable.function;
 
+import java.security.InvalidParameterException;
 import java.util.LinkedList;
 
 import org.csvator.interpreter.environment.Environment;
@@ -7,7 +8,7 @@ import org.csvator.interpreter.parsingTable.ArgumentValue;
 import org.csvator.interpreter.parsingTable.DoubleValue;
 import org.csvator.interpreter.parsingTable.EmptyValue;
 import org.csvator.interpreter.parsingTable.ExpressionValueInterface;
-import org.csvator.interpreter.parsingTable.FunctionExpressionValue;
+import org.csvator.interpreter.parsingTable.FunctionCallExpressionValue;
 import org.csvator.interpreter.parsingTable.IntegerValue;
 import org.csvator.interpreter.parsingTable.ValueInterface;
 import org.csvator.interpreter.parsingTable.typeValues.DoubleTypeValue;
@@ -16,7 +17,7 @@ import org.csvator.interpreter.parsingTable.typeValues.IntTypeValue;
 import org.csvator.interpreter.parsingTable.typeValues.TypeValueInterface;
 import org.csvator.interpreter.parsingTable.typeValues.VariableTypeValue;
 
-public class FunctionValue implements ValueInterface {
+public class FunctionValue implements ExpressionValueInterface, ValueInterface {
 
 	String id;
 	TypeValueInterface returnType;
@@ -42,6 +43,10 @@ public class FunctionValue implements ValueInterface {
 		this.expressions.add(guarda);
 	}
 
+	public void setExpressions(LinkedList<Guard> expressions) {
+		this.expressions = expressions;
+	}
+
 	public Environment createLocalEnvironment(LinkedList<ValueInterface> values, Environment father) throws TypeMismatchException {
 		Environment local = new Environment();
 		local.setFatherEnvironment(father);
@@ -52,18 +57,16 @@ public class FunctionValue implements ValueInterface {
 			}
 
 			boolean functionsHaveSameType = false;
-			if (arguments.get(i).getType().getClass() == FunctionTypeValue.class && parameterValue.getType() == VariableTypeValue.getInstace()) {
-				ValueInterface parameterValueValue = father.getValueOf(parameterValue.getId());
-				FunctionValue paramenterFunction;
-				if (parameterValueValue instanceof FunctionExpressionValue) {
-					paramenterFunction = (FunctionValue) father.getValueOf(parameterValueValue.getId());
-				} else {
-					paramenterFunction = (FunctionValue) parameterValueValue;
+			if (arguments.get(i).getType().getClass() == FunctionTypeValue.class) {
+				try {
+					FunctionValue paramenterFunction = (FunctionValue) this.extractFunctionFromParameter(parameterValue, father);
+					FunctionTypeValue paramenterType = (FunctionTypeValue) paramenterFunction.getType();
+					FunctionTypeValue argumentType = (FunctionTypeValue) arguments.get(i).getType();
+					functionsHaveSameType = paramenterType.compareToFunctionType(argumentType);
+					parameterValue = paramenterFunction;
+				} catch (InvalidParameterException exception) {
+					functionsHaveSameType = false;
 				}
-				FunctionTypeValue paramenterType = (FunctionTypeValue) paramenterFunction.getType();
-				FunctionTypeValue argumentType = (FunctionTypeValue) arguments.get(i).getType();
-				functionsHaveSameType = paramenterType.compareToFunctionType(argumentType);
-				parameterValue = paramenterFunction;
 			}
 
 			if (arguments.get(i).getType() == DoubleTypeValue.getInstace() && parameterValue.getType() == IntTypeValue.getInstace()) {
@@ -72,12 +75,29 @@ public class FunctionValue implements ValueInterface {
 			}
 
 			if (arguments.get(i).getType() != parameterValue.getType() && !functionsHaveSameType) {
-				throw new TypeMismatchException("Type mismatch on function " + this.id.trim() + " parameter " + (i + 1) + ". Expected " + arguments.get(i).getType().getClass() + " found " + parameterValue.getType().getClass());
+				throw new TypeMismatchException("Type mismatch on function " + this.id.trim() + " parameter " + (i + 1) + ". Expected " + arguments.get(i).getType() + " found " + parameterValue.getType());
 			}
 			local.putValue(arguments.get(i).getIdVariable(), parameterValue);
 		}
 
 		return local;
+	}
+
+	private FunctionValue extractFunctionFromParameter(ValueInterface parameterValue, Environment father) throws InvalidParameterException {
+		if (parameterValue.getType().getClass() == FunctionTypeValue.class) {
+			return (FunctionValue) parameterValue;
+		}
+		if (parameterValue.getType() == VariableTypeValue.getInstace()) {
+			ValueInterface value = father.getValueOf(parameterValue.getId());
+			FunctionValue paramenterFunction;
+			if (value instanceof FunctionCallExpressionValue) {
+				paramenterFunction = (FunctionValue) father.getValueOf(value.getId());
+			} else {
+				paramenterFunction = (FunctionValue) value;
+			}
+			return paramenterFunction;
+		}
+		throw new InvalidParameterException("The parameter is not a function");
 	}
 
 	@Override

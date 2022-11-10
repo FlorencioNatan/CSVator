@@ -35,6 +35,8 @@ import org.csvator.interpreter.parsingTable.StringValue;
 import org.csvator.interpreter.parsingTable.UnaryExpressionValue;
 import org.csvator.interpreter.parsingTable.ValueInterface;
 import org.csvator.interpreter.parsingTable.VariableValue;
+import org.csvator.interpreter.parsingTable.function.AnonymousFunctionBody;
+import org.csvator.interpreter.parsingTable.function.AnonymousFunctionBodyGuard;
 import org.csvator.interpreter.parsingTable.function.FunctionCall;
 import org.csvator.interpreter.parsingTable.function.FunctionValue;
 import org.csvator.interpreter.parsingTable.typeValues.AnyTypeValue;
@@ -46,9 +48,13 @@ import org.csvator.interpreter.parsingTable.typeValues.StringTypeValue;
 import org.csvator.interpreter.parsingTable.typeValues.TypeValueInterface;
 import org.csvator.core.analysis.DepthFirstAdapter;
 import org.csvator.core.node.AAndExpression;
+import org.csvator.core.node.AAnonymousFunctionBodyGuard;
+import org.csvator.core.node.AAnonymousFunctionWithArgumentExpression;
+import org.csvator.core.node.AAnonymousFunctionWithoutArgumentExpression;
 import org.csvator.core.node.AAnyTypeSpecifier;
 import org.csvator.core.node.AArgument;
 import org.csvator.core.node.ABodyFunctionDefinition;
+import org.csvator.core.node.ABodyGuardAnonymousFunctionBody;
 import org.csvator.core.node.ABodyGuardFunctionDefinition;
 import org.csvator.core.node.ABoolTypeSpecifier;
 import org.csvator.core.node.AConcatExpressionExpression;
@@ -78,6 +84,7 @@ import org.csvator.core.node.ANotExpression;
 import org.csvator.core.node.ANullExpression;
 import org.csvator.core.node.AOrExpression;
 import org.csvator.core.node.AParenExpression;
+import org.csvator.core.node.ASingleExpressionAnonymousFunctionBody;
 import org.csvator.core.node.AStringLiteralExpression;
 import org.csvator.core.node.AStringTypeSpecifier;
 import org.csvator.core.node.ASubExpression;
@@ -87,6 +94,7 @@ import org.csvator.core.node.AVarExpression;
 import org.csvator.core.node.AVariableDefinition;
 import org.csvator.core.node.AXorExpression;
 import org.csvator.core.node.Node;
+import org.csvator.core.node.PAnonymousFunctionBodyGuard;
 import org.csvator.core.node.PArgument;
 import org.csvator.core.node.PExpression;
 import org.csvator.core.node.PTypeSpecifier;
@@ -553,6 +561,91 @@ public class Interpreter extends DepthFirstAdapter {
 
 		ValueInterface result = function.evaluate(global);
 		parsingTable.putValue(node, result);
+	}
+
+	@Override
+	public void outAAnonymousFunctionBodyGuard(AAnonymousFunctionBodyGuard node) {
+		// TODO Auto-generated method stub
+		super.outAAnonymousFunctionBodyGuard(node);
+
+		ExpressionValueInterface condition = (ExpressionValueInterface) parsingTable.getValueOf(node.getCondition());
+		ExpressionValueInterface result = (ExpressionValueInterface) parsingTable.getValueOf(node.getResult());
+		AnonymousFunctionBodyGuard bodyGuard = new AnonymousFunctionBodyGuard(condition, result);
+		parsingTable.putValue(node, bodyGuard);
+	}
+
+	@Override
+	public void outASingleExpressionAnonymousFunctionBody(ASingleExpressionAnonymousFunctionBody node) {
+		// TODO Auto-generated method stub
+		super.outASingleExpressionAnonymousFunctionBody(node);
+
+		ExpressionValueInterface expression = (ExpressionValueInterface) parsingTable.getValueOf(node.getExpression());
+		AnonymousFunctionBody body = new AnonymousFunctionBody(expression);
+		parsingTable.putValue(node, body);
+	}
+
+	@Override
+	public void outABodyGuardAnonymousFunctionBody(ABodyGuardAnonymousFunctionBody node) {
+		// TODO Auto-generated method stub
+		super.outABodyGuardAnonymousFunctionBody(node);
+
+		AnonymousFunctionBodyGuard value = (AnonymousFunctionBodyGuard) parsingTable.getValueOf(node.getFirst());
+		LinkedList<AnonymousFunctionBodyGuard> guards = new LinkedList<>();
+		guards.add(value);
+
+		for (PAnonymousFunctionBodyGuard nodeExpression : node.getRest()) {
+			value = (AnonymousFunctionBodyGuard) parsingTable.getValueOf(nodeExpression);
+			guards.add(value);
+		}
+
+		AnonymousFunctionBody body = new AnonymousFunctionBody(guards);
+		parsingTable.putValue(node, body);
+	}
+
+	@Override
+	public void outAAnonymousFunctionWithoutArgumentExpression(AAnonymousFunctionWithoutArgumentExpression node) {
+		// TODO Auto-generated method stub
+		super.outAAnonymousFunctionWithoutArgumentExpression(node);
+
+		TypeValueInterface returnType = (TypeValueInterface) parsingTable.getValueOf(node.getReturnType());
+
+		AnonymousFunctionBody body = (AnonymousFunctionBody) parsingTable.getValueOf(node.getBody());
+		FunctionValue function = new FunctionValue(node.toString(), returnType);
+		if (body.isSingleExpression()) {
+			NullaryExpressionValue condition = new NullaryExpressionValue("Tautology", new BooleanValue("True", true));
+			function.addExpression(condition, body.getExpression());
+		} else {
+			function.setExpressions(body.getGuards());
+		}
+
+		parsingTable.putValue(node, function);
+	}
+
+	@Override
+	public void outAAnonymousFunctionWithArgumentExpression(AAnonymousFunctionWithArgumentExpression node) {
+		// TODO Auto-generated method stub
+		super.outAAnonymousFunctionWithArgumentExpression(node);
+
+		TypeValueInterface returnType = (TypeValueInterface) parsingTable.getValueOf(node.getReturnType());
+		LinkedList<ArgumentValue> arguments = new LinkedList<>();
+
+		ArgumentValue value = (ArgumentValue) parsingTable.getValueOf(node.getFirst());
+		arguments.add(value);
+		for (PArgument nodeArgument : node.getRest()) {
+			value = (ArgumentValue) parsingTable.getValueOf(nodeArgument);
+			arguments.add(value);
+		}
+
+		AnonymousFunctionBody body = (AnonymousFunctionBody) parsingTable.getValueOf(node.getBody());
+		FunctionValue function = new FunctionValue(node.toString(), returnType, arguments);
+		if (body.isSingleExpression()) {
+			NullaryExpressionValue condition = new NullaryExpressionValue("Tautology", new BooleanValue("True", true));
+			function.addExpression(condition, body.getExpression());
+		} else {
+			function.setExpressions(body.getGuards());
+		}
+
+		parsingTable.putValue(node, function);
 	}
 
 	@Override
