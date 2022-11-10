@@ -1,0 +1,27 @@
+soma := \( int a, int b -> int : a + b);
+
+soma(3,5);
+
+firstOrSecond: bool first, (int, int -> int) f, (int, int -> int) s -> (int, int -> int);
+firstOrSecond [first] : f;
+firstOrSecond [not first] : s;
+
+
+newSum := firstOrSecond(true, \(int a, int b -> int : a + b), \(int a, int b -> int : a - b));
+newSum(1,2);
+
+newSub := firstOrSecond(false, \(int a, int b -> int : a + b), \(int a, int b -> int : a - b));
+newSub(1,2);
+
+
+
+firstOrSecondTwo: bool first -> (int, int -> int);
+firstOrSecondTwo [first] : \(int a, int b -> int : a * b);
+firstOrSecondTwo [not first] : \(int a, int b -> int : a / b);
+
+
+newMult := firstOrSecondTwo(true);
+newMult(6,2);
+
+newDiv := firstOrSecondTwo(false);
+newDiv(6,2);
