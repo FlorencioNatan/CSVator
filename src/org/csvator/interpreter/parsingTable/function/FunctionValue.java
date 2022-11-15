@@ -147,7 +147,9 @@ public class FunctionValue implements ValueInterface, Cloneable {
 			typeString.append(argument);
 			typeString.append(", ");
 		}
-		typeString.delete(typeString.length() - 2, typeString.length());
+		if (typeString.length() > 1) {
+			typeString.delete(typeString.length() - 2, typeString.length());
+		}
 		typeString.append(" -> ");
 		typeString.append(returnType);
 		return typeString.toString();

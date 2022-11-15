@@ -20,6 +20,7 @@ public class FunctionTypeValue implements TypeValueInterface {
 
 	public FunctionTypeValue(TypeValueInterface returnType) {
 		this.id = "function";
+		this.parametersTypes = new LinkedList<TypeValueInterface>();
 		this.returnType = returnType;
 	}
 
@@ -41,7 +42,9 @@ public class FunctionTypeValue implements TypeValueInterface {
 			typeString.append(parameter);
 			typeString.append(", ");
 		}
-		typeString.delete(typeString.length() - 2, typeString.length());
+		if (typeString.length() > 1) {
+			typeString.delete(typeString.length() - 2, typeString.length());
+		}
 		typeString.append(" -> ");
 		typeString.append(returnType);
 		typeString.append(")");
