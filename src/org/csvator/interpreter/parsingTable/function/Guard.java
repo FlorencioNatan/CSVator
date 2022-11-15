@@ -1,6 +1,7 @@
 package org.csvator.interpreter.parsingTable.function;
 
 import org.csvator.interpreter.environment.Environment;
+import org.csvator.interpreter.parsingTable.AnonymousFunctionExpressionValue;
 import org.csvator.interpreter.parsingTable.BooleanValue;
 import org.csvator.interpreter.parsingTable.ExpressionValueInterface;
 import org.csvator.interpreter.parsingTable.ValueInterface;
@@ -21,6 +22,13 @@ public class Guard {
 	}
 
 	public ValueInterface evaluate(Environment env) {
+		if (this.result.getClass() == AnonymousFunctionExpressionValue.class) {
+			FunctionValue anonymousFunction = (FunctionValue) this.result.evaluate(env);
+			Environment clousure = env.clone();
+			clousure.setFatherEnvironment(null);
+			anonymousFunction.setClousure(clousure);
+			return anonymousFunction;
+		}
 		return this.result.evaluate(env);
 	}
 

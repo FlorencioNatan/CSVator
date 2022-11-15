@@ -24,6 +24,7 @@ public class FunctionValue implements ValueInterface, Cloneable {
 	TypeValueInterface returnType;
 	LinkedList<ArgumentValue> arguments;
 	LinkedList<Guard> expressions;
+	Environment clousure;
 
 	public FunctionValue(String id, TypeValueInterface returnType, LinkedList<ArgumentValue> arguments) {
 		this.id = id;
@@ -48,9 +49,18 @@ public class FunctionValue implements ValueInterface, Cloneable {
 		this.expressions = expressions;
 	}
 
+	public void setClousure(Environment clousure) {
+		this.clousure = clousure;
+	}
+
 	public Environment createLocalEnvironment(LinkedList<ValueInterface> values, Environment father) throws TypeMismatchException {
 		Environment local = new Environment();
-		local.setFatherEnvironment(father);
+		if (clousure == null) {
+			local.setFatherEnvironment(father);
+		} else {
+			clousure.setFatherEnvironment(father);
+			local.setFatherEnvironment(clousure);
+		}
 		for (int i = 0; i < arguments.size(); i++) {
 			ValueInterface parameterValue = values.get(i);
 			if (arguments.get(i).getType().getClass() != FunctionTypeValue.class) {
@@ -84,7 +94,17 @@ public class FunctionValue implements ValueInterface, Cloneable {
 		return local;
 	}
 
+	// TODO Refactor
 	private FunctionValue extractFunctionFromParameter(ValueInterface parameterValue, Environment father) throws InvalidParameterException {
+		if (parameterValue instanceof FunctionCallExpressionValue) {
+			ValueInterface function = parameterValue.evaluate(father);
+			if (!(function.getType() instanceof FunctionTypeValue)) {
+				// This error case is still not working properly
+				// TODO Change the exception into TypeMismatchException
+				throw new InvalidParameterException("The parameter is not a function");
+			}
+			return (FunctionValue) function;
+		}
 		if (parameterValue.getType().getClass() == FunctionTypeValue.class) {
 			return (FunctionValue) parameterValue;
 		}
