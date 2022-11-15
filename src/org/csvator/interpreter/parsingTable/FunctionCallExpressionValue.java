@@ -5,6 +5,7 @@ import java.util.LinkedList;
 import org.csvator.interpreter.environment.Environment;
 import org.csvator.interpreter.parsingTable.function.FunctionCall;
 import org.csvator.interpreter.parsingTable.function.TypeMismatchException;
+import org.csvator.interpreter.parsingTable.typeValues.AnyTypeValue;
 import org.csvator.interpreter.parsingTable.typeValues.FunctionTypeValue;
 import org.csvator.interpreter.parsingTable.typeValues.TypeValueInterface;
 
@@ -25,6 +26,7 @@ public class FunctionCallExpressionValue implements ExpressionValueInterface {
 		return id;
 	}
 
+	// TODO refactor call.evaluate(local);
 	@Override
 	public ValueInterface evaluate(Environment env) {
 		Environment local = call.createLocalEnvironment(expressions, env);
@@ -37,7 +39,7 @@ public class FunctionCallExpressionValue implements ExpressionValueInterface {
 			functionsHaveSameType = resultType.compareToFunctionType(callType);
 		}
 
-		if (result.getType() != call.getReturnType(env) && !functionsHaveSameType) {
+		if (call.getReturnType(env) != AnyTypeValue.getInstace() && result.getType() != call.getReturnType(env) && !functionsHaveSameType) {
 			throw new TypeMismatchException("Type mismatch on function " + this.id.trim() + " return. Expected " + call.getReturnType(env) + " found " + result.getType());
 		}
 		return call.evaluate(local);

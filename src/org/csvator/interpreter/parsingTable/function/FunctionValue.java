@@ -11,6 +11,7 @@ import org.csvator.interpreter.parsingTable.ExpressionValueInterface;
 import org.csvator.interpreter.parsingTable.FunctionCallExpressionValue;
 import org.csvator.interpreter.parsingTable.IntegerValue;
 import org.csvator.interpreter.parsingTable.ValueInterface;
+import org.csvator.interpreter.parsingTable.typeValues.AnyTypeValue;
 import org.csvator.interpreter.parsingTable.typeValues.DoubleTypeValue;
 import org.csvator.interpreter.parsingTable.typeValues.FunctionTypeValue;
 import org.csvator.interpreter.parsingTable.typeValues.IntTypeValue;
@@ -74,7 +75,7 @@ public class FunctionValue implements ValueInterface, Cloneable {
 				parameterValue = new DoubleValue(parameterValue.getId(), parameterContet);
 			}
 
-			if (arguments.get(i).getType() != parameterValue.getType() && !functionsHaveSameType) {
+			if (arguments.get(i).getType() != AnyTypeValue.getInstace() && arguments.get(i).getType() != parameterValue.getType() && !functionsHaveSameType) {
 				throw new TypeMismatchException("Type mismatch on function " + this.id.trim() + " parameter " + (i + 1) + ". Expected " + arguments.get(i).getType() + " found " + parameterValue.getType());
 			}
 			local.putValue(arguments.get(i).getIdVariable(), parameterValue);
