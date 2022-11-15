@@ -21,6 +21,7 @@ import org.csvator.interpreter.environment.operators.comparsion.GreaterThan;
 import org.csvator.interpreter.environment.operators.comparsion.LessEqual;
 import org.csvator.interpreter.environment.operators.comparsion.LessThan;
 import org.csvator.interpreter.environment.operators.string.Concat;
+import org.csvator.interpreter.parsingTable.AnonymousFunctionExpressionValue;
 import org.csvator.interpreter.parsingTable.ArgumentValue;
 import org.csvator.interpreter.parsingTable.BinaryExpressionValue;
 import org.csvator.interpreter.parsingTable.BooleanValue;
@@ -365,7 +366,8 @@ public class Interpreter extends DepthFirstAdapter {
 		// TODO Auto-generated method stub
 		super.outAConcatExpressionExpression(node);
 
-		BinaryExpressionValue expression = buildExpression(node.toString(), node.getLeft(), node.getRight(), new Concat());
+		BinaryExpressionValue expression = buildExpression(node.toString(), node.getLeft(), node.getRight(),
+				new Concat());
 
 		parsingTable.putValue(node, expression);
 	}
@@ -547,7 +549,8 @@ public class Interpreter extends DepthFirstAdapter {
 			expressions.add(value);
 		}
 
-		FunctionCallExpressionValue functionExpression = new FunctionCallExpressionValue(functionIdentifier, call, expressions);
+		FunctionCallExpressionValue functionExpression = new FunctionCallExpressionValue(functionIdentifier, call,
+				expressions);
 		parsingTable.putValue(node, functionExpression);
 	}
 
@@ -618,7 +621,8 @@ public class Interpreter extends DepthFirstAdapter {
 			function.setExpressions(body.getGuards());
 		}
 
-		parsingTable.putValue(node, function);
+		AnonymousFunctionExpressionValue anonFunction = new AnonymousFunctionExpressionValue(node.toString(), function);
+		parsingTable.putValue(node, anonFunction);
 	}
 
 	@Override
@@ -645,7 +649,8 @@ public class Interpreter extends DepthFirstAdapter {
 			function.setExpressions(body.getGuards());
 		}
 
-		parsingTable.putValue(node, function);
+		AnonymousFunctionExpressionValue anonFunction = new AnonymousFunctionExpressionValue(node.toString(), function);
+		parsingTable.putValue(node, anonFunction);
 	}
 
 	@Override
