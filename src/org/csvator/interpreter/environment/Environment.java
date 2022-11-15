@@ -5,7 +5,7 @@ import java.util.Map;
 
 import org.csvator.interpreter.parsingTable.ValueInterface;
 
-public class Environment {
+public class Environment implements Cloneable {
 
 	private Map<String, ValueInterface> env;
 	private Environment father;
@@ -37,6 +37,20 @@ public class Environment {
 		}
 
 		return env.get(id);
+	}
+
+	@Override
+	public Environment clone() {
+		Environment newEnv = new Environment();
+
+		for(Map.Entry<String, ValueInterface> element : env.entrySet()) {
+			String key = element.getKey();
+			ValueInterface value = element.getValue();
+			newEnv.putValue(key, value);
+		}
+		newEnv.father = this.father;
+
+		return newEnv;
 	}
 
 }
