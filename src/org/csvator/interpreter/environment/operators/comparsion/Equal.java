@@ -4,6 +4,7 @@ import org.csvator.interpreter.environment.Environment;
 import org.csvator.interpreter.parsingTable.BooleanValue;
 import org.csvator.interpreter.parsingTable.DoubleValue;
 import org.csvator.interpreter.parsingTable.IntegerValue;
+import org.csvator.interpreter.parsingTable.NullValue;
 import org.csvator.interpreter.parsingTable.StringValue;
 import org.csvator.interpreter.parsingTable.ValueInterface;
 
@@ -39,6 +40,10 @@ public class Equal extends EqualityOperator {
 
 		if (lho instanceof BooleanValue) {
 			result = ((BooleanValue) lho).getBooleanValue(env) == ((BooleanValue) rho).getBooleanValue(env);
+		}
+
+		if (lho instanceof NullValue) {
+			result = lho == rho;
 		}
 
 		return this.createResult(lho, rho, result, env);
