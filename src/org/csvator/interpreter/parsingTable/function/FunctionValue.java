@@ -17,7 +17,7 @@ import org.csvator.interpreter.parsingTable.typeValues.IntTypeValue;
 import org.csvator.interpreter.parsingTable.typeValues.TypeValueInterface;
 import org.csvator.interpreter.parsingTable.typeValues.VariableTypeValue;
 
-public class FunctionValue implements ExpressionValueInterface, ValueInterface {
+public class FunctionValue implements ValueInterface, Cloneable {
 
 	String id;
 	TypeValueInterface returnType;
@@ -151,6 +151,13 @@ public class FunctionValue implements ExpressionValueInterface, ValueInterface {
 		typeString.append(" -> ");
 		typeString.append(returnType);
 		return typeString.toString();
+	}
+
+	@Override
+	public FunctionValue clone() {
+		FunctionValue newFunction = new FunctionValue(this.id, this.returnType, this.arguments);
+		newFunction.setExpressions(this.expressions);
+		return newFunction;
 	}
 
 }
