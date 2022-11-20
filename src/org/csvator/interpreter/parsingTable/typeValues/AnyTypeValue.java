@@ -32,7 +32,6 @@ public class AnyTypeValue implements TypeValueInterface {
 
 	@Override
 	public String toString() {
-		// TODO Auto-generated method stub
 		return "any";
 	}
 

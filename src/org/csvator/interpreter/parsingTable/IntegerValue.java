@@ -35,7 +35,6 @@ public class IntegerValue implements ValueInterface {
 
 	@Override
 	public String toString() {
-		// TODO Auto-generated method stub
 		return Integer.toString(value);
 	}
 

@@ -33,7 +33,6 @@ public class IntTypeValue implements TypeValueInterface {
 
 	@Override
 	public String toString() {
-		// TODO Auto-generated method stub
 		return "int";
 	}
 

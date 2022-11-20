@@ -35,7 +35,6 @@ public class BooleanValue implements ValueInterface {
 
 	@Override
 	public String toString() {
-		// TODO Auto-generated method stub
 		return Boolean.toString(value);
 	}
 

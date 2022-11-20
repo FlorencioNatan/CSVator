@@ -112,7 +112,6 @@ public class Interpreter extends DepthFirstAdapter {
 
 	@Override
 	public void outAIntExpression(AIntExpression node) {
-		// TODO Auto-generated method stub
 		super.outAIntExpression(node);
 
 		String textInt = node.getInteger().getText().trim();
@@ -123,7 +122,6 @@ public class Interpreter extends DepthFirstAdapter {
 
 	@Override
 	public void outADoubleExpression(ADoubleExpression node) {
-		// TODO Auto-generated method stub
 		super.outADoubleExpression(node);
 
 		String textDouble = node.getDouble().getText().trim();
@@ -134,7 +132,6 @@ public class Interpreter extends DepthFirstAdapter {
 
 	@Override
 	public void outAStringLiteralExpression(AStringLiteralExpression node) {
-		// TODO Auto-generated method stub
 		super.outAStringLiteralExpression(node);
 
 		String value = node.getString().getText();
@@ -146,7 +143,6 @@ public class Interpreter extends DepthFirstAdapter {
 
 	@Override
 	public void outANullExpression(ANullExpression node) {
-		// TODO Auto-generated method stub
 		super.outANullExpression(node);
 
 		NullValue boolVal = NullValue.getInstace();
@@ -155,7 +151,6 @@ public class Interpreter extends DepthFirstAdapter {
 
 	@Override
 	public void outAVarExpression(AVarExpression node) {
-		// TODO Auto-generated method stub
 		super.outAVarExpression(node);
 
 		String identifier = node.getIdentifier().getText();
@@ -166,7 +161,6 @@ public class Interpreter extends DepthFirstAdapter {
 
 	@Override
 	public void outAParenExpression(AParenExpression node) {
-		// TODO Auto-generated method stub
 		super.outAParenExpression(node);
 
 		ValueInterface value = parsingTable.getValueOf(node.getExpression());
@@ -175,7 +169,6 @@ public class Interpreter extends DepthFirstAdapter {
 
 	@Override
 	public void outASumExpression(ASumExpression node) {
-		// TODO Auto-generated method stub
 		super.outASumExpression(node);
 
 		BinaryExpressionValue expression = buildExpression(node.toString(), node.getLeft(), node.getRight(), new Sum());
@@ -185,7 +178,6 @@ public class Interpreter extends DepthFirstAdapter {
 
 	@Override
 	public void outASubExpression(ASubExpression node) {
-		// TODO Auto-generated method stub
 		super.outASubExpression(node);
 
 		BinaryExpressionValue expression = buildExpression(node.toString(), node.getLeft(), node.getRight(), new Sub());
@@ -195,7 +187,6 @@ public class Interpreter extends DepthFirstAdapter {
 
 	@Override
 	public void outAMultExpression(AMultExpression node) {
-		// TODO Auto-generated method stub
 		super.outAMultExpression(node);
 
 		BinaryExpressionValue expression = buildExpression(node.toString(), node.getLeft(), node.getRight(),
@@ -206,7 +197,6 @@ public class Interpreter extends DepthFirstAdapter {
 
 	@Override
 	public void outADivExpression(ADivExpression node) {
-		// TODO Auto-generated method stub
 		super.outADivExpression(node);
 
 		BinaryExpressionValue expression = buildExpression(node.toString(), node.getLeft(), node.getRight(), new Div());
@@ -216,7 +206,6 @@ public class Interpreter extends DepthFirstAdapter {
 
 	@Override
 	public void outANegativeExpression(ANegativeExpression node) {
-		// TODO Auto-generated method stub
 		super.outANegativeExpression(node);
 
 		UnaryExpressionValue expression = buildExpression(node.toString(), node.getExpression(), new Negative());
@@ -226,7 +215,6 @@ public class Interpreter extends DepthFirstAdapter {
 
 	@Override
 	public void outATrueExpression(ATrueExpression node) {
-		// TODO Auto-generated method stub
 		super.outATrueExpression(node);
 
 		String textTrue = node.getKwTrue().getText().trim();
@@ -236,7 +224,6 @@ public class Interpreter extends DepthFirstAdapter {
 
 	@Override
 	public void outAFalseExpression(AFalseExpression node) {
-		// TODO Auto-generated method stub
 		super.outAFalseExpression(node);
 
 		String textFalse = node.getKwFalse().getText().trim();
@@ -246,7 +233,6 @@ public class Interpreter extends DepthFirstAdapter {
 
 	@Override
 	public void outANotExpression(ANotExpression node) {
-		// TODO Auto-generated method stub
 		super.outANotExpression(node);
 
 		UnaryExpressionValue expression = buildExpression(node.toString(), node.getExpression(), new Not());
@@ -256,7 +242,6 @@ public class Interpreter extends DepthFirstAdapter {
 
 	@Override
 	public void outAAndExpression(AAndExpression node) {
-		// TODO Auto-generated method stub
 		super.outAAndExpression(node);
 
 		BinaryExpressionValue expression = buildExpression(node.toString(), node.getLeft(), node.getRight(), new And());
@@ -266,7 +251,6 @@ public class Interpreter extends DepthFirstAdapter {
 
 	@Override
 	public void outAOrExpression(AOrExpression node) {
-		// TODO Auto-generated method stub
 		super.outAOrExpression(node);
 
 		BinaryExpressionValue expression = buildExpression(node.toString(), node.getLeft(), node.getRight(), new Or());
@@ -276,7 +260,6 @@ public class Interpreter extends DepthFirstAdapter {
 
 	@Override
 	public void outAXorExpression(AXorExpression node) {
-		// TODO Auto-generated method stub
 		super.outAXorExpression(node);
 
 		BinaryExpressionValue expression = buildExpression(node.toString(), node.getLeft(), node.getRight(), new Xor());
@@ -286,7 +269,6 @@ public class Interpreter extends DepthFirstAdapter {
 
 	@Override
 	public void outAImpliesExpression(AImpliesExpression node) {
-		// TODO Auto-generated method stub
 		super.outAImpliesExpression(node);
 
 		BinaryExpressionValue expression = buildExpression(node.toString(), node.getLeft(), node.getRight(),
@@ -297,7 +279,6 @@ public class Interpreter extends DepthFirstAdapter {
 
 	@Override
 	public void outAGreaterExpression(AGreaterExpression node) {
-		// TODO Auto-generated method stub
 		super.outAGreaterExpression(node);
 
 		BinaryExpressionValue expression = buildExpression(node.toString(), node.getLeft(), node.getRight(),
@@ -308,7 +289,6 @@ public class Interpreter extends DepthFirstAdapter {
 
 	@Override
 	public void outALessExpression(ALessExpression node) {
-		// TODO Auto-generated method stub
 		super.outALessExpression(node);
 
 		BinaryExpressionValue expression = buildExpression(node.toString(), node.getLeft(), node.getRight(),
@@ -319,7 +299,6 @@ public class Interpreter extends DepthFirstAdapter {
 
 	@Override
 	public void outAGreaterEqualExpression(AGreaterEqualExpression node) {
-		// TODO Auto-generated method stub
 		super.outAGreaterEqualExpression(node);
 
 		BinaryExpressionValue expression = buildExpression(node.toString(), node.getLeft(), node.getRight(),
@@ -330,7 +309,6 @@ public class Interpreter extends DepthFirstAdapter {
 
 	@Override
 	public void outALessEqualExpression(ALessEqualExpression node) {
-		// TODO Auto-generated method stub
 		super.outALessEqualExpression(node);
 
 		BinaryExpressionValue expression = buildExpression(node.toString(), node.getLeft(), node.getRight(),
@@ -341,7 +319,6 @@ public class Interpreter extends DepthFirstAdapter {
 
 	@Override
 	public void outAEqualExpression(AEqualExpression node) {
-		// TODO Auto-generated method stub
 		super.outAEqualExpression(node);
 
 		BinaryExpressionValue expression = buildExpression(node.toString(), node.getLeft(), node.getRight(),
@@ -352,7 +329,6 @@ public class Interpreter extends DepthFirstAdapter {
 
 	@Override
 	public void outADifferentExpression(ADifferentExpression node) {
-		// TODO Auto-generated method stub
 		super.outADifferentExpression(node);
 
 		BinaryExpressionValue expression = buildExpression(node.toString(), node.getLeft(), node.getRight(),
@@ -363,7 +339,6 @@ public class Interpreter extends DepthFirstAdapter {
 
 	@Override
 	public void outAConcatExpressionExpression(AConcatExpressionExpression node) {
-		// TODO Auto-generated method stub
 		super.outAConcatExpressionExpression(node);
 
 		BinaryExpressionValue expression = buildExpression(node.toString(), node.getLeft(), node.getRight(),
@@ -374,7 +349,6 @@ public class Interpreter extends DepthFirstAdapter {
 
 	@Override
 	public void outAVariableDefinition(AVariableDefinition node) {
-		// TODO Auto-generated method stub
 		super.outAVariableDefinition(node);
 
 		ValueInterface value = parsingTable.getValueOf(node.getExpression());
@@ -391,7 +365,6 @@ public class Interpreter extends DepthFirstAdapter {
 
 	@Override
 	public void outAIntTypeSpecifier(AIntTypeSpecifier node) {
-		// TODO Auto-generated method stub
 		super.outAIntTypeSpecifier(node);
 
 		IntTypeValue type = IntTypeValue.getInstace();
@@ -400,7 +373,6 @@ public class Interpreter extends DepthFirstAdapter {
 
 	@Override
 	public void outADoubleTypeSpecifier(ADoubleTypeSpecifier node) {
-		// TODO Auto-generated method stub
 		super.outADoubleTypeSpecifier(node);
 
 		DoubleTypeValue type = DoubleTypeValue.getInstace();
@@ -409,7 +381,6 @@ public class Interpreter extends DepthFirstAdapter {
 
 	@Override
 	public void outABoolTypeSpecifier(ABoolTypeSpecifier node) {
-		// TODO Auto-generated method stub
 		super.outABoolTypeSpecifier(node);
 
 		BoolTypeValue type = BoolTypeValue.getInstace();
@@ -418,7 +389,6 @@ public class Interpreter extends DepthFirstAdapter {
 
 	@Override
 	public void outAStringTypeSpecifier(AStringTypeSpecifier node) {
-		// TODO Auto-generated method stub
 		super.outAStringTypeSpecifier(node);
 
 		StringTypeValue type = StringTypeValue.getInstace();
@@ -427,7 +397,6 @@ public class Interpreter extends DepthFirstAdapter {
 
 	@Override
 	public void outAAnyTypeSpecifier(AAnyTypeSpecifier node) {
-		// TODO Auto-generated method stub
 		super.outAAnyTypeSpecifier(node);
 
 		AnyTypeValue type = AnyTypeValue.getInstace();
@@ -437,7 +406,6 @@ public class Interpreter extends DepthFirstAdapter {
 	@Override
 	public void outAFunctionTypeSpecifierNoParametersTypeSpecifier(
 			AFunctionTypeSpecifierNoParametersTypeSpecifier node) {
-		// TODO Auto-generated method stub
 		super.outAFunctionTypeSpecifierNoParametersTypeSpecifier(node);
 
 		TypeValueInterface result = (TypeValueInterface) parsingTable.getValueOf(node.getResult());
@@ -448,7 +416,6 @@ public class Interpreter extends DepthFirstAdapter {
 	@Override
 	public void outAFunctionTypeSpecifierWithParametersTypeSpecifier(
 			AFunctionTypeSpecifierWithParametersTypeSpecifier node) {
-		// TODO Auto-generated method stub
 		super.outAFunctionTypeSpecifierWithParametersTypeSpecifier(node);
 
 		LinkedList<TypeValueInterface> parametersTypes = new LinkedList<>();
@@ -465,7 +432,6 @@ public class Interpreter extends DepthFirstAdapter {
 
 	@Override
 	public void outAArgument(AArgument node) {
-		// TODO Auto-generated method stub
 		super.outAArgument(node);
 
 		TypeValueInterface type = (TypeValueInterface) parsingTable.getValueOf(node.getTypeSpecifier());
@@ -475,7 +441,6 @@ public class Interpreter extends DepthFirstAdapter {
 
 	@Override
 	public void outADeclarationFunctionDefinition(ADeclarationFunctionDefinition node) {
-		// TODO Auto-generated method stub
 		super.outADeclarationFunctionDefinition(node);
 
 		String functionIdentifier = node.getFunctionIdentifier().getText();
@@ -487,7 +452,6 @@ public class Interpreter extends DepthFirstAdapter {
 
 	@Override
 	public void outADeclarationWithArgumentFunctionDefinition(ADeclarationWithArgumentFunctionDefinition node) {
-		// TODO Auto-generated method stub
 		super.outADeclarationWithArgumentFunctionDefinition(node);
 
 		String functionIdentifier = node.getFunctionIdentifier().getText();
@@ -507,7 +471,6 @@ public class Interpreter extends DepthFirstAdapter {
 
 	@Override
 	public void outABodyGuardFunctionDefinition(ABodyGuardFunctionDefinition node) {
-		// TODO Auto-generated method stub
 		super.outABodyGuardFunctionDefinition(node);
 
 		String functionIdentifier = node.getFunctionIdentifier().getText();
@@ -521,7 +484,6 @@ public class Interpreter extends DepthFirstAdapter {
 
 	@Override
 	public void outABodyFunctionDefinition(ABodyFunctionDefinition node) {
-		// TODO Auto-generated method stub
 		super.outABodyFunctionDefinition(node);
 
 		String functionIdentifier = node.getFunctionIdentifier().getText();
@@ -535,7 +497,6 @@ public class Interpreter extends DepthFirstAdapter {
 
 	@Override
 	public void outAFunctionApplicationWithArgumentExpression(AFunctionApplicationWithArgumentExpression node) {
-		// TODO Auto-generated method stub
 		super.outAFunctionApplicationWithArgumentExpression(node);
 
 		String functionIdentifier = node.getFunctionIdentifier().getText();
@@ -556,7 +517,6 @@ public class Interpreter extends DepthFirstAdapter {
 
 	@Override
 	public void outAFunctionApplicationWithoutArgumentExpression(AFunctionApplicationWithoutArgumentExpression node) {
-		// TODO Auto-generated method stub
 		super.outAFunctionApplicationWithoutArgumentExpression(node);
 
 		String functionIdentifier = node.getFunctionIdentifier().getText();
@@ -568,7 +528,6 @@ public class Interpreter extends DepthFirstAdapter {
 
 	@Override
 	public void outAAnonymousFunctionBodyGuard(AAnonymousFunctionBodyGuard node) {
-		// TODO Auto-generated method stub
 		super.outAAnonymousFunctionBodyGuard(node);
 
 		ExpressionValueInterface condition = (ExpressionValueInterface) parsingTable.getValueOf(node.getCondition());
@@ -579,7 +538,6 @@ public class Interpreter extends DepthFirstAdapter {
 
 	@Override
 	public void outASingleExpressionAnonymousFunctionBody(ASingleExpressionAnonymousFunctionBody node) {
-		// TODO Auto-generated method stub
 		super.outASingleExpressionAnonymousFunctionBody(node);
 
 		ExpressionValueInterface expression = (ExpressionValueInterface) parsingTable.getValueOf(node.getExpression());
@@ -589,7 +547,6 @@ public class Interpreter extends DepthFirstAdapter {
 
 	@Override
 	public void outABodyGuardAnonymousFunctionBody(ABodyGuardAnonymousFunctionBody node) {
-		// TODO Auto-generated method stub
 		super.outABodyGuardAnonymousFunctionBody(node);
 
 		AnonymousFunctionBodyGuard value = (AnonymousFunctionBodyGuard) parsingTable.getValueOf(node.getFirst());
@@ -607,7 +564,6 @@ public class Interpreter extends DepthFirstAdapter {
 
 	@Override
 	public void outAAnonymousFunctionWithoutArgumentExpression(AAnonymousFunctionWithoutArgumentExpression node) {
-		// TODO Auto-generated method stub
 		super.outAAnonymousFunctionWithoutArgumentExpression(node);
 
 		TypeValueInterface returnType = (TypeValueInterface) parsingTable.getValueOf(node.getReturnType());
@@ -627,7 +583,6 @@ public class Interpreter extends DepthFirstAdapter {
 
 	@Override
 	public void outAAnonymousFunctionWithArgumentExpression(AAnonymousFunctionWithArgumentExpression node) {
-		// TODO Auto-generated method stub
 		super.outAAnonymousFunctionWithArgumentExpression(node);
 
 		TypeValueInterface returnType = (TypeValueInterface) parsingTable.getValueOf(node.getReturnType());
@@ -655,7 +610,6 @@ public class Interpreter extends DepthFirstAdapter {
 
 	@Override
 	public void outAExpressionLineLine(AExpressionLineLine node) {
-		// TODO Auto-generated method stub
 		super.outAExpressionLineLine(node);
 
 		ValueInterface value = parsingTable.getValueOf(node.getExpression());

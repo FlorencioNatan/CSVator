@@ -40,13 +40,11 @@ public class AnonymousFunctionBody implements ValueInterface {
 
 	@Override
 	public String getId() {
-		// TODO Auto-generated method stub
 		return id;
 	}
 
 	@Override
 	public ValueInterface evaluate(Environment env) {
-		// TODO Auto-generated method stub
 		if (expression != null) {
 			return expression.evaluate(env);
 		}
@@ -61,7 +59,6 @@ public class AnonymousFunctionBody implements ValueInterface {
 
 	@Override
 	public TypeValueInterface getType() {
-		// TODO Auto-generated method stub
 		if (expression != null) {
 			return expression.getType();
 		}

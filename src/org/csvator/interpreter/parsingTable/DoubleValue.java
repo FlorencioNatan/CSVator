@@ -35,7 +35,6 @@ public class DoubleValue implements ValueInterface {
 
 	@Override
 	public String toString() {
-		// TODO Auto-generated method stub
 		return Double.toString(value);
 	}
 

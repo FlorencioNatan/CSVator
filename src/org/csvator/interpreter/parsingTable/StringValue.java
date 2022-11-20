@@ -30,7 +30,6 @@ public class StringValue implements ValueInterface {
 
 	@Override
 	public String toString() {
-		// TODO Auto-generated method stub
 		return this.value;
 	}
 

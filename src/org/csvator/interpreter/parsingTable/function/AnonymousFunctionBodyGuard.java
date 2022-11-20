@@ -20,13 +20,11 @@ public class AnonymousFunctionBodyGuard implements ValueInterface {
 
 	@Override
 	public String getId() {
-		// TODO Auto-generated method stub
 		return id;
 	}
 
 	@Override
 	public ValueInterface evaluate(Environment env) {
-		// TODO Auto-generated method stub
 		ValueInterface conditionEvaluated = condition.evaluate(env);
 		if (conditionEvaluated instanceof BooleanValue && ((BooleanValue) conditionEvaluated).getBooleanValue(env) == true ) {
 			return result.evaluate(env);
@@ -36,7 +34,6 @@ public class AnonymousFunctionBodyGuard implements ValueInterface {
 
 	@Override
 	public TypeValueInterface getType() {
-		// TODO Auto-generated method stub
 		return result.getType();
 	}
 
