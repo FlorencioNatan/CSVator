@@ -77,6 +77,9 @@ public class FunctionValue implements ValueInterface, Cloneable {
 					parameterValue = paramenterFunction;
 				} catch (InvalidParameterException exception) {
 					functionsHaveSameType = false;
+					if (parameterValue instanceof FunctionCallExpressionValue) {
+						parameterValue = parameterValue.evaluate(father);
+					}
 				}
 			}
 
@@ -94,13 +97,10 @@ public class FunctionValue implements ValueInterface, Cloneable {
 		return local;
 	}
 
-	// TODO Refactor
 	private FunctionValue extractFunctionFromParameter(ValueInterface parameterValue, Environment father) throws InvalidParameterException {
 		if (parameterValue instanceof FunctionCallExpressionValue) {
 			ValueInterface function = parameterValue.evaluate(father);
 			if (!(function.getType() instanceof FunctionTypeValue)) {
-				// This error case is still not working properly
-				// TODO Change the exception into TypeMismatchException
 				throw new InvalidParameterException("The parameter is not a function");
 			}
 			return (FunctionValue) function;
@@ -109,14 +109,7 @@ public class FunctionValue implements ValueInterface, Cloneable {
 			return (FunctionValue) parameterValue;
 		}
 		if (parameterValue.getType() == VariableTypeValue.getInstace()) {
-			ValueInterface value = father.getValueOf(parameterValue.getId());
-			FunctionValue paramenterFunction;
-			if (value instanceof FunctionCallExpressionValue) {
-				paramenterFunction = (FunctionValue) father.getValueOf(value.getId());
-			} else {
-				paramenterFunction = (FunctionValue) value;
-			}
-			return paramenterFunction;
+			return (FunctionValue) father.getValueOf(parameterValue.getId());
 		}
 		throw new InvalidParameterException("The parameter is not a function");
 	}
