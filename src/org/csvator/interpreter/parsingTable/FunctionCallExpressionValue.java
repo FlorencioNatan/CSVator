@@ -26,7 +26,6 @@ public class FunctionCallExpressionValue implements ExpressionValueInterface {
 		return id;
 	}
 
-	// TODO refactor call.evaluate(local);
 	@Override
 	public ValueInterface evaluate(Environment env) {
 		Environment local = call.createLocalEnvironment(expressions, env);
@@ -42,7 +41,7 @@ public class FunctionCallExpressionValue implements ExpressionValueInterface {
 		if (call.getReturnType(env) != AnyTypeValue.getInstace() && result.getType() != call.getReturnType(env) && !functionsHaveSameType) {
 			throw new TypeMismatchException("Type mismatch on function " + this.id.trim() + " return. Expected " + call.getReturnType(env) + " found " + result.getType());
 		}
-		return call.evaluate(local);
+		return result;
 	}
 
 	@Override
