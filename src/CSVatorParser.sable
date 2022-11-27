@@ -36,6 +36,11 @@ Tokens
 	kw_false = 'false';
 	tok_double_quote = '"';
 	tok_plus_plus = '++';
+	tok_min_min = '--';
+	tok_excl_excl = '!!';
+	tok_excl_gt = '!<';
+	tok_excl_lt = '!>';
+	tok_excl_nb = '!#';
 	tok_plus = '+';
 	tok_min = '-';
 	tok_mult = '*';
@@ -60,6 +65,8 @@ Tokens
 	kw_dict = 'dict';
 	kw_set = 'set';
 	kw_list = 'list';
+	kw_swap = 'swap';
+	kw_update = 'update';
 	tok_semicolon = ';';
 	tok_colon = ':';
 	tok_comma = ',';
@@ -88,6 +95,8 @@ Productions
 
 	concat_expression {-> expression} = 
 		{concat} [left]:concat_expression tok_plus_plus [right]:not_expression {-> New expression.concat_expression(left.expression, right.expression)} |
+		{remove} [left]:concat_expression tok_min_min [right]:not_expression {-> New expression.remove_expression(left.expression, right.expression)} |
+		{index} [left]:concat_expression tok_excl_excl [right]:not_expression {-> New expression.index_expression(left.expression, right.expression)} |
 		{not_expression} not_expression {-> not_expression.expression};
 
 	not_expression {-> expression} =
@@ -135,6 +144,8 @@ Productions
 	postfix_expression {-> expression} =
 		{collection_initialization_expression} collection_initialization_expression {-> collection_initialization_expression.expression} |
 		{function_application_expression} function_application_expression {-> function_application_expression.expression} |
+		{swap} kw_swap tok_op_paren [collection]:expression [first_comma]:tok_comma [first_index]:expression [second_comma]:tok_comma [second_index]:expression tok_cl_paren {-> New expression.swap(collection, first_index, second_index)} |
+		{update} kw_update tok_op_paren [collection]:expression [first_comma]:tok_comma [index]:expression [second_comma]:tok_comma [value]:expression tok_cl_paren {-> New expression.update(collection, index, value)} |
 		{unary_expression} unary_expression {-> unary_expression.expression};
 
 	function_application_expression {-> expression} =
@@ -157,6 +168,9 @@ Productions
 
 	unary_expression {-> expression} =
 		{negative} tok_min primitive_expression {-> New expression.negative(primitive_expression.expression)} |
+		{head} tok_excl_gt primitive_expression {-> New expression.head(primitive_expression.expression)} |
+		{tail} tok_excl_lt primitive_expression {-> New expression.tail(primitive_expression.expression)} |
+		{size} tok_excl_nb primitive_expression {-> New expression.size(primitive_expression.expression)} |
 		{primitive_expression} primitive_expression {-> primitive_expression.expression};
 
 	primitive_expression {-> expression} = 
@@ -252,6 +266,11 @@ Abstract Syntax Tree
 		{false} kw_false |
 		{null} kw_null |
 		{concat_expression} [left]:expression [right]:expression |
+		{remove_expression} [left]:expression [right]:expression |
+		{index_expression} [left]:expression [right]:expression |
+		{head} expression |
+		{tail} expression |
+		{size} expression |
 		{string_literal} [string]:string_literal |
 		{key_value} [key]:expression [value]:expression |
 		{empty_vector} |
@@ -262,6 +281,8 @@ Abstract Syntax Tree
 		{set} [first]:expression [rest]:expression* |
 		{empty_list} |
 		{list} [first]:expression [rest]:expression* |
+		{swap} [collection]:expression [first_index]:expression [second_index]:expression |
+		{update} [collection]:expression [index]:expression [value]:expression |
 		{function_application_with_argument} [function_identifier]:identifier [first]:expression [rest]:expression* |
 		{function_application_without_argument} [function_identifier]:identifier |
 		{anonymous_function_without_argument} [return_type]:type_specifier [body]:anonymous_function_body |
