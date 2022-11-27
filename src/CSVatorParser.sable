@@ -67,6 +67,9 @@ Tokens
 	kw_list = 'list';
 	kw_swap = 'swap';
 	kw_update = 'update';
+	kw_map = 'map';
+	kw_filter = 'filter';
+	kw_reduce = 'reduce';
 	tok_semicolon = ';';
 	tok_colon = ':';
 	tok_comma = ',';
@@ -146,6 +149,9 @@ Productions
 		{function_application_expression} function_application_expression {-> function_application_expression.expression} |
 		{swap} kw_swap tok_op_paren [collection]:expression [first_comma]:tok_comma [first_index]:expression [second_comma]:tok_comma [second_index]:expression tok_cl_paren {-> New expression.swap(collection, first_index, second_index)} |
 		{update} kw_update tok_op_paren [collection]:expression [first_comma]:tok_comma [index]:expression [second_comma]:tok_comma [value]:expression tok_cl_paren {-> New expression.update(collection, index, value)} |
+		{map} kw_map tok_op_paren [collection]:expression [comma]:tok_comma [function]:expression tok_cl_paren {-> New expression.map(collection, function)} |
+		{filter} kw_filter tok_op_paren [collection]:expression [comma]:tok_comma [function]:expression tok_cl_paren {-> New expression.filter(collection, function)} |
+		{reduce} kw_reduce tok_op_paren [collection]:expression [first_comma]:tok_comma [function]:expression [second_comma]:tok_comma [init]:expression tok_cl_paren {-> New expression.reduce(collection, function, init)} |
 		{unary_expression} unary_expression {-> unary_expression.expression};
 
 	function_application_expression {-> expression} =
@@ -283,6 +289,9 @@ Abstract Syntax Tree
 		{list} [first]:expression [rest]:expression* |
 		{swap} [collection]:expression [first_index]:expression [second_index]:expression |
 		{update} [collection]:expression [index]:expression [value]:expression |
+		{map} [collection]:expression [function]:expression |
+		{filter} [collection]:expression [function]:expression |
+		{reduce} [collection]:expression [function]:expression [init]:expression |
 		{function_application_with_argument} [function_identifier]:identifier [first]:expression [rest]:expression* |
 		{function_application_without_argument} [function_identifier]:identifier |
 		{anonymous_function_without_argument} [return_type]:type_specifier [body]:anonymous_function_body |
