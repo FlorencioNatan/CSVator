@@ -1,6 +1,7 @@
 package org.csvator.interpreter;
 
 import java.util.LinkedList;
+import java.util.Vector;
 
 import org.csvator.interpreter.environment.Environment;
 import org.csvator.interpreter.environment.operators.OperatorInterface;
@@ -36,6 +37,7 @@ import org.csvator.interpreter.parsingTable.StringValue;
 import org.csvator.interpreter.parsingTable.UnaryExpressionValue;
 import org.csvator.interpreter.parsingTable.ValueInterface;
 import org.csvator.interpreter.parsingTable.VariableValue;
+import org.csvator.interpreter.parsingTable.VectorValue;
 import org.csvator.interpreter.parsingTable.function.AnonymousFunctionBody;
 import org.csvator.interpreter.parsingTable.function.AnonymousFunctionBodyGuard;
 import org.csvator.interpreter.parsingTable.function.FunctionCall;
@@ -70,6 +72,7 @@ import org.csvator.core.node.ADifferentExpression;
 import org.csvator.core.node.ADivExpression;
 import org.csvator.core.node.ADoubleExpression;
 import org.csvator.core.node.ADoubleTypeSpecifier;
+import org.csvator.core.node.AEmptyVectorExpression;
 import org.csvator.core.node.AEqualExpression;
 import org.csvator.core.node.AExpressionLineLine;
 import org.csvator.core.node.AFalseExpression;
@@ -100,6 +103,7 @@ import org.csvator.core.node.ASumExpression;
 import org.csvator.core.node.ATrueExpression;
 import org.csvator.core.node.AVarExpression;
 import org.csvator.core.node.AVariableDefinition;
+import org.csvator.core.node.AVectorExpression;
 import org.csvator.core.node.AVectorTypeSpecifier;
 import org.csvator.core.node.AXorExpression;
 import org.csvator.core.node.Node;
@@ -155,6 +159,31 @@ public class Interpreter extends DepthFirstAdapter {
 
 		NullValue nullVal = NullValue.getInstace();
 		parsingTable.putValue(node, nullVal);
+	}
+
+	@Override
+	public void outAEmptyVectorExpression(AEmptyVectorExpression node) {
+		super.outAEmptyVectorExpression(node);
+
+		VectorValue vector = new VectorValue(node.toString());
+		parsingTable.putValue(node, vector);
+	}
+
+	@Override
+	public void outAVectorExpression(AVectorExpression node) {
+		super.outAVectorExpression(node);
+
+		Vector<ValueInterface> vectorValues = new Vector<ValueInterface>();
+
+		ValueInterface value = parsingTable.getValueOf(node.getFirst());
+		vectorValues.add(value);
+		for (PExpression nodeExpression : node.getRest()) {
+			value = parsingTable.getValueOf(nodeExpression);
+			vectorValues.add(value);
+		}
+
+		VectorValue vector = new VectorValue(node.toString(), vectorValues);
+		parsingTable.putValue(node, vector);
 	}
 
 	@Override
