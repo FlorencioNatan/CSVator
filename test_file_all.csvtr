@@ -186,3 +186,10 @@ vect;
 
 vect := vector(1, 2, 3, 4, 5);
 vect;
+
+
+myList := list();
+myList;
+
+myList := list(1, 2, 3, 4, 5);
+myList;

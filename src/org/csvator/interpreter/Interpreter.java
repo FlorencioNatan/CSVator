@@ -30,6 +30,7 @@ import org.csvator.interpreter.parsingTable.DoubleValue;
 import org.csvator.interpreter.parsingTable.ExpressionValueInterface;
 import org.csvator.interpreter.parsingTable.FunctionCallExpressionValue;
 import org.csvator.interpreter.parsingTable.IntegerValue;
+import org.csvator.interpreter.parsingTable.ListValue;
 import org.csvator.interpreter.parsingTable.NullValue;
 import org.csvator.interpreter.parsingTable.NullaryExpressionValue;
 import org.csvator.interpreter.parsingTable.ParsingTable;
@@ -72,6 +73,7 @@ import org.csvator.core.node.ADifferentExpression;
 import org.csvator.core.node.ADivExpression;
 import org.csvator.core.node.ADoubleExpression;
 import org.csvator.core.node.ADoubleTypeSpecifier;
+import org.csvator.core.node.AEmptyListExpression;
 import org.csvator.core.node.AEmptyVectorExpression;
 import org.csvator.core.node.AEqualExpression;
 import org.csvator.core.node.AExpressionLineLine;
@@ -87,6 +89,7 @@ import org.csvator.core.node.AIntExpression;
 import org.csvator.core.node.AIntTypeSpecifier;
 import org.csvator.core.node.ALessEqualExpression;
 import org.csvator.core.node.ALessExpression;
+import org.csvator.core.node.AListExpression;
 import org.csvator.core.node.AListTypeSpecifier;
 import org.csvator.core.node.AMultExpression;
 import org.csvator.core.node.ANegativeExpression;
@@ -184,6 +187,31 @@ public class Interpreter extends DepthFirstAdapter {
 
 		VectorValue vector = new VectorValue(node.toString(), vectorValues);
 		parsingTable.putValue(node, vector);
+	}
+
+	@Override
+	public void outAEmptyListExpression(AEmptyListExpression node) {
+		super.outAEmptyListExpression(node);
+
+		ListValue list = new ListValue(node.toString());
+		parsingTable.putValue(node, list);
+	}
+
+	@Override
+	public void outAListExpression(AListExpression node) {
+		super.outAListExpression(node);
+
+		LinkedList<ValueInterface> listValues = new LinkedList<ValueInterface>();
+
+		ValueInterface value = parsingTable.getValueOf(node.getFirst());
+		listValues.add(value);
+		for (PExpression nodeExpression : node.getRest()) {
+			value = parsingTable.getValueOf(nodeExpression);
+			listValues.add(value);
+		}
+
+		ListValue list = new ListValue(node.toString(), listValues);
+		parsingTable.putValue(node, list);
 	}
 
 	@Override
