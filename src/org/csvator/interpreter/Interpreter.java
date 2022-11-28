@@ -42,11 +42,15 @@ import org.csvator.interpreter.parsingTable.function.FunctionCall;
 import org.csvator.interpreter.parsingTable.function.FunctionValue;
 import org.csvator.interpreter.parsingTable.typeValues.AnyTypeValue;
 import org.csvator.interpreter.parsingTable.typeValues.BoolTypeValue;
+import org.csvator.interpreter.parsingTable.typeValues.DictTypeValue;
 import org.csvator.interpreter.parsingTable.typeValues.DoubleTypeValue;
 import org.csvator.interpreter.parsingTable.typeValues.FunctionTypeValue;
 import org.csvator.interpreter.parsingTable.typeValues.IntTypeValue;
+import org.csvator.interpreter.parsingTable.typeValues.ListTypeValue;
+import org.csvator.interpreter.parsingTable.typeValues.SetTypeValue;
 import org.csvator.interpreter.parsingTable.typeValues.StringTypeValue;
 import org.csvator.interpreter.parsingTable.typeValues.TypeValueInterface;
+import org.csvator.interpreter.parsingTable.typeValues.VectorTypeValue;
 import org.csvator.core.analysis.DepthFirstAdapter;
 import org.csvator.core.node.AAndExpression;
 import org.csvator.core.node.AAnonymousFunctionBodyGuard;
@@ -61,6 +65,7 @@ import org.csvator.core.node.ABoolTypeSpecifier;
 import org.csvator.core.node.AConcatExpressionExpression;
 import org.csvator.core.node.ADeclarationFunctionDefinition;
 import org.csvator.core.node.ADeclarationWithArgumentFunctionDefinition;
+import org.csvator.core.node.ADictTypeSpecifier;
 import org.csvator.core.node.ADifferentExpression;
 import org.csvator.core.node.ADivExpression;
 import org.csvator.core.node.ADoubleExpression;
@@ -79,12 +84,14 @@ import org.csvator.core.node.AIntExpression;
 import org.csvator.core.node.AIntTypeSpecifier;
 import org.csvator.core.node.ALessEqualExpression;
 import org.csvator.core.node.ALessExpression;
+import org.csvator.core.node.AListTypeSpecifier;
 import org.csvator.core.node.AMultExpression;
 import org.csvator.core.node.ANegativeExpression;
 import org.csvator.core.node.ANotExpression;
 import org.csvator.core.node.ANullExpression;
 import org.csvator.core.node.AOrExpression;
 import org.csvator.core.node.AParenExpression;
+import org.csvator.core.node.ASetTypeSpecifier;
 import org.csvator.core.node.ASingleExpressionAnonymousFunctionBody;
 import org.csvator.core.node.AStringLiteralExpression;
 import org.csvator.core.node.AStringTypeSpecifier;
@@ -93,6 +100,7 @@ import org.csvator.core.node.ASumExpression;
 import org.csvator.core.node.ATrueExpression;
 import org.csvator.core.node.AVarExpression;
 import org.csvator.core.node.AVariableDefinition;
+import org.csvator.core.node.AVectorTypeSpecifier;
 import org.csvator.core.node.AXorExpression;
 import org.csvator.core.node.Node;
 import org.csvator.core.node.PAnonymousFunctionBodyGuard;
@@ -400,6 +408,38 @@ public class Interpreter extends DepthFirstAdapter {
 		super.outAAnyTypeSpecifier(node);
 
 		AnyTypeValue type = AnyTypeValue.getInstace();
+		parsingTable.putValue(node, type);
+	}
+
+	@Override
+	public void outAVectorTypeSpecifier(AVectorTypeSpecifier node) {
+		super.outAVectorTypeSpecifier(node);
+
+		VectorTypeValue type = VectorTypeValue.getInstace();
+		parsingTable.putValue(node, type);
+	}
+
+	@Override
+	public void outADictTypeSpecifier(ADictTypeSpecifier node) {
+		super.outADictTypeSpecifier(node);
+
+		DictTypeValue type = DictTypeValue.getInstace();
+		parsingTable.putValue(node, type);
+	}
+
+	@Override
+	public void outASetTypeSpecifier(ASetTypeSpecifier node) {
+		super.outASetTypeSpecifier(node);
+
+		SetTypeValue type = SetTypeValue.getInstace();
+		parsingTable.putValue(node, type);
+	}
+
+	@Override
+	public void outAListTypeSpecifier(AListTypeSpecifier node) {
+		super.outAListTypeSpecifier(node);
+
+		ListTypeValue type = ListTypeValue.getInstace();
 		parsingTable.putValue(node, type);
 	}
 
