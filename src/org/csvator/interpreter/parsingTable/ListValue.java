@@ -31,7 +31,7 @@ public class ListValue implements ValueInterface {
 		return this;
 	}
 
-	public LinkedList<ValueInterface> getVectorValue() {
+	public LinkedList<ValueInterface> getListValue() {
 		return value;
 	}
 

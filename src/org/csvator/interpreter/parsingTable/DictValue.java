@@ -31,7 +31,7 @@ public class DictValue implements ValueInterface {
 		return this;
 	}
 
-	public HashMap<ValueInterface, ValueInterface> getVectorValue() {
+	public HashMap<ValueInterface, ValueInterface> getDictValue() {
 		return value;
 	}
 

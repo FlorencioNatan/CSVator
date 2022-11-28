@@ -181,11 +181,11 @@ newSum(1,2);
 newSub := firstOrSecond(false, sum, sub);
 newSub(1,2);
 
-vect := vector();
-vect;
+myVect := vector();
+myVect;
 
-vect := vector(1, 2, 3, 4, 5);
-vect;
+myVect := vector(1, 2, 3, 4, 5);
+myVect;
 
 
 myList := list();
