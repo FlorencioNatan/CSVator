@@ -24,7 +24,7 @@ public class Main {
 				System.out.println(e);
 			}
 		} else {
-			System.err.println("usage: java simpleAdder inputFile");
+			System.err.println("No input file specified.");
 			System.exit(1);
 		}
 	}

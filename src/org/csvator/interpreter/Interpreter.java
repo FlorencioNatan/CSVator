@@ -153,8 +153,8 @@ public class Interpreter extends DepthFirstAdapter {
 	public void outANullExpression(ANullExpression node) {
 		super.outANullExpression(node);
 
-		NullValue boolVal = NullValue.getInstace();
-		parsingTable.putValue(node, boolVal);
+		NullValue nullVal = NullValue.getInstace();
+		parsingTable.putValue(node, nullVal);
 	}
 
 	@Override
