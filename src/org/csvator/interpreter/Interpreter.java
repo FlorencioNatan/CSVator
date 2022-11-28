@@ -1,6 +1,7 @@
 package org.csvator.interpreter;
 
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.LinkedList;
 import java.util.Vector;
 
@@ -37,6 +38,7 @@ import org.csvator.interpreter.parsingTable.ListValue;
 import org.csvator.interpreter.parsingTable.NullValue;
 import org.csvator.interpreter.parsingTable.NullaryExpressionValue;
 import org.csvator.interpreter.parsingTable.ParsingTable;
+import org.csvator.interpreter.parsingTable.SetValue;
 import org.csvator.interpreter.parsingTable.StringValue;
 import org.csvator.interpreter.parsingTable.UnaryExpressionValue;
 import org.csvator.interpreter.parsingTable.ValueInterface;
@@ -79,6 +81,7 @@ import org.csvator.core.node.ADoubleExpression;
 import org.csvator.core.node.ADoubleTypeSpecifier;
 import org.csvator.core.node.AEmptyDictExpression;
 import org.csvator.core.node.AEmptyListExpression;
+import org.csvator.core.node.AEmptySetExpression;
 import org.csvator.core.node.AEmptyVectorExpression;
 import org.csvator.core.node.AEqualExpression;
 import org.csvator.core.node.AExpressionLineLine;
@@ -103,6 +106,7 @@ import org.csvator.core.node.ANotExpression;
 import org.csvator.core.node.ANullExpression;
 import org.csvator.core.node.AOrExpression;
 import org.csvator.core.node.AParenExpression;
+import org.csvator.core.node.ASetExpression;
 import org.csvator.core.node.ASetTypeSpecifier;
 import org.csvator.core.node.ASingleExpressionAnonymousFunctionBody;
 import org.csvator.core.node.AStringLiteralExpression;
@@ -252,6 +256,31 @@ public class Interpreter extends DepthFirstAdapter {
 		}
 
 		DictValue list = new DictValue(node.toString(), dictValues);
+		parsingTable.putValue(node, list);
+	}
+
+	@Override
+	public void outAEmptySetExpression(AEmptySetExpression node) {
+		super.outAEmptySetExpression(node);
+
+		SetValue list = new SetValue(node.toString());
+		parsingTable.putValue(node, list);
+	}
+
+	@Override
+	public void outASetExpression(ASetExpression node) {
+		super.outASetExpression(node);
+
+		HashSet<ValueInterface> setValues = new HashSet<ValueInterface>();
+
+		ValueInterface value = parsingTable.getValueOf(node.getFirst());
+		setValues.add(value);
+		for (PExpression nodeExpression : node.getRest()) {
+			value = parsingTable.getValueOf(nodeExpression);
+			setValues.add(value);
+		}
+
+		SetValue list = new SetValue(node.toString(), setValues);
 		parsingTable.putValue(node, list);
 	}
 
