@@ -1,5 +1,6 @@
 package org.csvator.interpreter;
 
+import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.Vector;
 
@@ -26,10 +27,12 @@ import org.csvator.interpreter.parsingTable.AnonymousFunctionExpressionValue;
 import org.csvator.interpreter.parsingTable.ArgumentValue;
 import org.csvator.interpreter.parsingTable.BinaryExpressionValue;
 import org.csvator.interpreter.parsingTable.BooleanValue;
+import org.csvator.interpreter.parsingTable.DictValue;
 import org.csvator.interpreter.parsingTable.DoubleValue;
 import org.csvator.interpreter.parsingTable.ExpressionValueInterface;
 import org.csvator.interpreter.parsingTable.FunctionCallExpressionValue;
 import org.csvator.interpreter.parsingTable.IntegerValue;
+import org.csvator.interpreter.parsingTable.KeyValueExpressionValue;
 import org.csvator.interpreter.parsingTable.ListValue;
 import org.csvator.interpreter.parsingTable.NullValue;
 import org.csvator.interpreter.parsingTable.NullaryExpressionValue;
@@ -68,11 +71,13 @@ import org.csvator.core.node.ABoolTypeSpecifier;
 import org.csvator.core.node.AConcatExpressionExpression;
 import org.csvator.core.node.ADeclarationFunctionDefinition;
 import org.csvator.core.node.ADeclarationWithArgumentFunctionDefinition;
+import org.csvator.core.node.ADictExpression;
 import org.csvator.core.node.ADictTypeSpecifier;
 import org.csvator.core.node.ADifferentExpression;
 import org.csvator.core.node.ADivExpression;
 import org.csvator.core.node.ADoubleExpression;
 import org.csvator.core.node.ADoubleTypeSpecifier;
+import org.csvator.core.node.AEmptyDictExpression;
 import org.csvator.core.node.AEmptyListExpression;
 import org.csvator.core.node.AEmptyVectorExpression;
 import org.csvator.core.node.AEqualExpression;
@@ -87,6 +92,7 @@ import org.csvator.core.node.AGreaterExpression;
 import org.csvator.core.node.AImpliesExpression;
 import org.csvator.core.node.AIntExpression;
 import org.csvator.core.node.AIntTypeSpecifier;
+import org.csvator.core.node.AKeyValueExpression;
 import org.csvator.core.node.ALessEqualExpression;
 import org.csvator.core.node.ALessExpression;
 import org.csvator.core.node.AListExpression;
@@ -165,6 +171,16 @@ public class Interpreter extends DepthFirstAdapter {
 	}
 
 	@Override
+	public void outAKeyValueExpression(AKeyValueExpression node) {
+		super.outAKeyValueExpression(node);
+
+		ValueInterface key = parsingTable.getValueOf(node.getKey());
+		ValueInterface value = parsingTable.getValueOf(node.getValue());
+		KeyValueExpressionValue keyValue = new KeyValueExpressionValue(node.toString(), key, value);
+		parsingTable.putValue(node, keyValue);
+	}
+
+	@Override
 	public void outAEmptyVectorExpression(AEmptyVectorExpression node) {
 		super.outAEmptyVectorExpression(node);
 
@@ -211,6 +227,31 @@ public class Interpreter extends DepthFirstAdapter {
 		}
 
 		ListValue list = new ListValue(node.toString(), listValues);
+		parsingTable.putValue(node, list);
+	}
+
+	@Override
+	public void outAEmptyDictExpression(AEmptyDictExpression node) {
+		super.outAEmptyDictExpression(node);
+
+		DictValue list = new DictValue(node.toString());
+		parsingTable.putValue(node, list);
+	}
+
+	@Override
+	public void outADictExpression(ADictExpression node) {
+		super.outADictExpression(node);
+
+		HashMap<ValueInterface, ValueInterface> dictValues = new HashMap<ValueInterface, ValueInterface>();
+
+		KeyValueExpressionValue value = (KeyValueExpressionValue) parsingTable.getValueOf(node.getFirst());
+		dictValues.put(value.getKey(), value.getValue());
+		for (PExpression nodeExpression : node.getRest()) {
+			value = (KeyValueExpressionValue) parsingTable.getValueOf(nodeExpression);
+			dictValues.put(value.getKey(), value.getValue());
+		}
+
+		DictValue list = new DictValue(node.toString(), dictValues);
 		parsingTable.putValue(node, list);
 	}
 

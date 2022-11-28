@@ -162,13 +162,15 @@ Productions
 		{empty_vector} kw_vector tok_op_paren tok_cl_paren {-> New expression.empty_vector()} |
 		{vector} kw_vector tok_op_paren expression expression_list* tok_cl_paren {-> New expression.vector(expression, [expression_list.expression])} |
 		{empty_dict} kw_dict tok_op_paren tok_cl_paren {-> New expression.empty_dict()} |
-		{dict} kw_dict tok_op_paren key_value_expression key_value_list tok_cl_paren {-> New expression.dict(key_value_expression.expression, [key_value_list.expression])} |
+		{dict} kw_dict tok_op_paren key_value_expression key_value_list* tok_cl_paren {-> New expression.dict(key_value_expression.expression, [key_value_list.expression])} |
 		{empty_set} kw_set tok_op_paren tok_cl_paren {-> New expression.empty_set()} |
 		{set} kw_set tok_op_paren expression expression_list* tok_cl_paren {-> New expression.set(expression, [expression_list.expression])} |
 		{empty_list} kw_list tok_op_paren tok_cl_paren {-> New expression.empty_list()} |
 		{list} kw_list tok_op_paren expression expression_list* tok_cl_paren {-> New expression.list(expression, [expression_list.expression])};
 
-	key_value_expression {-> expression} = [key]:expression tok_right_arrow [value]:expression {-> New expression.key_value(key, value)};
+	key_value_expression {-> expression} =
+		{with_paren} tok_op_paren [key]:expression tok_right_arrow [value]:expression tok_cl_paren {-> New expression.key_value(key, value)} |
+		[key]:expression tok_right_arrow [value]:expression {-> New expression.key_value(key, value)};
 
 	key_value_list {-> expression} = tok_comma key_value_expression {-> key_value_expression.expression};
 
