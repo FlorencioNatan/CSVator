@@ -24,6 +24,11 @@ public class NullaryExpressionValue implements ExpressionValueInterface {
 	}
 
 	@Override
+	public String toString() {
+		return this.value.toString();
+	}
+
+	@Override
 	public TypeValueInterface getType() {
 		return this.value.getType();
 	}
