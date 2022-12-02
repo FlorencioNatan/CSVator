@@ -205,3 +205,40 @@ mySet;
 
 mySet := set(1, 2, 3, 4, 5);
 mySet;
+
+myVect ++ 6;
+7 ++ myVect;
+myVect;
+
+vectTwo := vector(10, 150, 12);
+
+myVect ++ vectTwo;
+vectTwo ++ myVect;
+myVect;
+vectTwo;
+
+
+
+myList ++ 6;
+7 ++ myList;
+myList;
+
+listTwo := list(10, 150, 12);
+
+myList ++ listTwo;
+listTwo ++ myList;
+myList;
+listTwo;
+
+
+
+mySet ++ 6;
+7 ++ mySet;
+mySet;
+
+setTwo := set(10, 150, 12);
+
+mySet ++ setTwo;
+setTwo ++ mySet;
+mySet;
+setTwo;

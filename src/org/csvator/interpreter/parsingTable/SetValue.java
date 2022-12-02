@@ -7,7 +7,7 @@ import org.csvator.interpreter.environment.Environment;
 import org.csvator.interpreter.parsingTable.typeValues.SetTypeValue;
 import org.csvator.interpreter.parsingTable.typeValues.TypeValueInterface;
 
-public class SetValue implements ValueInterface {
+public class SetValue implements CollectionValueInterface {
 
 	private String id;
 	private HashSet<ValueInterface> value;
@@ -44,6 +44,26 @@ public class SetValue implements ValueInterface {
 	@Override
 	public TypeValueInterface getType() {
 		return SetTypeValue.getInstace();
+	}
+
+	@Override
+	public CollectionValueInterface concatAtHead(ValueInterface value) {
+		if (value instanceof SetValue) {
+			SetValue listVal = (SetValue) value;
+			HashSet<ValueInterface> result = new HashSet<ValueInterface>();
+			result.addAll(listVal.value);
+			result.addAll(this.value);
+
+			return new SetValue(listVal.id + this.id, result);
+		}
+
+		this.value.add(value);
+		return this;
+	}
+
+	@Override
+	public CollectionValueInterface concatAtTail(ValueInterface value) {
+		return this.concatAtHead(value);
 	}
 
 }

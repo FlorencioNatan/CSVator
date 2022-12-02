@@ -6,7 +6,7 @@ import org.csvator.interpreter.environment.Environment;
 import org.csvator.interpreter.parsingTable.typeValues.ListTypeValue;
 import org.csvator.interpreter.parsingTable.typeValues.TypeValueInterface;
 
-public class ListValue implements ValueInterface {
+public class ListValue implements CollectionValueInterface {
 
 	private String id;
 	private LinkedList<ValueInterface> value;
@@ -43,6 +43,36 @@ public class ListValue implements ValueInterface {
 	@Override
 	public TypeValueInterface getType() {
 		return ListTypeValue.getInstace();
+	}
+
+	@Override
+	public CollectionValueInterface concatAtHead(ValueInterface value) {
+		if (value instanceof ListValue) {
+			ListValue listVal = (ListValue) value;
+			LinkedList<ValueInterface> result = new LinkedList<ValueInterface>();
+			result.addAll(listVal.value);
+			result.addAll(this.value);
+
+			return new ListValue(listVal.id + this.id, result);
+		}
+
+		this.value.addFirst(value);
+		return this;
+	}
+
+	@Override
+	public CollectionValueInterface concatAtTail(ValueInterface value) {
+		if (value instanceof ListValue) {
+			ListValue listVal = (ListValue) value;
+			LinkedList<ValueInterface> result = new LinkedList<ValueInterface>();
+			result.addAll(this.value);
+			result.addAll(listVal.value);
+
+			return new ListValue(listVal.id + this.id, result);
+		}
+
+		this.value.addLast(value);
+		return this;
 	}
 
 }

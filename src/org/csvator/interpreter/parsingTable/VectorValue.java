@@ -3,10 +3,11 @@ package org.csvator.interpreter.parsingTable;
 import java.util.Vector;
 
 import org.csvator.interpreter.environment.Environment;
+import org.csvator.interpreter.parsingTable.function.TypeMismatchException;
 import org.csvator.interpreter.parsingTable.typeValues.TypeValueInterface;
 import org.csvator.interpreter.parsingTable.typeValues.VectorTypeValue;
 
-public class VectorValue implements ValueInterface {
+public class VectorValue implements CollectionValueInterface {
 
 	private String id;
 	private Vector<ValueInterface> value;
@@ -43,6 +44,36 @@ public class VectorValue implements ValueInterface {
 	@Override
 	public TypeValueInterface getType() {
 		return VectorTypeValue.getInstace();
+	}
+
+	@Override
+	public CollectionValueInterface concatAtHead(ValueInterface value) {
+		if (value instanceof VectorValue) {
+			VectorValue vecVal = (VectorValue) value;
+			Vector<ValueInterface> result = new Vector<ValueInterface>();
+			result.addAll(vecVal.value);
+			result.addAll(this.value);
+
+			return new VectorValue(vecVal.id + this.id, result);
+		}
+
+		this.value.add(0, value);
+		return this;
+	}
+
+	@Override
+	public CollectionValueInterface concatAtTail(ValueInterface value) {
+		if (value instanceof VectorValue) {
+			VectorValue vecVal = (VectorValue) value;
+			Vector<ValueInterface> result = new Vector<ValueInterface>();
+			result.addAll(this.value);
+			result.addAll(vecVal.value);
+
+			return new VectorValue(vecVal.id + this.id, result);
+		}
+
+		this.value.add(value);
+		return this;
 	}
 
 }

@@ -1,10 +1,11 @@
 package org.csvator.interpreter.parsingTable;
 
 import org.csvator.interpreter.environment.Environment;
+import org.csvator.interpreter.parsingTable.function.TypeMismatchException;
 import org.csvator.interpreter.parsingTable.typeValues.StringTypeValue;
 import org.csvator.interpreter.parsingTable.typeValues.TypeValueInterface;
 
-public class StringValue implements ValueInterface {
+public class StringValue implements CollectionValueInterface {
 
 	String id;
 	String value;
@@ -36,6 +37,28 @@ public class StringValue implements ValueInterface {
 	@Override
 	public TypeValueInterface getType() {
 		return StringTypeValue.getInstace();
+	}
+
+	@Override
+	public CollectionValueInterface concatAtHead(ValueInterface value) {
+		if (value instanceof StringValue) {
+			StringValue strVal = (StringValue) value;
+			String result = strVal.value + this.value;
+			return new StringValue(result, result);
+		}
+
+		throw new TypeMismatchException("It's not possible to concatenate a string with a " + value.getType());
+	}
+
+	@Override
+	public CollectionValueInterface concatAtTail(ValueInterface value) {
+		if (value instanceof StringValue) {
+			StringValue strVal = (StringValue) value;
+			String result = this.value + strVal.value;
+			return new StringValue(result, result);
+		}
+
+		throw new TypeMismatchException("It's not possible to concatenate a string with a " + value.getType());
 	}
 
 }
