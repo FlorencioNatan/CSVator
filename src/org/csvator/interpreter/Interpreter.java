@@ -17,13 +17,13 @@ import org.csvator.interpreter.environment.operators.arithmetic.Mult;
 import org.csvator.interpreter.environment.operators.arithmetic.Negative;
 import org.csvator.interpreter.environment.operators.arithmetic.Sub;
 import org.csvator.interpreter.environment.operators.arithmetic.Sum;
+import org.csvator.interpreter.environment.operators.collection.Concat;
 import org.csvator.interpreter.environment.operators.comparsion.Different;
 import org.csvator.interpreter.environment.operators.comparsion.Equal;
 import org.csvator.interpreter.environment.operators.comparsion.GreaterEqual;
 import org.csvator.interpreter.environment.operators.comparsion.GreaterThan;
 import org.csvator.interpreter.environment.operators.comparsion.LessEqual;
 import org.csvator.interpreter.environment.operators.comparsion.LessThan;
-import org.csvator.interpreter.environment.operators.string.Concat;
 import org.csvator.interpreter.parsingTable.AnonymousFunctionExpressionValue;
 import org.csvator.interpreter.parsingTable.ArgumentValue;
 import org.csvator.interpreter.parsingTable.BinaryExpressionValue;
@@ -476,8 +476,7 @@ public class Interpreter extends DepthFirstAdapter {
 	public void outAConcatExpressionExpression(AConcatExpressionExpression node) {
 		super.outAConcatExpressionExpression(node);
 
-		BinaryExpressionValue expression = buildExpression(node.toString(), node.getLeft(), node.getRight(),
-				new Concat());
+		BinaryExpressionValue expression = buildExpression(node.toString(), node.getLeft(), node.getRight(), new Concat());
 
 		parsingTable.putValue(node, expression);
 	}
