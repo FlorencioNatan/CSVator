@@ -86,4 +86,9 @@ public class DictValue implements CollectionValueInterface {
 		throw new TypeMismatchException("It's not possible to concatenate a dict with a " + value.getType());
 	}
 
+	@Override
+	public void remove(ValueInterface value) {
+		this.value.remove(value);
+	}
+
 }

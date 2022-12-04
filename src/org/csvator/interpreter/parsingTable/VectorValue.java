@@ -4,6 +4,7 @@ import java.util.Vector;
 
 import org.csvator.interpreter.environment.Environment;
 import org.csvator.interpreter.parsingTable.function.TypeMismatchException;
+import org.csvator.interpreter.parsingTable.typeValues.IntTypeValue;
 import org.csvator.interpreter.parsingTable.typeValues.TypeValueInterface;
 import org.csvator.interpreter.parsingTable.typeValues.VectorTypeValue;
 
@@ -74,6 +75,14 @@ public class VectorValue implements CollectionValueInterface {
 
 		this.value.add(value);
 		return this;
+	}
+
+	@Override
+	public void remove(ValueInterface value) {
+		if (!(value instanceof IntegerValue)) {
+			throw new TypeMismatchException("The index to be removed must of type " + IntTypeValue.getInstace());
+		}
+		this.value.remove(((IntegerValue) value).value);
 	}
 
 }

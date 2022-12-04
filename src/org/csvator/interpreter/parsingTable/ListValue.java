@@ -3,6 +3,8 @@ package org.csvator.interpreter.parsingTable;
 import java.util.LinkedList;
 
 import org.csvator.interpreter.environment.Environment;
+import org.csvator.interpreter.parsingTable.function.TypeMismatchException;
+import org.csvator.interpreter.parsingTable.typeValues.IntTypeValue;
 import org.csvator.interpreter.parsingTable.typeValues.ListTypeValue;
 import org.csvator.interpreter.parsingTable.typeValues.TypeValueInterface;
 
@@ -73,6 +75,14 @@ public class ListValue implements CollectionValueInterface {
 
 		this.value.addLast(value);
 		return this;
+	}
+
+	@Override
+	public void remove(ValueInterface value) {
+		if (!(value instanceof IntegerValue)) {
+			throw new TypeMismatchException("The index to be removed must of type " + IntTypeValue.getInstace());
+		}
+		this.value.remove(((IntegerValue) value).value);
 	}
 
 }

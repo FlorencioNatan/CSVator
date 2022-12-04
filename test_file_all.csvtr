@@ -257,3 +257,8 @@ mySet ++ setTwo;
 setTwo ++ mySet;
 mySet;
 setTwo;
+
+
+myVect -- 4;
+myList -- 3;
+myDict -- "seven";

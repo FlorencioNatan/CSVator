@@ -2,6 +2,7 @@ package org.csvator.interpreter.parsingTable;
 
 import org.csvator.interpreter.environment.Environment;
 import org.csvator.interpreter.parsingTable.function.TypeMismatchException;
+import org.csvator.interpreter.parsingTable.typeValues.IntTypeValue;
 import org.csvator.interpreter.parsingTable.typeValues.StringTypeValue;
 import org.csvator.interpreter.parsingTable.typeValues.TypeValueInterface;
 
@@ -73,6 +74,15 @@ public class StringValue implements CollectionValueInterface {
 			return false;
 		}
 		return this.value.equals(((StringValue) obj).value);
+	}
+
+	@Override
+	public void remove(ValueInterface value) {
+		if (!(value instanceof IntegerValue)) {
+			throw new TypeMismatchException("The index to be removed must of type " + IntTypeValue.getInstace());
+		}
+		int index = ((IntegerValue) value).value;
+		this.value = this.value.substring(0, index) + this.value.substring(index + 1);
 	}
 
 }

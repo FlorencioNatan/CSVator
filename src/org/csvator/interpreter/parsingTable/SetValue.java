@@ -66,4 +66,9 @@ public class SetValue implements CollectionValueInterface {
 		return this.concatAtHead(value);
 	}
 
+	@Override
+	public void remove(ValueInterface value) {
+		// Do nothing because sets are not indexed
+	}
+
 }

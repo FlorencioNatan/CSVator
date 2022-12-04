@@ -6,4 +6,6 @@ public interface CollectionValueInterface extends ValueInterface {
 
 	public CollectionValueInterface concatAtTail(ValueInterface value);
 
+	public void remove(ValueInterface value);
+
 }

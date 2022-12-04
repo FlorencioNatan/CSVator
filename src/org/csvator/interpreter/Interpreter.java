@@ -18,6 +18,7 @@ import org.csvator.interpreter.environment.operators.arithmetic.Negative;
 import org.csvator.interpreter.environment.operators.arithmetic.Sub;
 import org.csvator.interpreter.environment.operators.arithmetic.Sum;
 import org.csvator.interpreter.environment.operators.collection.Concat;
+import org.csvator.interpreter.environment.operators.collection.Remove;
 import org.csvator.interpreter.environment.operators.comparsion.Different;
 import org.csvator.interpreter.environment.operators.comparsion.Equal;
 import org.csvator.interpreter.environment.operators.comparsion.GreaterEqual;
@@ -106,6 +107,7 @@ import org.csvator.core.node.ANotExpression;
 import org.csvator.core.node.ANullExpression;
 import org.csvator.core.node.AOrExpression;
 import org.csvator.core.node.AParenExpression;
+import org.csvator.core.node.ARemoveExpressionExpression;
 import org.csvator.core.node.ASetExpression;
 import org.csvator.core.node.ASetTypeSpecifier;
 import org.csvator.core.node.ASingleExpressionAnonymousFunctionBody;
@@ -477,6 +479,15 @@ public class Interpreter extends DepthFirstAdapter {
 		super.outAConcatExpressionExpression(node);
 
 		BinaryExpressionValue expression = buildExpression(node.toString(), node.getLeft(), node.getRight(), new Concat());
+
+		parsingTable.putValue(node, expression);
+	}
+
+	@Override
+	public void outARemoveExpressionExpression(ARemoveExpressionExpression node) {
+		super.outARemoveExpressionExpression(node);
+
+		BinaryExpressionValue expression = buildExpression(node.toString(), node.getLeft(), node.getRight(), new Remove());
 
 		parsingTable.putValue(node, expression);
 	}
