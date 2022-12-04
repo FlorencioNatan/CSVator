@@ -38,6 +38,7 @@ Tokens
 	tok_plus_plus = '++';
 	tok_min_min = '--';
 	tok_excl_excl = '!!';
+	tok_excl_inte = '!?';
 	tok_excl_gt = '!<';
 	tok_excl_lt = '!>';
 	tok_excl_nb = '!#';
@@ -102,6 +103,7 @@ Productions
 		{concat} [left]:concat_expression tok_plus_plus [right]:key_value_expression {-> New expression.concat_expression(left.expression, right.expression)} |
 		{remove} [left]:concat_expression tok_min_min [right]:key_value_expression {-> New expression.remove_expression(left.expression, right.expression)} |
 		{index} [left]:concat_expression tok_excl_excl [right]:key_value_expression {-> New expression.index_expression(left.expression, right.expression)} |
+		{contains} [left]:concat_expression tok_excl_inte [right]:key_value_expression {-> New expression.contains_expression(left.expression, right.expression)} |
 		{key_value_expression} key_value_expression {-> key_value_expression.expression};
 
 	key_value_expression {-> expression} =
@@ -280,6 +282,7 @@ Abstract Syntax Tree
 		{concat_expression} [left]:expression [right]:expression |
 		{remove_expression} [left]:expression [right]:expression |
 		{index_expression} [left]:expression [right]:expression |
+		{contains_expression} [left]:expression [right]:expression |
 		{head} expression |
 		{tail} expression |
 		{size} expression |
