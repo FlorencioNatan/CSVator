@@ -23,7 +23,7 @@ public class KeyValueExpressionValue implements ValueInterface {
 
 	@Override
 	public ValueInterface evaluate(Environment env) {
-		return this;
+		return new KeyValueExpressionValue(id, key.evaluate(env), value.evaluate(env));
 	}
 
 	public ValueInterface getKey() {

@@ -10,10 +10,10 @@ public class Concat extends CollectionOperator {
 	public ValueInterface apply(ValueInterface lho, ValueInterface rho, Environment env) {
 		if (lho instanceof CollectionValueInterface) {
 			CollectionValueInterface colLho = this.castToCollection(lho);
-			return colLho.concatAtTail(rho);
+			return colLho.concatAtTail(rho.evaluate(env));
 		}
 		CollectionValueInterface colRho = this.castToCollection(rho);
-		return colRho.concatAtHead(lho);
+		return colRho.concatAtHead(lho.evaluate(env));
 	}
 
 }
