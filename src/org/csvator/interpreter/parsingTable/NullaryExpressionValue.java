@@ -29,6 +29,16 @@ public class NullaryExpressionValue implements ExpressionValueInterface {
 	}
 
 	@Override
+	public int hashCode() {
+		return this.value.hashCode();
+	}
+
+	@Override
+	public boolean equals(Object obj) {
+		return this.value.equals(obj);
+	}
+
+	@Override
 	public TypeValueInterface getType() {
 		return this.value.getType();
 	}

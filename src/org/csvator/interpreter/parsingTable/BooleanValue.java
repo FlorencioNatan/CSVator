@@ -43,4 +43,17 @@ public class BooleanValue implements ValueInterface {
 		return BoolTypeValue.getInstace();
 	}
 
+	@Override
+	public int hashCode() {
+		return Boolean.hashCode(this.value);
+	}
+
+	@Override
+	public boolean equals(Object obj) {
+		if (!(obj instanceof BooleanValue)) {
+			return false;
+		}
+		return this.value == ((BooleanValue) obj).value;
+	}
+
 }

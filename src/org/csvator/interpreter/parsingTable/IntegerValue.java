@@ -43,4 +43,20 @@ public class IntegerValue implements ValueInterface {
 		return IntTypeValue.getInstace();
 	}
 
+	@Override
+	public int hashCode() {
+		return Integer.hashCode(this.value);
+	}
+
+	@Override
+	public boolean equals(Object obj) {
+		if ((obj instanceof IntegerValue)) {
+			return this.value == ((IntegerValue) obj).value;
+		}
+		if ((obj instanceof DoubleValue)) {
+			return this.value == ((DoubleValue) obj).value;
+		}
+		return false;
+	}
+
 }

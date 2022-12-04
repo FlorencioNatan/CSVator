@@ -61,4 +61,18 @@ public class StringValue implements CollectionValueInterface {
 		throw new TypeMismatchException("It's not possible to concatenate a string with a " + value.getType());
 	}
 
+	@Override
+	public int hashCode() {
+		int hash = this.value.hashCode();
+		return hash;
+	}
+
+	@Override
+	public boolean equals(Object obj) {
+		if (!(obj instanceof StringValue)) {
+			return false;
+		}
+		return this.value.equals(((StringValue) obj).value);
+	}
+
 }
