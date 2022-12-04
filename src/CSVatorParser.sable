@@ -99,9 +99,13 @@ Productions
 		{concat_expression} concat_expression {-> concat_expression.expression};
 
 	concat_expression {-> expression} = 
-		{concat} [left]:concat_expression tok_plus_plus [right]:not_expression {-> New expression.concat_expression(left.expression, right.expression)} |
-		{remove} [left]:concat_expression tok_min_min [right]:not_expression {-> New expression.remove_expression(left.expression, right.expression)} |
-		{index} [left]:concat_expression tok_excl_excl [right]:not_expression {-> New expression.index_expression(left.expression, right.expression)} |
+		{concat} [left]:concat_expression tok_plus_plus [right]:key_value_expression {-> New expression.concat_expression(left.expression, right.expression)} |
+		{remove} [left]:concat_expression tok_min_min [right]:key_value_expression {-> New expression.remove_expression(left.expression, right.expression)} |
+		{index} [left]:concat_expression tok_excl_excl [right]:key_value_expression {-> New expression.index_expression(left.expression, right.expression)} |
+		{key_value_expression} key_value_expression {-> key_value_expression.expression};
+
+	key_value_expression {-> expression} =
+		[key]:key_value_expression tok_right_arrow [value]:not_expression {-> New expression.key_value(key.expression, value.expression)} |
 		{not_expression} not_expression {-> not_expression.expression};
 
 	not_expression {-> expression} =
@@ -171,10 +175,6 @@ Productions
 		{set} kw_set tok_op_paren expression expression_list* tok_cl_paren {-> New expression.set(expression, [expression_list.expression])} |
 		{empty_list} kw_list tok_op_paren tok_cl_paren {-> New expression.empty_list()} |
 		{list} kw_list tok_op_paren expression expression_list* tok_cl_paren {-> New expression.list(expression, [expression_list.expression])};
-
-	key_value_expression {-> expression} =
-		{with_paren} tok_op_paren [key]:expression tok_right_arrow [value]:expression tok_cl_paren {-> New expression.key_value(key, value)} |
-		[key]:expression tok_right_arrow [value]:expression {-> New expression.key_value(key, value)};
 
 	key_value_list {-> expression} = tok_comma key_value_expression {-> key_value_expression.expression};
 
