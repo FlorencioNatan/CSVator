@@ -8,4 +8,6 @@ public interface CollectionValueInterface extends ValueInterface {
 
 	public void remove(ValueInterface value);
 
+	public ValueInterface get(ValueInterface value);
+
 }

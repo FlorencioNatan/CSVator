@@ -91,4 +91,9 @@ public class DictValue implements CollectionValueInterface {
 		this.value.remove(value);
 	}
 
+	@Override
+	public ValueInterface get(ValueInterface value) {
+		return this.value.get(value);
+	}
+
 }

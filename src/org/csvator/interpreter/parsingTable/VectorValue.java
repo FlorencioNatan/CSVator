@@ -85,4 +85,12 @@ public class VectorValue implements CollectionValueInterface {
 		this.value.remove(((IntegerValue) value).value);
 	}
 
+	@Override
+	public ValueInterface get(ValueInterface value) {
+		if (!(value instanceof IntegerValue)) {
+			throw new TypeMismatchException("The index must of type " + IntTypeValue.getInstace());
+		}
+		return this.value.get(((IntegerValue) value).value);
+	}
+
 }

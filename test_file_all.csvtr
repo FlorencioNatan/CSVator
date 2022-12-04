@@ -262,3 +262,8 @@ setTwo;
 myVect -- 4;
 myList -- 3;
 myDict -- "seven";
+
+myVect !! 0;
+myList !! 5;
+myDict !! "two";
+mySet !! 2;

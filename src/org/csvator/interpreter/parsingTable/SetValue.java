@@ -71,4 +71,9 @@ public class SetValue implements CollectionValueInterface {
 		// Do nothing because sets are not indexed
 	}
 
+	@Override
+	public ValueInterface get(ValueInterface value) {
+		return NullValue.getInstace();
+	}
+
 }

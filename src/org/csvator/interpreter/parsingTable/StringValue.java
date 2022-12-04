@@ -85,4 +85,14 @@ public class StringValue implements CollectionValueInterface {
 		this.value = this.value.substring(0, index) + this.value.substring(index + 1);
 	}
 
+	@Override
+	public ValueInterface get(ValueInterface value) {
+		if (!(value instanceof IntegerValue)) {
+			throw new TypeMismatchException("The index must of type " + IntTypeValue.getInstace());
+		}
+
+		String character = String.valueOf(this.value.charAt(((IntegerValue) value).value));
+		return new StringValue(character, character);
+	}
+
 }

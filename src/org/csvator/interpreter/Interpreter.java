@@ -18,6 +18,7 @@ import org.csvator.interpreter.environment.operators.arithmetic.Negative;
 import org.csvator.interpreter.environment.operators.arithmetic.Sub;
 import org.csvator.interpreter.environment.operators.arithmetic.Sum;
 import org.csvator.interpreter.environment.operators.collection.Concat;
+import org.csvator.interpreter.environment.operators.collection.Index;
 import org.csvator.interpreter.environment.operators.collection.Remove;
 import org.csvator.interpreter.environment.operators.comparsion.Different;
 import org.csvator.interpreter.environment.operators.comparsion.Equal;
@@ -94,6 +95,7 @@ import org.csvator.core.node.AFunctionTypeSpecifierWithParametersTypeSpecifier;
 import org.csvator.core.node.AGreaterEqualExpression;
 import org.csvator.core.node.AGreaterExpression;
 import org.csvator.core.node.AImpliesExpression;
+import org.csvator.core.node.AIndexExpressionExpression;
 import org.csvator.core.node.AIntExpression;
 import org.csvator.core.node.AIntTypeSpecifier;
 import org.csvator.core.node.AKeyValueExpression;
@@ -250,10 +252,10 @@ public class Interpreter extends DepthFirstAdapter {
 
 		HashMap<ValueInterface, ValueInterface> dictValues = new HashMap<ValueInterface, ValueInterface>();
 
-		KeyValueExpressionValue value = (KeyValueExpressionValue) parsingTable.getValueOf(node.getFirst());
+		KeyValueExpressionValue value = (KeyValueExpressionValue) parsingTable.getValueOf(node.getFirst()).evaluate(global);
 		dictValues.put(value.getKey(), value.getValue());
 		for (PExpression nodeExpression : node.getRest()) {
-			value = (KeyValueExpressionValue) parsingTable.getValueOf(nodeExpression);
+			value = (KeyValueExpressionValue) parsingTable.getValueOf(nodeExpression).evaluate(global);
 			dictValues.put(value.getKey(), value.getValue());
 		}
 
@@ -488,6 +490,13 @@ public class Interpreter extends DepthFirstAdapter {
 		super.outARemoveExpressionExpression(node);
 
 		BinaryExpressionValue expression = buildExpression(node.toString(), node.getLeft(), node.getRight(), new Remove());
+
+		parsingTable.putValue(node, expression);
+	}
+
+	@Override
+	public void outAIndexExpressionExpression(AIndexExpressionExpression node) {
+		BinaryExpressionValue expression = buildExpression(node.toString(), node.getLeft(), node.getRight(), new Index());
 
 		parsingTable.putValue(node, expression);
 	}
