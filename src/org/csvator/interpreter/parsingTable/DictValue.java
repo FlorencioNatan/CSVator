@@ -3,10 +3,11 @@ package org.csvator.interpreter.parsingTable;
 import java.util.HashMap;
 
 import org.csvator.interpreter.environment.Environment;
+import org.csvator.interpreter.parsingTable.function.TypeMismatchException;
 import org.csvator.interpreter.parsingTable.typeValues.DictTypeValue;
 import org.csvator.interpreter.parsingTable.typeValues.TypeValueInterface;
 
-public class DictValue implements ValueInterface {
+public class DictValue implements CollectionValueInterface {
 
 	private String id;
 	private HashMap<ValueInterface, ValueInterface> value;
@@ -43,6 +44,46 @@ public class DictValue implements ValueInterface {
 	@Override
 	public TypeValueInterface getType() {
 		return DictTypeValue.getInstace();
+	}
+
+	@Override
+	public CollectionValueInterface concatAtHead(ValueInterface value) {
+		if (value instanceof DictValue) {
+			DictValue vecVal = (DictValue) value;
+			HashMap<ValueInterface, ValueInterface> result = new HashMap<ValueInterface, ValueInterface>();
+			result.putAll(vecVal.value);
+			result.putAll(this.value);
+
+			return new DictValue(vecVal.id + this.id, result);
+		}
+
+		if (value instanceof KeyValueExpressionValue) {
+			KeyValueExpressionValue keyValue = (KeyValueExpressionValue) value;
+			this.value.put(keyValue.getKey(), keyValue.getValue());
+			return this;
+		}
+
+		throw new TypeMismatchException("It's not possible to concatenate a dict with a " + value.getType());
+	}
+
+	@Override
+	public CollectionValueInterface concatAtTail(ValueInterface value) {
+		if (value instanceof DictValue) {
+			DictValue vecVal = (DictValue) value;
+			HashMap<ValueInterface, ValueInterface> result = new HashMap<ValueInterface, ValueInterface>();
+			result.putAll(this.value);
+			result.putAll(vecVal.value);
+
+			return new DictValue(vecVal.id + this.id, result);
+		}
+
+		if (value instanceof KeyValueExpressionValue) {
+			KeyValueExpressionValue keyValue = (KeyValueExpressionValue) value;
+			this.value.put(keyValue.getKey(), keyValue.getValue());
+			return this;
+		}
+
+		throw new TypeMismatchException("It's not possible to concatenate a dict with a " + value.getType());
 	}
 
 }

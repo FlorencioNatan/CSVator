@@ -206,6 +206,8 @@ mySet;
 mySet := set(1, 2, 3, 4, 5);
 mySet;
 
+
+
 myVect ++ 6;
 7 ++ myVect;
 myVect;
@@ -216,6 +218,19 @@ myVect ++ vectTwo;
 vectTwo ++ myVect;
 myVect;
 vectTwo;
+
+
+
+myDict ++ "six" -> 6;
+"seven" -> 7 ++ myDict;
+myDict;
+
+dictTwo := dict("four" -> 4, ("five" -> 5));
+
+myDict ++ dictTwo;
+dictTwo ++ myDict;
+myDict;
+dictTwo;
 
 
 
