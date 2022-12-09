@@ -19,8 +19,11 @@ import org.csvator.interpreter.environment.operators.arithmetic.Sub;
 import org.csvator.interpreter.environment.operators.arithmetic.Sum;
 import org.csvator.interpreter.environment.operators.collection.Concat;
 import org.csvator.interpreter.environment.operators.collection.Contains;
+import org.csvator.interpreter.environment.operators.collection.Head;
 import org.csvator.interpreter.environment.operators.collection.Index;
 import org.csvator.interpreter.environment.operators.collection.Remove;
+import org.csvator.interpreter.environment.operators.collection.Size;
+import org.csvator.interpreter.environment.operators.collection.Tail;
 import org.csvator.interpreter.environment.operators.comparsion.Different;
 import org.csvator.interpreter.environment.operators.comparsion.Equal;
 import org.csvator.interpreter.environment.operators.comparsion.GreaterEqual;
@@ -96,6 +99,7 @@ import org.csvator.core.node.AFunctionTypeSpecifierNoParametersTypeSpecifier;
 import org.csvator.core.node.AFunctionTypeSpecifierWithParametersTypeSpecifier;
 import org.csvator.core.node.AGreaterEqualExpression;
 import org.csvator.core.node.AGreaterExpression;
+import org.csvator.core.node.AHeadExpression;
 import org.csvator.core.node.AImpliesExpression;
 import org.csvator.core.node.AIndexExpressionExpression;
 import org.csvator.core.node.AIntExpression;
@@ -115,10 +119,12 @@ import org.csvator.core.node.ARemoveExpressionExpression;
 import org.csvator.core.node.ASetExpression;
 import org.csvator.core.node.ASetTypeSpecifier;
 import org.csvator.core.node.ASingleExpressionAnonymousFunctionBody;
+import org.csvator.core.node.ASizeExpression;
 import org.csvator.core.node.AStringLiteralExpression;
 import org.csvator.core.node.AStringTypeSpecifier;
 import org.csvator.core.node.ASubExpression;
 import org.csvator.core.node.ASumExpression;
+import org.csvator.core.node.ATailExpression;
 import org.csvator.core.node.ATrueExpression;
 import org.csvator.core.node.AVarExpression;
 import org.csvator.core.node.AVariableDefinition;
@@ -506,6 +512,27 @@ public class Interpreter extends DepthFirstAdapter {
 	@Override
 	public void outAContainsExpressionExpression(AContainsExpressionExpression node) {
 		BinaryExpressionValue expression = buildExpression(node.toString(), node.getLeft(), node.getRight(), new Contains());
+
+		parsingTable.putValue(node, expression);
+	}
+
+	@Override
+	public void outAHeadExpression(AHeadExpression node) {
+		UnaryExpressionValue expression = buildExpression(node.toString(), node.getExpression(), new Head());
+
+		parsingTable.putValue(node, expression);
+	}
+
+	@Override
+	public void outATailExpression(ATailExpression node) {
+		UnaryExpressionValue expression = buildExpression(node.toString(), node.getExpression(), new Tail());
+
+		parsingTable.putValue(node, expression);
+	}
+
+	@Override
+	public void outASizeExpression(ASizeExpression node) {
+		UnaryExpressionValue expression = buildExpression(node.toString(), node.getExpression(), new Size());
 
 		parsingTable.putValue(node, expression);
 	}

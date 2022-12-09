@@ -114,4 +114,26 @@ public class VectorValue implements CollectionValueInterface {
 		}
 		return new BooleanValue("false", false);
 	}
+
+	@Override
+	public ValueInterface head() {
+		return this.value.get(0);
+	}
+
+	@Override
+	public ValueInterface tail() {
+		Vector<ValueInterface> result = new Vector<ValueInterface>();
+		for (int i = 1; i < this.value.size(); i++) {
+			ValueInterface element = this.value.get(i);
+			result.add(element);
+		}
+
+		return new VectorValue(this.id, result);
+	}
+
+	@Override
+	public ValueInterface size() {
+		return new IntegerValue(Integer.toString(this.value.size()), this.value.size());
+	}
+
 }

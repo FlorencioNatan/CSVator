@@ -3,6 +3,7 @@ package org.csvator.interpreter.parsingTable;
 import java.util.HashMap;
 
 import org.csvator.interpreter.environment.Environment;
+import org.csvator.interpreter.environment.operators.InvalidOperationException;
 import org.csvator.interpreter.parsingTable.function.TypeMismatchException;
 import org.csvator.interpreter.parsingTable.typeValues.DictTypeValue;
 import org.csvator.interpreter.parsingTable.typeValues.TypeValueInterface;
@@ -102,6 +103,21 @@ public class DictValue implements CollectionValueInterface {
 			return new BooleanValue("true", true);
 		}
 		return new BooleanValue("false", false);
+	}
+
+	@Override
+	public ValueInterface head() {
+		throw new InvalidOperationException("Head is not a valid operation on a " + DictTypeValue.getInstace());
+	}
+
+	@Override
+	public ValueInterface tail() {
+		throw new InvalidOperationException("Tail is not a valid operation on a " + DictTypeValue.getInstace());
+	}
+
+	@Override
+	public ValueInterface size() {
+		return new IntegerValue(Integer.toString(this.value.size()), this.value.size());
 	}
 
 }

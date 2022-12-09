@@ -12,4 +12,10 @@ public interface CollectionValueInterface extends ValueInterface {
 
 	public ValueInterface contains(ValueInterface value);
 
+	public ValueInterface head();
+
+	public ValueInterface tail();
+
+	public ValueInterface size();
+
 }

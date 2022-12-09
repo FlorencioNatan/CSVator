@@ -106,4 +106,21 @@ public class StringValue implements CollectionValueInterface {
 		return new BooleanValue("false", false);
 	}
 
+	@Override
+	public ValueInterface head() {
+		String newString = this.value.substring(0, 0);
+		return new StringValue(newString, newString);
+	}
+
+	@Override
+	public ValueInterface tail() {
+		String newString = this.value.substring(1, this.value.length() - 1);
+		return new StringValue(newString, newString);
+	}
+
+	@Override
+	public ValueInterface size() {
+		return new IntegerValue(Integer.toString(this.value.length()), this.value.length());
+	}
+
 }

@@ -286,3 +286,14 @@ mySet !? 71;
 myVect ++ (0 -> 8);
 myList ++ (0 -> 9);
 myDict ++ ("ten" -> 10);
+
+!< myVect;
+!< myList;
+
+!> myVect;
+!> myList;
+
+!# myVect;
+!# myList;
+!# myDict;
+!# mySet;
