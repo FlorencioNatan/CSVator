@@ -58,6 +58,13 @@ public class ListValue implements CollectionValueInterface {
 			return new ListValue(listVal.id + this.id, result);
 		}
 
+		if (value instanceof KeyValueExpressionValue) {
+			KeyValueExpressionValue keyValue = (KeyValueExpressionValue) value;
+			IntegerValue key = (IntegerValue) keyValue.getKey();
+			this.value.add(key.value, keyValue.getValue());
+			return this;
+		}
+
 		this.value.addFirst(value);
 		return this;
 	}
@@ -71,6 +78,13 @@ public class ListValue implements CollectionValueInterface {
 			result.addAll(listVal.value);
 
 			return new ListValue(listVal.id + this.id, result);
+		}
+
+		if (value instanceof KeyValueExpressionValue) {
+			KeyValueExpressionValue keyValue = (KeyValueExpressionValue) value;
+			IntegerValue key = (IntegerValue) keyValue.getKey();
+			this.value.add(key.value, keyValue.getValue());
+			return this;
 		}
 
 		this.value.addLast(value);

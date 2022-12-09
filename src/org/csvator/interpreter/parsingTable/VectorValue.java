@@ -58,6 +58,13 @@ public class VectorValue implements CollectionValueInterface {
 			return new VectorValue(vecVal.id + this.id, result);
 		}
 
+		if (value instanceof KeyValueExpressionValue) {
+			KeyValueExpressionValue keyValue = (KeyValueExpressionValue) value;
+			IntegerValue key = (IntegerValue) keyValue.getKey();
+			this.value.add(key.value, keyValue.getValue());
+			return this;
+		}
+
 		this.value.add(0, value);
 		return this;
 	}
@@ -71,6 +78,13 @@ public class VectorValue implements CollectionValueInterface {
 			result.addAll(vecVal.value);
 
 			return new VectorValue(vecVal.id + this.id, result);
+		}
+
+		if (value instanceof KeyValueExpressionValue) {
+			KeyValueExpressionValue keyValue = (KeyValueExpressionValue) value;
+			IntegerValue key = (IntegerValue) keyValue.getKey();
+			this.value.add(key.value, keyValue.getValue());
+			return this;
 		}
 
 		this.value.add(value);
