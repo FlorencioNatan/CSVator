@@ -10,4 +10,6 @@ public interface CollectionValueInterface extends ValueInterface {
 
 	public ValueInterface get(ValueInterface value);
 
+	public ValueInterface contains(ValueInterface value);
+
 }

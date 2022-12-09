@@ -76,4 +76,12 @@ public class SetValue implements CollectionValueInterface {
 		return NullValue.getInstace();
 	}
 
+	@Override
+	public ValueInterface contains(ValueInterface value) {
+		if (this.value.contains(value)) {
+			return new BooleanValue("true", true);
+		}
+		return new BooleanValue("false", false);
+	}
+
 }

@@ -267,3 +267,18 @@ myVect !! 0;
 myList !! 5;
 myDict !! "two";
 mySet !! 2;
+
+myVect;
+myList;
+myDict;
+mySet;
+
+myVect !? 7;
+myList !? 1;
+myDict !? "six";
+mySet !? 6;
+
+myVect !? 0;
+myList !? 10;
+myDict !? "five";
+mySet !? 71;

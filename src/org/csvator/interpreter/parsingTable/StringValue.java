@@ -95,4 +95,15 @@ public class StringValue implements CollectionValueInterface {
 		return new StringValue(character, character);
 	}
 
+	@Override
+	public ValueInterface contains(ValueInterface value) {
+		if (!(value instanceof StringValue)) {
+			throw new TypeMismatchException("The value must of type " + StringTypeValue.getInstace());
+		}
+		if (this.value.contains(((StringValue) value).value)) {
+			new BooleanValue("true", true);
+		}
+		return new BooleanValue("false", false);
+	}
+
 }

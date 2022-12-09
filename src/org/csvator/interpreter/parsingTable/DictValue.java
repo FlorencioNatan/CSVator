@@ -96,4 +96,12 @@ public class DictValue implements CollectionValueInterface {
 		return this.value.get(value);
 	}
 
+	@Override
+	public ValueInterface contains(ValueInterface value) {
+		if (this.value.containsKey(value)) {
+			return new BooleanValue("true", true);
+		}
+		return new BooleanValue("false", false);
+	}
+
 }

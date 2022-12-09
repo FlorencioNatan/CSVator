@@ -93,4 +93,11 @@ public class VectorValue implements CollectionValueInterface {
 		return this.value.get(((IntegerValue) value).value);
 	}
 
+	@Override
+	public ValueInterface contains(ValueInterface value) {
+		if (this.value.contains(value)) {
+			return new BooleanValue("true", true);
+		}
+		return new BooleanValue("false", false);
+	}
 }
