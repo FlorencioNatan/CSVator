@@ -204,10 +204,10 @@ public class Interpreter extends DepthFirstAdapter {
 
 		Vector<ValueInterface> vectorValues = new Vector<ValueInterface>();
 
-		ValueInterface value = parsingTable.getValueOf(node.getFirst());
+		ValueInterface value = parsingTable.getValueOf(node.getFirst()).evaluate(global);
 		vectorValues.add(value);
 		for (PExpression nodeExpression : node.getRest()) {
-			value = parsingTable.getValueOf(nodeExpression);
+			value = parsingTable.getValueOf(nodeExpression).evaluate(global);
 			vectorValues.add(value);
 		}
 
@@ -229,10 +229,10 @@ public class Interpreter extends DepthFirstAdapter {
 
 		LinkedList<ValueInterface> listValues = new LinkedList<ValueInterface>();
 
-		ValueInterface value = parsingTable.getValueOf(node.getFirst());
+		ValueInterface value = parsingTable.getValueOf(node.getFirst()).evaluate(global);
 		listValues.add(value);
 		for (PExpression nodeExpression : node.getRest()) {
-			value = parsingTable.getValueOf(nodeExpression);
+			value = parsingTable.getValueOf(nodeExpression).evaluate(global);
 			listValues.add(value);
 		}
 
@@ -279,10 +279,10 @@ public class Interpreter extends DepthFirstAdapter {
 
 		HashSet<ValueInterface> setValues = new HashSet<ValueInterface>();
 
-		ValueInterface value = parsingTable.getValueOf(node.getFirst());
+		ValueInterface value = parsingTable.getValueOf(node.getFirst()).evaluate(global);
 		setValues.add(value);
 		for (PExpression nodeExpression : node.getRest()) {
-			value = parsingTable.getValueOf(nodeExpression);
+			value = parsingTable.getValueOf(nodeExpression).evaluate(global);
 			setValues.add(value);
 		}
 
