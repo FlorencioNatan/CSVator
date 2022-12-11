@@ -37,7 +37,7 @@ public class NullValue implements ValueInterface {
 
 	@Override
 	public TypeValueInterface getType() {
-		return VoidTypeValue.getInstace();
+		return VoidTypeValue.getInstance();
 	}
 
 }

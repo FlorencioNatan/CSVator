@@ -44,7 +44,7 @@ public class DictValue implements CollectionValueInterface {
 
 	@Override
 	public TypeValueInterface getType() {
-		return DictTypeValue.getInstace();
+		return DictTypeValue.getInstance();
 	}
 
 	@Override
@@ -107,12 +107,12 @@ public class DictValue implements CollectionValueInterface {
 
 	@Override
 	public ValueInterface head() {
-		throw new InvalidOperationException("Head is not a valid operation on a " + DictTypeValue.getInstace());
+		throw new InvalidOperationException("Head is not a valid operation on a " + DictTypeValue.getInstance());
 	}
 
 	@Override
 	public ValueInterface tail() {
-		throw new InvalidOperationException("Tail is not a valid operation on a " + DictTypeValue.getInstace());
+		throw new InvalidOperationException("Tail is not a valid operation on a " + DictTypeValue.getInstance());
 	}
 
 	@Override

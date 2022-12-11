@@ -83,12 +83,12 @@ public class UserDefinedFunctionValue implements FunctionValueInterface, Cloneab
 				}
 			}
 
-			if (arguments.get(i).getType() == DoubleTypeValue.getInstace() && parameterValue.getType() == IntTypeValue.getInstace()) {
+			if (arguments.get(i).getType() == DoubleTypeValue.getInstance() && parameterValue.getType() == IntTypeValue.getInstance()) {
 				int parameterContet = ((IntegerValue) parameterValue).getIntValue(father);
 				parameterValue = new DoubleValue(parameterValue.getId(), parameterContet);
 			}
 
-			if (arguments.get(i).getType() != AnyTypeValue.getInstace() && arguments.get(i).getType() != parameterValue.getType() && !functionsHaveSameType) {
+			if (arguments.get(i).getType() != AnyTypeValue.getInstance() && arguments.get(i).getType() != parameterValue.getType() && !functionsHaveSameType) {
 				throw new TypeMismatchException("Type mismatch on function " + this.id.trim() + " parameter " + (i + 1) + ". Expected " + arguments.get(i).getType() + " found " + parameterValue.getType());
 			}
 			local.putValue(arguments.get(i).getIdVariable(), parameterValue);
@@ -108,7 +108,7 @@ public class UserDefinedFunctionValue implements FunctionValueInterface, Cloneab
 		if (parameterValue.getType().getClass() == FunctionTypeValue.class) {
 			return (UserDefinedFunctionValue) parameterValue;
 		}
-		if (parameterValue.getType() == VariableTypeValue.getInstace()) {
+		if (parameterValue.getType() == VariableTypeValue.getInstance()) {
 			return (UserDefinedFunctionValue) father.getValueOf(parameterValue.getId());
 		}
 		throw new InvalidParameterException("The parameter is not a function");

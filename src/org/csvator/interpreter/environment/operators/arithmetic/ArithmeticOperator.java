@@ -14,7 +14,7 @@ public abstract class ArithmeticOperator implements OperatorInterface {
 			return this.applyOnUnaryOperator(lho, env);
 		}
 
-		if (lho.getType() == rho.getType() && lho.getType() == IntTypeValue.getInstace()) {
+		if (lho.getType() == rho.getType() && lho.getType() == IntTypeValue.getInstance()) {
 			IntegerValue intLho = this.castToIntegerValue(lho);
 			IntegerValue intRho = this.castToIntegerValue(rho);
 			int result = this.operationOnInt(intLho.getIntValue(env), intRho.getIntValue(env));
@@ -23,14 +23,14 @@ public abstract class ArithmeticOperator implements OperatorInterface {
 		}
 
 		double doubleLho = 0.0;
-		if (lho.getType() == IntTypeValue.getInstace()) {
+		if (lho.getType() == IntTypeValue.getInstance()) {
 			doubleLho = this.castToIntegerValue(lho).getIntValue(env);
 		} else {
 			doubleLho = this.castToDoubleValue(lho).getDoubleValue(env);
 		}
 
 		double doubleRho = 0.0;
-		if (rho.getType() == IntTypeValue.getInstace()) {
+		if (rho.getType() == IntTypeValue.getInstance()) {
 			doubleRho = this.castToIntegerValue(rho).getIntValue(env);
 		} else {
 			doubleRho = this.castToDoubleValue(rho).getDoubleValue(env);
@@ -41,7 +41,7 @@ public abstract class ArithmeticOperator implements OperatorInterface {
 	}
 
 	private ValueInterface applyOnUnaryOperator(ValueInterface lho, Environment env) {
-		if (lho.getType() == IntTypeValue.getInstace()) {
+		if (lho.getType() == IntTypeValue.getInstance()) {
 			IntegerValue intLho = this.castToIntegerValue(lho);
 			int result = this.operationOnInt(intLho.getIntValue(env), 0);
 

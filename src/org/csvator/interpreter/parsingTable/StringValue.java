@@ -37,7 +37,7 @@ public class StringValue implements CollectionValueInterface {
 
 	@Override
 	public TypeValueInterface getType() {
-		return StringTypeValue.getInstace();
+		return StringTypeValue.getInstance();
 	}
 
 	@Override
@@ -79,7 +79,7 @@ public class StringValue implements CollectionValueInterface {
 	@Override
 	public void remove(ValueInterface value) {
 		if (!(value instanceof IntegerValue)) {
-			throw new TypeMismatchException("The index to be removed must of type " + IntTypeValue.getInstace());
+			throw new TypeMismatchException("The index to be removed must of type " + IntTypeValue.getInstance());
 		}
 		int index = ((IntegerValue) value).value;
 		this.value = this.value.substring(0, index) + this.value.substring(index + 1);
@@ -88,7 +88,7 @@ public class StringValue implements CollectionValueInterface {
 	@Override
 	public ValueInterface get(ValueInterface value) {
 		if (!(value instanceof IntegerValue)) {
-			throw new TypeMismatchException("The index must of type " + IntTypeValue.getInstace());
+			throw new TypeMismatchException("The index must of type " + IntTypeValue.getInstance());
 		}
 
 		String character = String.valueOf(this.value.charAt(((IntegerValue) value).value));
@@ -98,7 +98,7 @@ public class StringValue implements CollectionValueInterface {
 	@Override
 	public ValueInterface contains(ValueInterface value) {
 		if (!(value instanceof StringValue)) {
-			throw new TypeMismatchException("The value must of type " + StringTypeValue.getInstace());
+			throw new TypeMismatchException("The value must of type " + StringTypeValue.getInstance());
 		}
 		if (this.value.contains(((StringValue) value).value)) {
 			new BooleanValue("true", true);

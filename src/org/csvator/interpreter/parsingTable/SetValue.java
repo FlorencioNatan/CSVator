@@ -44,7 +44,7 @@ public class SetValue implements CollectionValueInterface {
 
 	@Override
 	public TypeValueInterface getType() {
-		return SetTypeValue.getInstace();
+		return SetTypeValue.getInstance();
 	}
 
 	@Override
@@ -87,12 +87,12 @@ public class SetValue implements CollectionValueInterface {
 
 	@Override
 	public ValueInterface head() {
-		throw new InvalidOperationException("Head is not a valid operation on a " + SetTypeValue.getInstace());
+		throw new InvalidOperationException("Head is not a valid operation on a " + SetTypeValue.getInstance());
 	}
 
 	@Override
 	public ValueInterface tail() {
-		throw new InvalidOperationException("Tail is not a valid operation on a " + SetTypeValue.getInstace());
+		throw new InvalidOperationException("Tail is not a valid operation on a " + SetTypeValue.getInstance());
 	}
 
 	@Override

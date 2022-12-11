@@ -41,7 +41,7 @@ public class KeyValueExpressionValue implements ValueInterface {
 
 	@Override
 	public TypeValueInterface getType() {
-		return KeyValueTypeValue.getInstace();
+		return KeyValueTypeValue.getInstance();
 	}
 
 }

@@ -13,7 +13,7 @@ public class VoidTypeValue implements TypeValueInterface {
 		this.id = "void";
 	}
 
-	public static VoidTypeValue getInstace() {
+	public static VoidTypeValue getInstance() {
 		if (VoidTypeValue.instance == null) {
 			VoidTypeValue.instance = new VoidTypeValue();
 		}

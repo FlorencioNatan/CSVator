@@ -40,7 +40,7 @@ public class IntegerValue implements ValueInterface {
 
 	@Override
 	public TypeValueInterface getType() {
-		return IntTypeValue.getInstace();
+		return IntTypeValue.getInstance();
 	}
 
 	@Override

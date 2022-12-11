@@ -34,7 +34,7 @@ public class VariableValue implements ValueInterface {
 		if (this.value != null) {
 			return this.value.getType();
 		}
-		return VariableTypeValue.getInstace();
+		return VariableTypeValue.getInstance();
 	}
 
 }

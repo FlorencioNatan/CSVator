@@ -44,7 +44,7 @@ public class VectorValue implements CollectionValueInterface {
 
 	@Override
 	public TypeValueInterface getType() {
-		return VectorTypeValue.getInstace();
+		return VectorTypeValue.getInstance();
 	}
 
 	@Override
@@ -94,7 +94,7 @@ public class VectorValue implements CollectionValueInterface {
 	@Override
 	public void remove(ValueInterface value) {
 		if (!(value instanceof IntegerValue)) {
-			throw new TypeMismatchException("The index to be removed must of type " + IntTypeValue.getInstace());
+			throw new TypeMismatchException("The index to be removed must of type " + IntTypeValue.getInstance());
 		}
 		this.value.remove(((IntegerValue) value).value);
 	}
@@ -102,7 +102,7 @@ public class VectorValue implements CollectionValueInterface {
 	@Override
 	public ValueInterface get(ValueInterface value) {
 		if (!(value instanceof IntegerValue)) {
-			throw new TypeMismatchException("The index must of type " + IntTypeValue.getInstace());
+			throw new TypeMismatchException("The index must of type " + IntTypeValue.getInstance());
 		}
 		return this.value.get(((IntegerValue) value).value);
 	}

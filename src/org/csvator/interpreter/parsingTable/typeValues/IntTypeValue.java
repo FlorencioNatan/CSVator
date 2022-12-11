@@ -13,7 +13,7 @@ public class IntTypeValue implements TypeValueInterface {
 		this.id = "int";
 	}
 
-	public static IntTypeValue getInstace() {
+	public static IntTypeValue getInstance() {
 		if (IntTypeValue.instance == null) {
 			IntTypeValue.instance = new IntTypeValue();
 		}

@@ -13,7 +13,7 @@ public class DoubleTypeValue implements TypeValueInterface {
 		this.id = "double";
 	}
 
-	public static DoubleTypeValue getInstace() {
+	public static DoubleTypeValue getInstance() {
 		if (DoubleTypeValue.instance == null) {
 			DoubleTypeValue.instance = new DoubleTypeValue();
 		}

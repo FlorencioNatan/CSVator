@@ -13,7 +13,7 @@ public class AnyTypeValue implements TypeValueInterface {
 		this.id = "any";
 	}
 
-	public static AnyTypeValue getInstace() {
+	public static AnyTypeValue getInstance() {
 		if (AnyTypeValue.instance == null) {
 			AnyTypeValue.instance = new AnyTypeValue();
 		}

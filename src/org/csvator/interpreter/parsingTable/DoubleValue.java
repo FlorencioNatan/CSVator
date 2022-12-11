@@ -40,7 +40,7 @@ public class DoubleValue implements ValueInterface {
 
 	@Override
 	public TypeValueInterface getType() {
-		return DoubleTypeValue.getInstace();
+		return DoubleTypeValue.getInstance();
 	}
 
 	@Override

@@ -40,7 +40,7 @@ public class BooleanValue implements ValueInterface {
 
 	@Override
 	public TypeValueInterface getType() {
-		return BoolTypeValue.getInstace();
+		return BoolTypeValue.getInstance();
 	}
 
 	@Override

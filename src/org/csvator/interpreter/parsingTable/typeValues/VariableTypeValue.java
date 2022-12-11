@@ -13,7 +13,7 @@ public class VariableTypeValue implements TypeValueInterface {
 		this.id = "var";
 	}
 
-	public static VariableTypeValue getInstace() {
+	public static VariableTypeValue getInstance() {
 		if (VariableTypeValue.instance == null) {
 			VariableTypeValue.instance = new VariableTypeValue();
 		}

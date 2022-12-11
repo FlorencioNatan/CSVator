@@ -35,8 +35,8 @@ public class BinaryExpressionValue implements ExpressionValueInterface {
 			return lho.getType();
 		}
 
-		if (lho.getType() == DoubleTypeValue.getInstace() || rho.getType() == DoubleTypeValue.getInstace()) {
-			return DoubleTypeValue.getInstace();
+		if (lho.getType() == DoubleTypeValue.getInstance() || rho.getType() == DoubleTypeValue.getInstance()) {
+			return DoubleTypeValue.getInstance();
 		}
 
 		return lho.getType();

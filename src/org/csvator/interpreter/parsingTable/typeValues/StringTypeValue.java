@@ -13,7 +13,7 @@ public class StringTypeValue implements TypeValueInterface {
 		this.id = "string";
 	}
 
-	public static StringTypeValue getInstace() {
+	public static StringTypeValue getInstance() {
 		if (StringTypeValue.instance == null) {
 			StringTypeValue.instance = new StringTypeValue();
 		}

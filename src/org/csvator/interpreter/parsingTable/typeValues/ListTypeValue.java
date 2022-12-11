@@ -13,7 +13,7 @@ public class ListTypeValue implements TypeValueInterface {
 		this.id = "list";
 	}
 
-	public static ListTypeValue getInstace() {
+	public static ListTypeValue getInstance() {
 		if (ListTypeValue.instance == null) {
 			ListTypeValue.instance = new ListTypeValue();
 		}

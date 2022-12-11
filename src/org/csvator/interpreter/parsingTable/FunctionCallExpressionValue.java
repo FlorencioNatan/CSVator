@@ -38,7 +38,7 @@ public class FunctionCallExpressionValue implements ExpressionValueInterface {
 			functionsHaveSameType = resultType.compareToFunctionType(callType);
 		}
 
-		if (call.getReturnType(env) != AnyTypeValue.getInstace() && result.getType() != call.getReturnType(env) && !functionsHaveSameType) {
+		if (call.getReturnType(env) != AnyTypeValue.getInstance() && result.getType() != call.getReturnType(env) && !functionsHaveSameType) {
 			throw new TypeMismatchException("Type mismatch on function " + this.id.trim() + " return. Expected " + call.getReturnType(env) + " found " + result.getType());
 		}
 		return result;

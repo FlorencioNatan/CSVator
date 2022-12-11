@@ -13,7 +13,7 @@ public class BoolTypeValue implements TypeValueInterface {
 		this.id = "bool";
 	}
 
-	public static BoolTypeValue getInstace() {
+	public static BoolTypeValue getInstance() {
 		if (BoolTypeValue.instance == null) {
 			BoolTypeValue.instance = new BoolTypeValue();
 		}

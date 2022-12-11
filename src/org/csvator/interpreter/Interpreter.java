@@ -558,7 +558,7 @@ public class Interpreter extends DepthFirstAdapter {
 	public void outAIntTypeSpecifier(AIntTypeSpecifier node) {
 		super.outAIntTypeSpecifier(node);
 
-		IntTypeValue type = IntTypeValue.getInstace();
+		IntTypeValue type = IntTypeValue.getInstance();
 		parsingTable.putValue(node, type);
 	}
 
@@ -566,7 +566,7 @@ public class Interpreter extends DepthFirstAdapter {
 	public void outADoubleTypeSpecifier(ADoubleTypeSpecifier node) {
 		super.outADoubleTypeSpecifier(node);
 
-		DoubleTypeValue type = DoubleTypeValue.getInstace();
+		DoubleTypeValue type = DoubleTypeValue.getInstance();
 		parsingTable.putValue(node, type);
 	}
 
@@ -574,7 +574,7 @@ public class Interpreter extends DepthFirstAdapter {
 	public void outABoolTypeSpecifier(ABoolTypeSpecifier node) {
 		super.outABoolTypeSpecifier(node);
 
-		BoolTypeValue type = BoolTypeValue.getInstace();
+		BoolTypeValue type = BoolTypeValue.getInstance();
 		parsingTable.putValue(node, type);
 	}
 
@@ -582,7 +582,7 @@ public class Interpreter extends DepthFirstAdapter {
 	public void outAStringTypeSpecifier(AStringTypeSpecifier node) {
 		super.outAStringTypeSpecifier(node);
 
-		StringTypeValue type = StringTypeValue.getInstace();
+		StringTypeValue type = StringTypeValue.getInstance();
 		parsingTable.putValue(node, type);
 	}
 
@@ -590,7 +590,7 @@ public class Interpreter extends DepthFirstAdapter {
 	public void outAAnyTypeSpecifier(AAnyTypeSpecifier node) {
 		super.outAAnyTypeSpecifier(node);
 
-		AnyTypeValue type = AnyTypeValue.getInstace();
+		AnyTypeValue type = AnyTypeValue.getInstance();
 		parsingTable.putValue(node, type);
 	}
 
@@ -598,7 +598,7 @@ public class Interpreter extends DepthFirstAdapter {
 	public void outAVectorTypeSpecifier(AVectorTypeSpecifier node) {
 		super.outAVectorTypeSpecifier(node);
 
-		VectorTypeValue type = VectorTypeValue.getInstace();
+		VectorTypeValue type = VectorTypeValue.getInstance();
 		parsingTable.putValue(node, type);
 	}
 
@@ -606,7 +606,7 @@ public class Interpreter extends DepthFirstAdapter {
 	public void outADictTypeSpecifier(ADictTypeSpecifier node) {
 		super.outADictTypeSpecifier(node);
 
-		DictTypeValue type = DictTypeValue.getInstace();
+		DictTypeValue type = DictTypeValue.getInstance();
 		parsingTable.putValue(node, type);
 	}
 
@@ -614,7 +614,7 @@ public class Interpreter extends DepthFirstAdapter {
 	public void outASetTypeSpecifier(ASetTypeSpecifier node) {
 		super.outASetTypeSpecifier(node);
 
-		SetTypeValue type = SetTypeValue.getInstace();
+		SetTypeValue type = SetTypeValue.getInstance();
 		parsingTable.putValue(node, type);
 	}
 
@@ -622,7 +622,7 @@ public class Interpreter extends DepthFirstAdapter {
 	public void outAListTypeSpecifier(AListTypeSpecifier node) {
 		super.outAListTypeSpecifier(node);
 
-		ListTypeValue type = ListTypeValue.getInstace();
+		ListTypeValue type = ListTypeValue.getInstance();
 		parsingTable.putValue(node, type);
 	}
 

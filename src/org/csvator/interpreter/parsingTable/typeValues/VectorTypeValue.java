@@ -13,7 +13,7 @@ public class VectorTypeValue implements TypeValueInterface {
 		this.id = "vector";
 	}
 
-	public static VectorTypeValue getInstace() {
+	public static VectorTypeValue getInstance() {
 		if (VectorTypeValue.instance == null) {
 			VectorTypeValue.instance = new VectorTypeValue();
 		}

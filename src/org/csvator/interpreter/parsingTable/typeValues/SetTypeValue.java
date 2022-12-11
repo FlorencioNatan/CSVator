@@ -13,7 +13,7 @@ public class SetTypeValue implements TypeValueInterface {
 		this.id = "set";
 	}
 
-	public static SetTypeValue getInstace() {
+	public static SetTypeValue getInstance() {
 		if (SetTypeValue.instance == null) {
 			SetTypeValue.instance = new SetTypeValue();
 		}

@@ -13,7 +13,7 @@ public class DictTypeValue implements TypeValueInterface {
 		this.id = "dict";
 	}
 
-	public static DictTypeValue getInstace() {
+	public static DictTypeValue getInstance() {
 		if (DictTypeValue.instance == null) {
 			DictTypeValue.instance = new DictTypeValue();
 		}

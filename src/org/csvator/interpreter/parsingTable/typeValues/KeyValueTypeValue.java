@@ -13,7 +13,7 @@ public class KeyValueTypeValue implements TypeValueInterface {
 		this.id = "key -> value";
 	}
 
-	public static KeyValueTypeValue getInstace() {
+	public static KeyValueTypeValue getInstance() {
 		if (KeyValueTypeValue.instance == null) {
 			KeyValueTypeValue.instance = new KeyValueTypeValue();
 		}
