@@ -50,6 +50,10 @@ public class VectorTypeValue implements TypeValueInterface {
 			return true;
 		}
 
+		if (type instanceof CollectionTypeValue) {
+			return true;
+		}
+
 		return false;
 	}
 

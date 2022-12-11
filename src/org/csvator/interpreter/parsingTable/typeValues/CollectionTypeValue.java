@@ -4,20 +4,20 @@ import org.csvator.interpreter.environment.Environment;
 import org.csvator.interpreter.parsingTable.EmptyValue;
 import org.csvator.interpreter.parsingTable.ValueInterface;
 
-public class SetTypeValue implements TypeValueInterface {
+public class CollectionTypeValue implements TypeValueInterface {
 
-	private static SetTypeValue instance;
+	private static CollectionTypeValue instance;
 	String id;
 
-	public SetTypeValue() {
-		this.id = "set";
+	public CollectionTypeValue() {
+		this.id = "collection";
 	}
 
-	public static SetTypeValue getInstance() {
-		if (SetTypeValue.instance == null) {
-			SetTypeValue.instance = new SetTypeValue();
+	public static CollectionTypeValue getInstance() {
+		if (CollectionTypeValue.instance == null) {
+			CollectionTypeValue.instance = new CollectionTypeValue();
 		}
-		return SetTypeValue.instance;
+		return CollectionTypeValue.instance;
 	}
 
 	@Override
@@ -32,7 +32,7 @@ public class SetTypeValue implements TypeValueInterface {
 
 	@Override
 	public String toString() {
-		return "set";
+		return "collection";
 	}
 
 	@Override
@@ -40,7 +40,6 @@ public class SetTypeValue implements TypeValueInterface {
 		return this;
 	}
 
-	@Override
 	public boolean equalsToType(TypeValueInterface type) {
 		if (type == this) {
 			return true;
@@ -50,7 +49,19 @@ public class SetTypeValue implements TypeValueInterface {
 			return true;
 		}
 
-		if (type instanceof CollectionTypeValue) {
+		if (type instanceof VectorTypeValue) {
+			return true;
+		}
+
+		if (type instanceof DictTypeValue) {
+			return true;
+		}
+
+		if (type instanceof ListTypeValue) {
+			return true;
+		}
+
+		if (type instanceof SetTypeValue) {
 			return true;
 		}
 
