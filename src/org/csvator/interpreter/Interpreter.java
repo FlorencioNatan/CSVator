@@ -53,6 +53,7 @@ import org.csvator.interpreter.parsingTable.VectorValue;
 import org.csvator.interpreter.parsingTable.function.AnonymousFunctionBody;
 import org.csvator.interpreter.parsingTable.function.AnonymousFunctionBodyGuard;
 import org.csvator.interpreter.parsingTable.function.FunctionCall;
+import org.csvator.interpreter.parsingTable.function.FunctionValueInterface;
 import org.csvator.interpreter.parsingTable.function.UserDefinedFunctionValue;
 import org.csvator.interpreter.parsingTable.typeValues.AnyTypeValue;
 import org.csvator.interpreter.parsingTable.typeValues.BoolTypeValue;
@@ -742,7 +743,7 @@ public class Interpreter extends DepthFirstAdapter {
 		super.outAFunctionApplicationWithoutArgumentExpression(node);
 
 		String functionIdentifier = node.getFunctionIdentifier().getText();
-		UserDefinedFunctionValue function = (UserDefinedFunctionValue) global.getValueOf(functionIdentifier);
+		FunctionValueInterface function = (FunctionValueInterface) global.getValueOf(functionIdentifier);
 
 		ValueInterface result = function.evaluate(global);
 		parsingTable.putValue(node, result);

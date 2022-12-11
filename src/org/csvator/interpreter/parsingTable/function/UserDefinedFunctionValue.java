@@ -18,7 +18,7 @@ import org.csvator.interpreter.parsingTable.typeValues.IntTypeValue;
 import org.csvator.interpreter.parsingTable.typeValues.TypeValueInterface;
 import org.csvator.interpreter.parsingTable.typeValues.VariableTypeValue;
 
-public class UserDefinedFunctionValue implements ValueInterface, Cloneable {
+public class UserDefinedFunctionValue implements FunctionValueInterface, Cloneable {
 
 	String id;
 	TypeValueInterface returnType;
