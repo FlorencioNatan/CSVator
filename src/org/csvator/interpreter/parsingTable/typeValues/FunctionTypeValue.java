@@ -74,4 +74,17 @@ public class FunctionTypeValue implements TypeValueInterface {
 		return true;
 	}
 
+	@Override
+	public boolean equalsToType(TypeValueInterface type) {
+		if (type instanceof AnyTypeValue) {
+			return true;
+		}
+
+		if (type instanceof FunctionTypeValue) {
+			return this.compareToFunctionType((FunctionTypeValue) type);
+		}
+
+		return false;
+	}
+
 }

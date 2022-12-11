@@ -67,19 +67,16 @@ public class UserDefinedFunctionValue implements FunctionValueInterface, Cloneab
 				parameterValue = parameterValue.evaluate(father);
 			}
 
-			boolean functionsHaveSameType = false;
 			if (arguments.get(i).getType().getClass() == FunctionTypeValue.class) {
 				try {
-					UserDefinedFunctionValue paramenterFunction = (UserDefinedFunctionValue) this.extractFunctionFromParameter(parameterValue, father);
-					FunctionTypeValue paramenterType = (FunctionTypeValue) paramenterFunction.getType();
-					FunctionTypeValue argumentType = (FunctionTypeValue) arguments.get(i).getType();
-					functionsHaveSameType = paramenterType.compareToFunctionType(argumentType);
-					parameterValue = paramenterFunction;
-				} catch (InvalidParameterException exception) {
-					functionsHaveSameType = false;
 					if (parameterValue instanceof FunctionCallExpressionValue) {
 						parameterValue = parameterValue.evaluate(father);
 					}
+
+					UserDefinedFunctionValue paramenterFunction = (UserDefinedFunctionValue) this.extractFunctionFromParameter(parameterValue, father);
+					parameterValue = paramenterFunction;
+				} catch (InvalidParameterException exception) {
+					// do nothing
 				}
 			}
 
@@ -88,7 +85,7 @@ public class UserDefinedFunctionValue implements FunctionValueInterface, Cloneab
 				parameterValue = new DoubleValue(parameterValue.getId(), parameterContet);
 			}
 
-			if (arguments.get(i).getType() != AnyTypeValue.getInstance() && arguments.get(i).getType() != parameterValue.getType() && !functionsHaveSameType) {
+			if (!arguments.get(i).getType().equalsToType(parameterValue.getType())) {
 				throw new TypeMismatchException("Type mismatch on function " + this.id.trim() + " parameter " + (i + 1) + ". Expected " + arguments.get(i).getType() + " found " + parameterValue.getType());
 			}
 			local.putValue(arguments.get(i).getIdVariable(), parameterValue);
@@ -98,13 +95,6 @@ public class UserDefinedFunctionValue implements FunctionValueInterface, Cloneab
 	}
 
 	private UserDefinedFunctionValue extractFunctionFromParameter(ValueInterface parameterValue, Environment father) throws InvalidParameterException {
-		if (parameterValue instanceof FunctionCallExpressionValue) {
-			ValueInterface function = parameterValue.evaluate(father);
-			if (!(function.getType() instanceof FunctionTypeValue)) {
-				throw new InvalidParameterException("The parameter is not a function");
-			}
-			return (UserDefinedFunctionValue) function;
-		}
 		if (parameterValue.getType().getClass() == FunctionTypeValue.class) {
 			return (UserDefinedFunctionValue) parameterValue;
 		}

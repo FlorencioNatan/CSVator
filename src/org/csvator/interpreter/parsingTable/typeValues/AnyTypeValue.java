@@ -40,4 +40,9 @@ public class AnyTypeValue implements TypeValueInterface {
 		return this;
 	}
 
+	@Override
+	public boolean equalsToType(TypeValueInterface type) {
+		return true;
+	}
+
 }

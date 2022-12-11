@@ -39,4 +39,18 @@ public class VoidTypeValue implements TypeValueInterface {
 	public TypeValueInterface getType() {
 		return this;
 	}
+
+	@Override
+	public boolean equalsToType(TypeValueInterface type) {
+		if (type == this) {
+			return true;
+		}
+
+		if (type instanceof AnyTypeValue) {
+			return true;
+		}
+
+		return false;
+	}
+
 }

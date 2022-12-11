@@ -4,4 +4,6 @@ import org.csvator.interpreter.parsingTable.ValueInterface;
 
 public interface TypeValueInterface extends ValueInterface {
 
+	boolean equalsToType(TypeValueInterface type);
+
 }

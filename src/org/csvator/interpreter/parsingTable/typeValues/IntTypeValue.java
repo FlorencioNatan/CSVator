@@ -41,4 +41,17 @@ public class IntTypeValue implements TypeValueInterface {
 		return this;
 	}
 
+	@Override
+	public boolean equalsToType(TypeValueInterface type) {
+		if (type == this) {
+			return true;
+		}
+
+		if (type instanceof AnyTypeValue) {
+			return true;
+		}
+
+		return false;
+	}
+
 }
