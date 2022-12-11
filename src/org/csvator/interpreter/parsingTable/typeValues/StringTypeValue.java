@@ -50,6 +50,10 @@ public class StringTypeValue implements TypeValueInterface {
 			return true;
 		}
 
+		if (type instanceof CollectionTypeValue) {
+			return true;
+		}
+
 		return false;
 	}
 
