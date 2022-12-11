@@ -24,7 +24,7 @@ public class UserDefinedFunctionValue implements FunctionValueInterface, Cloneab
 	TypeValueInterface returnType;
 	LinkedList<ArgumentValue> arguments;
 	LinkedList<Guard> expressions;
-	Environment clousure;
+	Environment closure;
 
 	public UserDefinedFunctionValue(String id, TypeValueInterface returnType, LinkedList<ArgumentValue> arguments) {
 		this.id = id;
@@ -49,17 +49,17 @@ public class UserDefinedFunctionValue implements FunctionValueInterface, Cloneab
 		this.expressions = expressions;
 	}
 
-	public void setClousure(Environment clousure) {
-		this.clousure = clousure;
+	public void setClosure(Environment closure) {
+		this.closure = closure;
 	}
 
 	public Environment createLocalEnvironment(LinkedList<ValueInterface> values, Environment father) throws TypeMismatchException {
 		Environment local = new Environment();
-		if (clousure == null) {
+		if (closure == null) {
 			local.setFatherEnvironment(father);
 		} else {
-			clousure.setFatherEnvironment(father);
-			local.setFatherEnvironment(clousure);
+			closure.setFatherEnvironment(father);
+			local.setFatherEnvironment(closure);
 		}
 		for (int i = 0; i < arguments.size(); i++) {
 			ValueInterface parameterValue = values.get(i);
