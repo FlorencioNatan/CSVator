@@ -100,4 +100,9 @@ public class SetValue implements CollectionValueInterface {
 		return new IntegerValue(Integer.toString(this.value.size()), this.value.size());
 	}
 
+	@Override
+	public CollectionValueInterface update(ValueInterface index, ValueInterface value) {
+		throw new InvalidOperationException("Update is not a valid operation on a " + SetTypeValue.getInstance());
+	}
+
 }

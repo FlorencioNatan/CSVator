@@ -34,6 +34,7 @@ import org.csvator.interpreter.parsingTable.AnonymousFunctionExpressionValue;
 import org.csvator.interpreter.parsingTable.ArgumentValue;
 import org.csvator.interpreter.parsingTable.BinaryExpressionValue;
 import org.csvator.interpreter.parsingTable.BooleanValue;
+import org.csvator.interpreter.parsingTable.CollectionValueInterface;
 import org.csvator.interpreter.parsingTable.DictValue;
 import org.csvator.interpreter.parsingTable.DoubleValue;
 import org.csvator.interpreter.parsingTable.ExpressionValueInterface;
@@ -55,6 +56,7 @@ import org.csvator.interpreter.parsingTable.function.AnonymousFunctionBodyGuard;
 import org.csvator.interpreter.parsingTable.function.FunctionCall;
 import org.csvator.interpreter.parsingTable.function.FunctionValueInterface;
 import org.csvator.interpreter.parsingTable.function.UserDefinedFunctionValue;
+import org.csvator.interpreter.parsingTable.function.builtIn.Update;
 import org.csvator.interpreter.parsingTable.typeValues.AnyTypeValue;
 import org.csvator.interpreter.parsingTable.typeValues.BoolTypeValue;
 import org.csvator.interpreter.parsingTable.typeValues.DictTypeValue;
@@ -127,6 +129,7 @@ import org.csvator.core.node.ASubExpression;
 import org.csvator.core.node.ASumExpression;
 import org.csvator.core.node.ATailExpression;
 import org.csvator.core.node.ATrueExpression;
+import org.csvator.core.node.AUpdateExpression;
 import org.csvator.core.node.AVarExpression;
 import org.csvator.core.node.AVariableDefinition;
 import org.csvator.core.node.AVectorExpression;
@@ -536,6 +539,26 @@ public class Interpreter extends DepthFirstAdapter {
 		UnaryExpressionValue expression = buildExpression(node.toString(), node.getExpression(), new Size());
 
 		parsingTable.putValue(node, expression);
+	}
+
+	@Override
+	public void outAUpdateExpression(AUpdateExpression node) {
+		ValueInterface collection = parsingTable.getValueOf(node.getCollection());
+		ValueInterface index = parsingTable.getValueOf(node.getIndex());
+		ValueInterface value = parsingTable.getValueOf(node.getValue());
+
+		FunctionCall call = new FunctionCall("update");
+		LinkedList<ValueInterface> expressions = new LinkedList<>();
+		expressions.add(collection);
+		expressions.add(index);
+		expressions.add(value);
+
+		FunctionCallExpressionValue functionExpression = new FunctionCallExpressionValue("update", call,
+				expressions);
+		parsingTable.putValue(node, functionExpression);
+
+		Update update = new Update();
+		global.putValue("update", update);
 	}
 
 	@Override

@@ -123,4 +123,22 @@ public class StringValue implements CollectionValueInterface {
 		return new IntegerValue(Integer.toString(this.value.length()), this.value.length());
 	}
 
+	@Override
+	public CollectionValueInterface update(ValueInterface index, ValueInterface value) {
+		if (!(index instanceof IntegerValue)) {
+			throw new TypeMismatchException("The index must of type " + IntTypeValue.getInstance());
+		}
+
+		if (!(value instanceof StringValue)) {
+			throw new TypeMismatchException("The value must of type " + StringTypeValue.getInstance());
+		}
+
+		int intIndex = ((IntegerValue) index).value;
+		String strValue = ((StringValue) value).value;
+
+		this.value = this.value.substring(0, intIndex)
+			+ strValue + this.value.substring(intIndex + 1);
+		return this;
+	}
+
 }

@@ -136,4 +136,14 @@ public class ListValue implements CollectionValueInterface {
 		return new IntegerValue(Integer.toString(this.value.size()), this.value.size());
 	}
 
+	@Override
+	public CollectionValueInterface update(ValueInterface index, ValueInterface value) {
+		if (!(index instanceof IntegerValue)) {
+			throw new TypeMismatchException("The index must of type " + IntTypeValue.getInstance());
+		}
+
+		this.value.set(((IntegerValue) index).value, value);
+		return this;
+	}
+
 }

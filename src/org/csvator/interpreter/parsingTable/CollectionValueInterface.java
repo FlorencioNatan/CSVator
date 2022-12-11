@@ -18,4 +18,6 @@ public interface CollectionValueInterface extends ValueInterface {
 
 	public ValueInterface size();
 
+	public CollectionValueInterface update(ValueInterface index, ValueInterface value);
+
 }

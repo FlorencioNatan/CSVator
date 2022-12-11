@@ -297,3 +297,10 @@ myDict ++ ("ten" -> 10);
 !# myList;
 !# myDict;
 !# mySet;
+
+myStr := "Hello World!!!";
+
+update(myVect, 0, 0);
+update(myList, 2, 95);
+update(myDict, "two", 22);
+update(myStr, 2, "J");

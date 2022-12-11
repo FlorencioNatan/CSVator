@@ -120,4 +120,10 @@ public class DictValue implements CollectionValueInterface {
 		return new IntegerValue(Integer.toString(this.value.size()), this.value.size());
 	}
 
+	@Override
+	public CollectionValueInterface update(ValueInterface index, ValueInterface value) {
+		this.value.put(index, value);
+		return this;
+	}
+
 }
