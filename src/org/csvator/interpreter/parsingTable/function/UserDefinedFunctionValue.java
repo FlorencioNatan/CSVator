@@ -18,7 +18,7 @@ import org.csvator.interpreter.parsingTable.typeValues.IntTypeValue;
 import org.csvator.interpreter.parsingTable.typeValues.TypeValueInterface;
 import org.csvator.interpreter.parsingTable.typeValues.VariableTypeValue;
 
-public class FunctionValue implements ValueInterface, Cloneable {
+public class UserDefinedFunctionValue implements ValueInterface, Cloneable {
 
 	String id;
 	TypeValueInterface returnType;
@@ -26,14 +26,14 @@ public class FunctionValue implements ValueInterface, Cloneable {
 	LinkedList<Guard> expressions;
 	Environment clousure;
 
-	public FunctionValue(String id, TypeValueInterface returnType, LinkedList<ArgumentValue> arguments) {
+	public UserDefinedFunctionValue(String id, TypeValueInterface returnType, LinkedList<ArgumentValue> arguments) {
 		this.id = id;
 		this.returnType = returnType;
 		this.arguments = arguments;
 		this.expressions = new LinkedList<>();
 	}
 
-	public FunctionValue(String id, TypeValueInterface returnType) {
+	public UserDefinedFunctionValue(String id, TypeValueInterface returnType) {
 		this.id = id;
 		this.returnType = returnType;
 		this.arguments = new LinkedList<>();
@@ -70,7 +70,7 @@ public class FunctionValue implements ValueInterface, Cloneable {
 			boolean functionsHaveSameType = false;
 			if (arguments.get(i).getType().getClass() == FunctionTypeValue.class) {
 				try {
-					FunctionValue paramenterFunction = (FunctionValue) this.extractFunctionFromParameter(parameterValue, father);
+					UserDefinedFunctionValue paramenterFunction = (UserDefinedFunctionValue) this.extractFunctionFromParameter(parameterValue, father);
 					FunctionTypeValue paramenterType = (FunctionTypeValue) paramenterFunction.getType();
 					FunctionTypeValue argumentType = (FunctionTypeValue) arguments.get(i).getType();
 					functionsHaveSameType = paramenterType.compareToFunctionType(argumentType);
@@ -97,19 +97,19 @@ public class FunctionValue implements ValueInterface, Cloneable {
 		return local;
 	}
 
-	private FunctionValue extractFunctionFromParameter(ValueInterface parameterValue, Environment father) throws InvalidParameterException {
+	private UserDefinedFunctionValue extractFunctionFromParameter(ValueInterface parameterValue, Environment father) throws InvalidParameterException {
 		if (parameterValue instanceof FunctionCallExpressionValue) {
 			ValueInterface function = parameterValue.evaluate(father);
 			if (!(function.getType() instanceof FunctionTypeValue)) {
 				throw new InvalidParameterException("The parameter is not a function");
 			}
-			return (FunctionValue) function;
+			return (UserDefinedFunctionValue) function;
 		}
 		if (parameterValue.getType().getClass() == FunctionTypeValue.class) {
-			return (FunctionValue) parameterValue;
+			return (UserDefinedFunctionValue) parameterValue;
 		}
 		if (parameterValue.getType() == VariableTypeValue.getInstace()) {
-			return (FunctionValue) father.getValueOf(parameterValue.getId());
+			return (UserDefinedFunctionValue) father.getValueOf(parameterValue.getId());
 		}
 		throw new InvalidParameterException("The parameter is not a function");
 	}
@@ -170,8 +170,8 @@ public class FunctionValue implements ValueInterface, Cloneable {
 	}
 
 	@Override
-	public FunctionValue clone() {
-		FunctionValue newFunction = new FunctionValue(this.id, this.returnType, this.arguments);
+	public UserDefinedFunctionValue clone() {
+		UserDefinedFunctionValue newFunction = new UserDefinedFunctionValue(this.id, this.returnType, this.arguments);
 		newFunction.setExpressions(this.expressions);
 		return newFunction;
 	}

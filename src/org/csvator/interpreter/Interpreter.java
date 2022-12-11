@@ -53,7 +53,7 @@ import org.csvator.interpreter.parsingTable.VectorValue;
 import org.csvator.interpreter.parsingTable.function.AnonymousFunctionBody;
 import org.csvator.interpreter.parsingTable.function.AnonymousFunctionBodyGuard;
 import org.csvator.interpreter.parsingTable.function.FunctionCall;
-import org.csvator.interpreter.parsingTable.function.FunctionValue;
+import org.csvator.interpreter.parsingTable.function.UserDefinedFunctionValue;
 import org.csvator.interpreter.parsingTable.typeValues.AnyTypeValue;
 import org.csvator.interpreter.parsingTable.typeValues.BoolTypeValue;
 import org.csvator.interpreter.parsingTable.typeValues.DictTypeValue;
@@ -668,7 +668,7 @@ public class Interpreter extends DepthFirstAdapter {
 		String functionIdentifier = node.getFunctionIdentifier().getText();
 		TypeValueInterface returnType = (TypeValueInterface) parsingTable.getValueOf(node.getReturnType());
 
-		FunctionValue function = new FunctionValue(functionIdentifier, returnType);
+		UserDefinedFunctionValue function = new UserDefinedFunctionValue(functionIdentifier, returnType);
 		global.putValue(functionIdentifier, function);
 	}
 
@@ -687,7 +687,7 @@ public class Interpreter extends DepthFirstAdapter {
 			arguments.add(value);
 		}
 
-		FunctionValue function = new FunctionValue(functionIdentifier, returnType, arguments);
+		UserDefinedFunctionValue function = new UserDefinedFunctionValue(functionIdentifier, returnType, arguments);
 		global.putValue(functionIdentifier, function);
 	}
 
@@ -696,7 +696,7 @@ public class Interpreter extends DepthFirstAdapter {
 		super.outABodyGuardFunctionDefinition(node);
 
 		String functionIdentifier = node.getFunctionIdentifier().getText();
-		FunctionValue function = (FunctionValue) global.getValueOf(functionIdentifier);
+		UserDefinedFunctionValue function = (UserDefinedFunctionValue) global.getValueOf(functionIdentifier);
 		ExpressionValueInterface condition = (ExpressionValueInterface) parsingTable.getValueOf(node.getCondition());
 
 		ExpressionValueInterface result = (ExpressionValueInterface) parsingTable.getValueOf(node.getResult());
@@ -709,7 +709,7 @@ public class Interpreter extends DepthFirstAdapter {
 		super.outABodyFunctionDefinition(node);
 
 		String functionIdentifier = node.getFunctionIdentifier().getText();
-		FunctionValue function = (FunctionValue) global.getValueOf(functionIdentifier);
+		UserDefinedFunctionValue function = (UserDefinedFunctionValue) global.getValueOf(functionIdentifier);
 		NullaryExpressionValue condition = new NullaryExpressionValue("Tautology", new BooleanValue("True", true));
 
 		ExpressionValueInterface result = (ExpressionValueInterface) parsingTable.getValueOf(node.getResult());
@@ -742,7 +742,7 @@ public class Interpreter extends DepthFirstAdapter {
 		super.outAFunctionApplicationWithoutArgumentExpression(node);
 
 		String functionIdentifier = node.getFunctionIdentifier().getText();
-		FunctionValue function = (FunctionValue) global.getValueOf(functionIdentifier);
+		UserDefinedFunctionValue function = (UserDefinedFunctionValue) global.getValueOf(functionIdentifier);
 
 		ValueInterface result = function.evaluate(global);
 		parsingTable.putValue(node, result);
@@ -791,7 +791,7 @@ public class Interpreter extends DepthFirstAdapter {
 		TypeValueInterface returnType = (TypeValueInterface) parsingTable.getValueOf(node.getReturnType());
 
 		AnonymousFunctionBody body = (AnonymousFunctionBody) parsingTable.getValueOf(node.getBody());
-		FunctionValue function = new FunctionValue(node.toString(), returnType);
+		UserDefinedFunctionValue function = new UserDefinedFunctionValue(node.toString(), returnType);
 		if (body.isSingleExpression()) {
 			NullaryExpressionValue condition = new NullaryExpressionValue("Tautology", new BooleanValue("True", true));
 			function.addExpression(condition, body.getExpression());
@@ -818,7 +818,7 @@ public class Interpreter extends DepthFirstAdapter {
 		}
 
 		AnonymousFunctionBody body = (AnonymousFunctionBody) parsingTable.getValueOf(node.getBody());
-		FunctionValue function = new FunctionValue(node.toString(), returnType, arguments);
+		UserDefinedFunctionValue function = new UserDefinedFunctionValue(node.toString(), returnType, arguments);
 		if (body.isSingleExpression()) {
 			NullaryExpressionValue condition = new NullaryExpressionValue("Tautology", new BooleanValue("True", true));
 			function.addExpression(condition, body.getExpression());

@@ -23,7 +23,7 @@ public class Guard {
 
 	public ValueInterface evaluate(Environment env) {
 		if (this.result.getClass() == AnonymousFunctionExpressionValue.class) {
-			FunctionValue anonymousFunction = (FunctionValue) this.result.evaluate(env);
+			UserDefinedFunctionValue anonymousFunction = (UserDefinedFunctionValue) this.result.evaluate(env);
 			Environment clousure = env.clone();
 			clousure.setFatherEnvironment(null);
 			anonymousFunction.setClousure(clousure);

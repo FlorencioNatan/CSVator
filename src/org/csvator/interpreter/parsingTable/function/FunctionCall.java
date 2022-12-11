@@ -18,11 +18,11 @@ public class FunctionCall implements ValueInterface {
 
 	public Environment createLocalEnvironment(LinkedList<ValueInterface> values, Environment father) throws TypeMismatchException {
 		ValueInterface value = father.getValueOf(id);
-		FunctionValue functionValue;
+		UserDefinedFunctionValue functionValue;
 		if (value instanceof FunctionCallExpressionValue) {
-			functionValue = (FunctionValue) value.evaluate(father);
+			functionValue = (UserDefinedFunctionValue) value.evaluate(father);
 		} else {
-			functionValue = (FunctionValue) value;
+			functionValue = (UserDefinedFunctionValue) value;
 		}
 		return functionValue.createLocalEnvironment(values, father);
 	}
@@ -35,22 +35,22 @@ public class FunctionCall implements ValueInterface {
 	@Override
 	public ValueInterface evaluate(Environment env) {
 		ValueInterface value = env.getValueOf(id);
-		FunctionValue functionValue;
+		UserDefinedFunctionValue functionValue;
 		if (value instanceof FunctionCallExpressionValue) {
-			functionValue = (FunctionValue) value.evaluate(env);
+			functionValue = (UserDefinedFunctionValue) value.evaluate(env);
 		} else {
-			functionValue = (FunctionValue) value;
+			functionValue = (UserDefinedFunctionValue) value;
 		}
 		return functionValue.apply(env);
 	}
 
 	public TypeValueInterface getReturnType(Environment env) {
 		ValueInterface value = env.getValueOf(id);
-		FunctionValue functionValue;
+		UserDefinedFunctionValue functionValue;
 		if (value instanceof FunctionCallExpressionValue) {
-			functionValue = (FunctionValue) value.evaluate(env);
+			functionValue = (UserDefinedFunctionValue) value.evaluate(env);
 		} else {
-			functionValue = (FunctionValue) value;
+			functionValue = (UserDefinedFunctionValue) value;
 		}
 		return functionValue.getReturnType();
 	}

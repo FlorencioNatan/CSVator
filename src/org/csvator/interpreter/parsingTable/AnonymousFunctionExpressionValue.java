@@ -2,15 +2,15 @@ package org.csvator.interpreter.parsingTable;
 
 
 import org.csvator.interpreter.environment.Environment;
-import org.csvator.interpreter.parsingTable.function.FunctionValue;
+import org.csvator.interpreter.parsingTable.function.UserDefinedFunctionValue;
 import org.csvator.interpreter.parsingTable.typeValues.TypeValueInterface;
 
 public class AnonymousFunctionExpressionValue implements ExpressionValueInterface {
 
 	String id;
-	FunctionValue function;
+	UserDefinedFunctionValue function;
 
-	public AnonymousFunctionExpressionValue(String id, FunctionValue function) {
+	public AnonymousFunctionExpressionValue(String id, UserDefinedFunctionValue function) {
 		this.id = id;
 		this.function = function;
 	}
