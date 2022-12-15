@@ -304,3 +304,8 @@ update(myVect, 0, 0);
 update(myList, 2, 95);
 update(myDict, "two", 22);
 update(myStr, 2, "J");
+
+swap(myVect, 1, 4);
+swap(myList, 2, 4);
+swap(myDict, "two", "ten");
+swap(myStr, 2, 6);

@@ -141,4 +141,31 @@ public class StringValue implements CollectionValueInterface {
 		return this;
 	}
 
+	@Override
+	public CollectionValueInterface swap(ValueInterface firstIndex, ValueInterface secondIndex) {
+		if (!(firstIndex instanceof IntegerValue)) {
+			throw new TypeMismatchException("The firstIndex must of type " + IntTypeValue.getInstance());
+		}
+
+		if (!(secondIndex instanceof IntegerValue)) {
+			throw new TypeMismatchException("The secondIndex must of type " + IntTypeValue.getInstance());
+		}
+
+		int fIndex = ((IntegerValue) firstIndex).value;
+		int sIndex = ((IntegerValue) secondIndex).value;
+
+		int smallerIndex = Math.min(fIndex, sIndex);
+		int biggerIndex = Math.max(fIndex, sIndex);
+
+		String prefix = this.value.substring(0, smallerIndex);
+		String middle = this.value.substring(smallerIndex + 1, biggerIndex);
+		String suffix = this.value.substring(biggerIndex + 1);
+
+		String firstCharacter = String.valueOf(this.value.charAt(smallerIndex));
+		String secondCharacter = String.valueOf(this.value.charAt(biggerIndex));
+
+		this.value = prefix + secondCharacter + middle + firstCharacter + suffix;
+		return this;
+	}
+
 }

@@ -20,4 +20,6 @@ public interface CollectionValueInterface extends ValueInterface {
 
 	public CollectionValueInterface update(ValueInterface index, ValueInterface value);
 
+	public CollectionValueInterface swap(ValueInterface firstIndex, ValueInterface secondIndex);
+
 }

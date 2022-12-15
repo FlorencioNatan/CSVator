@@ -146,4 +146,24 @@ public class VectorValue implements CollectionValueInterface {
 		return this;
 	}
 
+	@Override
+	public CollectionValueInterface swap(ValueInterface firstIndex, ValueInterface secondIndex) {
+		if (!(firstIndex instanceof IntegerValue)) {
+			throw new TypeMismatchException("The firstIndex must of type " + IntTypeValue.getInstance());
+		}
+
+		if (!(secondIndex instanceof IntegerValue)) {
+			throw new TypeMismatchException("The secondIndex must of type " + IntTypeValue.getInstance());
+		}
+
+		int fIndex = ((IntegerValue) firstIndex).value;
+		int sIndex = ((IntegerValue) secondIndex).value;
+
+		ValueInterface temp = this.value.get(fIndex);
+
+		this.value.set(fIndex, this.value.get(sIndex));
+		this.value.set(sIndex, temp);
+		return this;
+	}
+
 }

@@ -126,4 +126,12 @@ public class DictValue implements CollectionValueInterface {
 		return this;
 	}
 
+	@Override
+	public CollectionValueInterface swap(ValueInterface firstIndex, ValueInterface secondIndex) {
+		ValueInterface temp = this.value.get(firstIndex);
+		this.value.put(firstIndex, this.value.get(secondIndex));
+		this.value.put(secondIndex, temp);
+		return this;
+	}
+
 }

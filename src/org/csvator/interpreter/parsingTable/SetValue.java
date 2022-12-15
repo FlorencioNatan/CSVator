@@ -105,4 +105,9 @@ public class SetValue implements CollectionValueInterface {
 		throw new InvalidOperationException("Update is not a valid operation on a " + SetTypeValue.getInstance());
 	}
 
+	@Override
+	public CollectionValueInterface swap(ValueInterface firstIndex, ValueInterface secondIndex) {
+		throw new InvalidOperationException("Swap is not a valid operation on a " + SetTypeValue.getInstance());
+	}
+
 }
