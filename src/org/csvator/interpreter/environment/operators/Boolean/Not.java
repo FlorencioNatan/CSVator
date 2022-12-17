@@ -9,7 +9,7 @@ public class Not extends BooleanOperator {
 	@Override
 	public ValueInterface apply(ValueInterface lho, ValueInterface rho, Environment env) {
 		BooleanValue boolLho = this.castToBooleanValue(lho);
-		boolean result = !boolLho.getBooleanValue(env);
+		boolean result = !boolLho.getBooleanValue();
 
 		return this.createResult(boolLho, null, result, env);
 	}

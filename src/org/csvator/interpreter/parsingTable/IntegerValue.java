@@ -29,7 +29,7 @@ public class IntegerValue implements ValueInterface {
 		return this;
 	}
 
-	public int getIntValue(Environment env) {
+	public int getIntValue() {
 		return this.value;
 	}
 

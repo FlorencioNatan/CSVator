@@ -10,7 +10,7 @@ public class And extends BooleanOperator {
 	public ValueInterface apply(ValueInterface lho, ValueInterface rho, Environment env) {
 		BooleanValue boolLho = this.castToBooleanValue(lho);
 		BooleanValue boolRho = this.castToBooleanValue(rho);
-		boolean result = boolLho.getBooleanValue(env) && boolRho.getBooleanValue(env);
+		boolean result = boolLho.getBooleanValue() && boolRho.getBooleanValue();
 
 		return this.createResult(boolLho, boolRho, result, env);
 	}

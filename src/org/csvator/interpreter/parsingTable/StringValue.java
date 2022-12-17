@@ -28,7 +28,7 @@ public class StringValue implements CollectionValueInterface {
 		return this;
 	}
 
-	public String getStrValue(Environment env) {
+	public String getStrValue() {
 		return this.value;
 	}
 

@@ -18,7 +18,7 @@ public class Guard {
 
 	public boolean isConditionValid(Environment env) {
 		BooleanValue result = (BooleanValue) condition.evaluate(env);
-		return result.getBooleanValue(env);
+		return result.getBooleanValue();
 	}
 
 	public ValueInterface evaluate(Environment env) {

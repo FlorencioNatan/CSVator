@@ -17,23 +17,23 @@ public abstract class ArithmeticOperator implements OperatorInterface {
 		if (lho.getType() == rho.getType() && lho.getType() == IntTypeValue.getInstance()) {
 			IntegerValue intLho = this.castToIntegerValue(lho);
 			IntegerValue intRho = this.castToIntegerValue(rho);
-			int result = this.operationOnInt(intLho.getIntValue(env), intRho.getIntValue(env));
+			int result = this.operationOnInt(intLho.getIntValue(), intRho.getIntValue());
 
 			return this.createIntegerResult(intLho, intRho, result, env);
 		}
 
 		double doubleLho = 0.0;
 		if (lho.getType() == IntTypeValue.getInstance()) {
-			doubleLho = this.castToIntegerValue(lho).getIntValue(env);
+			doubleLho = this.castToIntegerValue(lho).getIntValue();
 		} else {
-			doubleLho = this.castToDoubleValue(lho).getDoubleValue(env);
+			doubleLho = this.castToDoubleValue(lho).getDoubleValue();
 		}
 
 		double doubleRho = 0.0;
 		if (rho.getType() == IntTypeValue.getInstance()) {
-			doubleRho = this.castToIntegerValue(rho).getIntValue(env);
+			doubleRho = this.castToIntegerValue(rho).getIntValue();
 		} else {
-			doubleRho = this.castToDoubleValue(rho).getDoubleValue(env);
+			doubleRho = this.castToDoubleValue(rho).getDoubleValue();
 		}
 		double result = this.operationOnDouble(doubleLho, doubleRho);
 
@@ -43,12 +43,12 @@ public abstract class ArithmeticOperator implements OperatorInterface {
 	private ValueInterface applyOnUnaryOperator(ValueInterface lho, Environment env) {
 		if (lho.getType() == IntTypeValue.getInstance()) {
 			IntegerValue intLho = this.castToIntegerValue(lho);
-			int result = this.operationOnInt(intLho.getIntValue(env), 0);
+			int result = this.operationOnInt(intLho.getIntValue(), 0);
 
 			return this.createIntegerResult(intLho, result, env);
 		}
 
-		double doubleLho = this.castToDoubleValue(lho).getDoubleValue(env);
+		double doubleLho = this.castToDoubleValue(lho).getDoubleValue();
 		double result = this.operationOnDouble(doubleLho, 0);
 
 		return this.createDoubleResult(lho, result, env);

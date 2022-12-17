@@ -80,7 +80,7 @@ public class UserDefinedFunctionValue implements FunctionValueInterface, Cloneab
 			}
 
 			if (arguments.get(i).getType() == DoubleTypeValue.getInstance() && parameterValue.getType() == IntTypeValue.getInstance()) {
-				int parameterContet = ((IntegerValue) parameterValue).getIntValue(father);
+				int parameterContet = ((IntegerValue) parameterValue).getIntValue();
 				parameterValue = new DoubleValue(parameterValue.getId(), parameterContet);
 			}
 

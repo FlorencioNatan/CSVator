@@ -15,11 +15,11 @@ public class Equal extends EqualityOperator {
 		boolean result = false;
 
 		if (lho instanceof IntegerValue && rho instanceof DoubleValue) {
-			result = ((IntegerValue) lho).getIntValue(env) == ((DoubleValue) rho).getDoubleValue(env);
+			result = ((IntegerValue) lho).getIntValue() == ((DoubleValue) rho).getDoubleValue();
 		}
 
 		if (lho instanceof DoubleValue && rho instanceof IntegerValue) {
-			result = ((DoubleValue) lho).getDoubleValue(env) == ((IntegerValue) rho).getIntValue(env);
+			result = ((DoubleValue) lho).getDoubleValue() == ((IntegerValue) rho).getIntValue();
 		}
 
 		if (lho.getClass() != rho.getClass()) {
@@ -27,19 +27,19 @@ public class Equal extends EqualityOperator {
 		}
 
 		if (lho instanceof IntegerValue) {
-			result = ((IntegerValue) lho).getIntValue(env) == ((IntegerValue) rho).getIntValue(env);
+			result = ((IntegerValue) lho).getIntValue() == ((IntegerValue) rho).getIntValue();
 		}
 
 		if (lho instanceof DoubleValue) {
-			result = ((DoubleValue) lho).getDoubleValue(env) == ((DoubleValue) rho).getDoubleValue(env);
+			result = ((DoubleValue) lho).getDoubleValue() == ((DoubleValue) rho).getDoubleValue();
 		}
 
 		if (lho instanceof StringValue) {
-			result = ((StringValue) lho).getStrValue(env).equals(((StringValue) rho).getStrValue(env));
+			result = ((StringValue) lho).getStrValue().equals(((StringValue) rho).getStrValue());
 		}
 
 		if (lho instanceof BooleanValue) {
-			result = ((BooleanValue) lho).getBooleanValue(env) == ((BooleanValue) rho).getBooleanValue(env);
+			result = ((BooleanValue) lho).getBooleanValue() == ((BooleanValue) rho).getBooleanValue();
 		}
 
 		if (lho instanceof NullValue) {

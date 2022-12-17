@@ -29,7 +29,7 @@ public class DoubleValue implements ValueInterface {
 		return this;
 	}
 
-	public double getDoubleValue(Environment env) {
+	public double getDoubleValue() {
 		return this.value;
 	}
 

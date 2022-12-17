@@ -16,7 +16,7 @@ public abstract class ComparsionOperator implements OperatorInterface {
 		if (lho.getType() == rho.getType() && lho.getType() == IntTypeValue.getInstance()) {
 			IntegerValue intLho = this.castToIntegerValue(lho);
 			IntegerValue intRho = this.castToIntegerValue(rho);
-			boolean result = this.operationOnInt(intLho.getIntValue(env), intRho.getIntValue(env));
+			boolean result = this.operationOnInt(intLho.getIntValue(), intRho.getIntValue());
 
 			return this.createResult(intLho, intRho, result, env);
 		}
@@ -24,23 +24,23 @@ public abstract class ComparsionOperator implements OperatorInterface {
 		if (lho.getType() == rho.getType() && lho.getType() == StringTypeValue.getInstance()) {
 			StringValue strLho = this.castToStringValue(lho);
 			StringValue strRho = this.castToStringValue(rho);
-			boolean result = this.operationOnString(strLho.getStrValue(env), strRho.getStrValue(env));
+			boolean result = this.operationOnString(strLho.getStrValue(), strRho.getStrValue());
 
 			return this.createResult(strLho, strRho, result, env);
 		}
 
 		double doubleLho = 0.0;
 		if (lho.getType() == IntTypeValue.getInstance()) {
-			doubleLho = this.castToIntegerValue(lho).getIntValue(env);
+			doubleLho = this.castToIntegerValue(lho).getIntValue();
 		} else {
-			doubleLho = this.castToDoubleValue(lho).getDoubleValue(env);
+			doubleLho = this.castToDoubleValue(lho).getDoubleValue();
 		}
 
 		double doubleRho = 0.0;
 		if (rho.getType() == IntTypeValue.getInstance()) {
-			doubleRho = this.castToIntegerValue(rho).getIntValue(env);
+			doubleRho = this.castToIntegerValue(rho).getIntValue();
 		} else {
-			doubleRho = this.castToDoubleValue(rho).getDoubleValue(env);
+			doubleRho = this.castToDoubleValue(rho).getDoubleValue();
 		}
 		boolean result = this.operationOnDouble(doubleLho, doubleRho);
 

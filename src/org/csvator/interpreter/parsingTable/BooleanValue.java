@@ -29,7 +29,7 @@ public class BooleanValue implements ValueInterface {
 		return this;
 	}
 
-	public boolean getBooleanValue(Environment env) {
+	public boolean getBooleanValue() {
 		return this.value;
 	}
 

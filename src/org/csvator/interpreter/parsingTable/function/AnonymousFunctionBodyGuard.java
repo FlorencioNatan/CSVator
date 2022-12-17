@@ -26,7 +26,7 @@ public class AnonymousFunctionBodyGuard implements ValueInterface {
 	@Override
 	public ValueInterface evaluate(Environment env) {
 		ValueInterface conditionEvaluated = condition.evaluate(env);
-		if (conditionEvaluated instanceof BooleanValue && ((BooleanValue) conditionEvaluated).getBooleanValue(env) == true ) {
+		if (conditionEvaluated instanceof BooleanValue && ((BooleanValue) conditionEvaluated).getBooleanValue() == true ) {
 			return result.evaluate(env);
 		}
 		return NullValue.getInstace();
