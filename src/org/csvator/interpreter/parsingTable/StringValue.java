@@ -1,6 +1,8 @@
 package org.csvator.interpreter.parsingTable;
 
 import org.csvator.interpreter.environment.Environment;
+import org.csvator.interpreter.environment.operators.InvalidOperationException;
+import org.csvator.interpreter.parsingTable.function.FunctionValueInterface;
 import org.csvator.interpreter.parsingTable.function.TypeMismatchException;
 import org.csvator.interpreter.parsingTable.typeValues.IntTypeValue;
 import org.csvator.interpreter.parsingTable.typeValues.StringTypeValue;
@@ -166,6 +168,11 @@ public class StringValue implements CollectionValueInterface {
 
 		this.value = prefix + secondCharacter + middle + firstCharacter + suffix;
 		return this;
+	}
+
+	@Override
+	public CollectionValueInterface sort(FunctionValueInterface sortFunction) {
+		throw new InvalidOperationException("Sort is not a valid operation on a " + StringTypeValue.getInstance());
 	}
 
 }

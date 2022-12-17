@@ -309,3 +309,6 @@ swap(myVect, 1, 4);
 swap(myList, 2, 4);
 swap(myDict, "two", "ten");
 swap(myStr, 2, 6);
+
+sort(myVect, \(int a, int b -> int : a - b));
+sort(myList, \(int a, int b -> int : b - a));

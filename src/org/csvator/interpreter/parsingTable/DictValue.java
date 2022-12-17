@@ -4,6 +4,7 @@ import java.util.HashMap;
 
 import org.csvator.interpreter.environment.Environment;
 import org.csvator.interpreter.environment.operators.InvalidOperationException;
+import org.csvator.interpreter.parsingTable.function.FunctionValueInterface;
 import org.csvator.interpreter.parsingTable.function.TypeMismatchException;
 import org.csvator.interpreter.parsingTable.typeValues.DictTypeValue;
 import org.csvator.interpreter.parsingTable.typeValues.TypeValueInterface;
@@ -132,6 +133,11 @@ public class DictValue implements CollectionValueInterface {
 		this.value.put(firstIndex, this.value.get(secondIndex));
 		this.value.put(secondIndex, temp);
 		return this;
+	}
+
+	@Override
+	public CollectionValueInterface sort(FunctionValueInterface sortFunction) {
+		throw new InvalidOperationException("Sort is not a valid operation on a " + DictTypeValue.getInstance());
 	}
 
 }

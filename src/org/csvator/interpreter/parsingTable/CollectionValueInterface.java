@@ -1,5 +1,7 @@
 package org.csvator.interpreter.parsingTable;
 
+import org.csvator.interpreter.parsingTable.function.FunctionValueInterface;
+
 public interface CollectionValueInterface extends ValueInterface {
 
 	public CollectionValueInterface concatAtHead(ValueInterface value);
@@ -21,5 +23,7 @@ public interface CollectionValueInterface extends ValueInterface {
 	public CollectionValueInterface update(ValueInterface index, ValueInterface value);
 
 	public CollectionValueInterface swap(ValueInterface firstIndex, ValueInterface secondIndex);
+
+	public CollectionValueInterface sort(FunctionValueInterface sortFunction);
 
 }

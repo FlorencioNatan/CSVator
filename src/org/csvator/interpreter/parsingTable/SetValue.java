@@ -5,6 +5,7 @@ import java.util.HashSet;
 
 import org.csvator.interpreter.environment.Environment;
 import org.csvator.interpreter.environment.operators.InvalidOperationException;
+import org.csvator.interpreter.parsingTable.function.FunctionValueInterface;
 import org.csvator.interpreter.parsingTable.typeValues.SetTypeValue;
 import org.csvator.interpreter.parsingTable.typeValues.TypeValueInterface;
 
@@ -108,6 +109,11 @@ public class SetValue implements CollectionValueInterface {
 	@Override
 	public CollectionValueInterface swap(ValueInterface firstIndex, ValueInterface secondIndex) {
 		throw new InvalidOperationException("Swap is not a valid operation on a " + SetTypeValue.getInstance());
+	}
+
+	@Override
+	public CollectionValueInterface sort(FunctionValueInterface sortFunction) {
+		throw new InvalidOperationException("Sort is not a valid operation on a " + SetTypeValue.getInstance());
 	}
 
 }

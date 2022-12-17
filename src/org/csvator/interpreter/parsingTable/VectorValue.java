@@ -3,6 +3,7 @@ package org.csvator.interpreter.parsingTable;
 import java.util.Vector;
 
 import org.csvator.interpreter.environment.Environment;
+import org.csvator.interpreter.parsingTable.function.FunctionValueInterface;
 import org.csvator.interpreter.parsingTable.function.TypeMismatchException;
 import org.csvator.interpreter.parsingTable.typeValues.IntTypeValue;
 import org.csvator.interpreter.parsingTable.typeValues.TypeValueInterface;
@@ -163,6 +164,20 @@ public class VectorValue implements CollectionValueInterface {
 
 		this.value.set(fIndex, this.value.get(sIndex));
 		this.value.set(sIndex, temp);
+		return this;
+	}
+
+	@Override
+	public CollectionValueInterface sort(FunctionValueInterface sortFunction) {
+		this.value.sort((valueA, valueB) -> {
+			ValueInterface result = sortFunction.apply(valueA, valueB);
+
+			if (! (result instanceof IntegerValue)) {
+				throw new TypeMismatchException("Sort function must return a " + IntTypeValue.getInstance() + ". A " + result.getType() + " returned.");
+			}
+
+			return ((IntegerValue) result).value;
+		});
 		return this;
 	}
 
