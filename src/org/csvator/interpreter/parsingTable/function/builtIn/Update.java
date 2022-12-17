@@ -56,8 +56,8 @@ public class Update implements FunctionValueInterface {
 		CollectionValueInterface collection = (CollectionValueInterface) env.getValueOf("collection");
 		ValueInterface firstIndex = env.getValueOf("index");
 		ValueInterface secondIndex = env.getValueOf("value");
-		collection.update(firstIndex, secondIndex);
-		return collection;
+
+		return collection.update(firstIndex, secondIndex);
 	}
 	
 }

@@ -29,7 +29,6 @@ public class Sort implements FunctionValueInterface {
 		LinkedList<TypeValueInterface> parametersType = new LinkedList<>();
 		parametersType.add(CollectionTypeValue.getInstance());
 		parametersType.add(AnyTypeValue.getInstance());
-		parametersType.add(AnyTypeValue.getInstance());
 		return new FunctionTypeValue(parametersType, getReturnType());
 	}
 
@@ -53,9 +52,8 @@ public class Sort implements FunctionValueInterface {
 	public ValueInterface apply(Environment env) {
 		CollectionValueInterface collection = (CollectionValueInterface) env.getValueOf("collection");
 		FunctionValueInterface sortFunction = (FunctionValueInterface) env.getValueOf("sortFunction");
-		collection.sort(sortFunction);
 
-		return collection;
+		return collection.sort(sortFunction);
 	}
 
 }

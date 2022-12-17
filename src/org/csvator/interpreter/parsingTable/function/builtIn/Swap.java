@@ -56,8 +56,8 @@ public class Swap implements FunctionValueInterface {
 		CollectionValueInterface collection = (CollectionValueInterface) env.getValueOf("collection");
 		ValueInterface firstIndex = env.getValueOf("firstIndex");
 		ValueInterface secondIndex = env.getValueOf("secondIndex");
-		collection.swap(firstIndex, secondIndex);
-		return collection;
+
+		return collection.swap(firstIndex, secondIndex);
 	}
 	
 }
