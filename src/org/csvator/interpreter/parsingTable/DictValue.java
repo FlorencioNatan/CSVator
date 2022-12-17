@@ -1,12 +1,14 @@
 package org.csvator.interpreter.parsingTable;
 
 import java.util.HashMap;
+import java.util.Map;
 
 import org.csvator.interpreter.environment.Environment;
 import org.csvator.interpreter.environment.operators.InvalidOperationException;
 import org.csvator.interpreter.parsingTable.function.FunctionValueInterface;
 import org.csvator.interpreter.parsingTable.function.TypeMismatchException;
 import org.csvator.interpreter.parsingTable.typeValues.DictTypeValue;
+import org.csvator.interpreter.parsingTable.typeValues.KeyValueTypeValue;
 import org.csvator.interpreter.parsingTable.typeValues.TypeValueInterface;
 
 public class DictValue implements CollectionValueInterface {
@@ -138,6 +140,25 @@ public class DictValue implements CollectionValueInterface {
 	@Override
 	public CollectionValueInterface sort(FunctionValueInterface sortFunction) {
 		throw new InvalidOperationException("Sort is not a valid operation on a " + DictTypeValue.getInstance());
+	}
+
+	@Override
+	public CollectionValueInterface map(FunctionValueInterface mapFunction) {
+		HashMap<ValueInterface, ValueInterface> mappedValue = new HashMap<>();
+
+		for (Map.Entry<ValueInterface, ValueInterface> set : value.entrySet()) {
+			ValueInterface result = mapFunction.apply(set.getKey(), set.getValue());
+
+			if (! (result instanceof KeyValueExpressionValue)) {
+				throw new TypeMismatchException("Map function must return a " + KeyValueTypeValue.getInstance() + ". A " + result.getType() + " returned.");
+			}
+
+			KeyValueExpressionValue keyValue = (KeyValueExpressionValue) result;
+			mappedValue.put(keyValue.getKey(), keyValue.getValue());
+		}
+
+		DictValue mappedDict = new DictValue(id, mappedValue);
+		return mappedDict;
 	}
 
 }

@@ -180,4 +180,15 @@ public class ListValue implements CollectionValueInterface {
 		return this;
 	}
 
+	@Override
+	public CollectionValueInterface map(FunctionValueInterface mapFunction) {
+		LinkedList<ValueInterface> mappedValue = new LinkedList<>();
+		for (ValueInterface elem : value) {
+			mappedValue.add(mapFunction.apply(elem));
+		}
+
+		ListValue mappedList = new ListValue(id, mappedValue);
+		return mappedList;
+	}
+
 }

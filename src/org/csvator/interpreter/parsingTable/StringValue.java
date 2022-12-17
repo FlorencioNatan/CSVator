@@ -175,4 +175,23 @@ public class StringValue implements CollectionValueInterface {
 		throw new InvalidOperationException("Sort is not a valid operation on a " + StringTypeValue.getInstance());
 	}
 
+	@Override
+	public CollectionValueInterface map(FunctionValueInterface mapFunction) {
+		StringBuilder mappedValue = new StringBuilder();
+		for (char elem : value.toCharArray()) {
+			ValueInterface result = mapFunction.apply(new StringValue(String.valueOf(elem), String.valueOf(elem)));
+
+			if (! (result instanceof StringValue)) {
+				throw new TypeMismatchException("Map function must return a " + StringTypeValue.getInstance() + ". A " + result.getType() + " returned.");
+			}
+
+			StringValue mappedChar = (StringValue) result;
+			mappedValue.append(mappedChar.getStrValue());
+		}
+
+		String strMapped = mappedValue.toString();
+		StringValue mappedStr = new StringValue(strMapped, strMapped);
+		return mappedStr;
+	}
+
 }

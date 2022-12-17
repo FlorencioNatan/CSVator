@@ -4,7 +4,7 @@ import org.csvator.interpreter.environment.Environment;
 import org.csvator.interpreter.parsingTable.typeValues.KeyValueTypeValue;
 import org.csvator.interpreter.parsingTable.typeValues.TypeValueInterface;
 
-public class KeyValueExpressionValue implements ValueInterface {
+public class KeyValueExpressionValue implements ExpressionValueInterface {
 
 	private String id;
 	private ValueInterface key;

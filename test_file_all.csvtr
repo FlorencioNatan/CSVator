@@ -312,3 +312,8 @@ swap(myStr, 2, 6);
 
 sort(myVect, \(int a, int b -> int : a - b));
 sort(myList, \(int a, int b -> int : b - a));
+
+map(myVect, \(int a -> int : a + 1));
+map(myList, \(int a -> int : a * 2));
+map(mySet, \(int a -> int : a + 5));
+map(myDict, \(string k, int v -> (string -> int) : (("new_" ++ k) -> v * 10)));

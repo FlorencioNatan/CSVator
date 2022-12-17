@@ -26,4 +26,6 @@ public interface CollectionValueInterface extends ValueInterface {
 
 	public CollectionValueInterface sort(FunctionValueInterface sortFunction);
 
+	public CollectionValueInterface map(FunctionValueInterface mapFunction);
+
 }

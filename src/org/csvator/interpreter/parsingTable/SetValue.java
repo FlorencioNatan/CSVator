@@ -116,4 +116,15 @@ public class SetValue implements CollectionValueInterface {
 		throw new InvalidOperationException("Sort is not a valid operation on a " + SetTypeValue.getInstance());
 	}
 
+	@Override
+	public CollectionValueInterface map(FunctionValueInterface mapFunction) {
+		HashSet<ValueInterface> mappedValue = new HashSet<>();
+		for (ValueInterface elem : value) {
+			mappedValue.add(mapFunction.apply(elem));
+		}
+
+		SetValue mappedSet = new SetValue(id, mappedValue);
+		return mappedSet;
+	}
+
 }

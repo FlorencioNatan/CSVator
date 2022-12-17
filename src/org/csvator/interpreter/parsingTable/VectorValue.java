@@ -181,4 +181,15 @@ public class VectorValue implements CollectionValueInterface {
 		return this;
 	}
 
+	@Override
+	public CollectionValueInterface map(FunctionValueInterface mapFunction) {
+		Vector<ValueInterface> mappedValue = new Vector<>();
+		for (ValueInterface elem : value) {
+			mappedValue.add(mapFunction.apply(elem));
+		}
+
+		VectorValue mappedVec = new VectorValue(id, mappedValue);
+		return mappedVec;
+	}
+
 }
