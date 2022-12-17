@@ -14,4 +14,14 @@ public interface FunctionValueInterface extends ValueInterface {
 
 	public ValueInterface apply(Environment env);
 
+	default ValueInterface apply(ValueInterface... arguments) {
+		LinkedList<ValueInterface> values = new LinkedList<ValueInterface>();
+		for (ValueInterface argument : arguments) {
+			values.add(argument);
+		}
+
+		Environment local = this.createLocalEnvironment(values, null);
+		return this.apply(local);
+	}
+
 }
