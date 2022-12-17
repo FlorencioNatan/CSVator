@@ -80,6 +80,10 @@ public class FunctionTypeValue implements TypeValueInterface {
 			return true;
 		}
 
+		if (type instanceof AnyFunctionTypeValue) {
+			return true;
+		}
+
 		if (type instanceof FunctionTypeValue) {
 			return this.compareToFunctionType((FunctionTypeValue) type);
 		}

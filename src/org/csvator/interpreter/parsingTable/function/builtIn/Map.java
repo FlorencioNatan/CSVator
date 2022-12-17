@@ -8,7 +8,7 @@ import org.csvator.interpreter.parsingTable.ValueInterface;
 import org.csvator.interpreter.parsingTable.function.FunctionValueInterface;
 import org.csvator.interpreter.parsingTable.function.InvalidNumberOfParametersException;
 import org.csvator.interpreter.parsingTable.function.TypeMismatchException;
-import org.csvator.interpreter.parsingTable.typeValues.AnyTypeValue;
+import org.csvator.interpreter.parsingTable.typeValues.AnyFunctionTypeValue;
 import org.csvator.interpreter.parsingTable.typeValues.CollectionTypeValue;
 import org.csvator.interpreter.parsingTable.typeValues.FunctionTypeValue;
 import org.csvator.interpreter.parsingTable.typeValues.TypeValueInterface;
@@ -29,7 +29,7 @@ public class Map implements FunctionValueInterface {
 	public TypeValueInterface getType() {
 		LinkedList<TypeValueInterface> parametersType = new LinkedList<>();
 		parametersType.add(CollectionTypeValue.getInstance());
-		parametersType.add(AnyTypeValue.getInstance());
+		parametersType.add(AnyFunctionTypeValue.getInstance());
 		return new FunctionTypeValue(parametersType, getReturnType());
 	}
 
