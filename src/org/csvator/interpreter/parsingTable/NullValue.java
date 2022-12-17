@@ -7,7 +7,7 @@ import org.csvator.interpreter.parsingTable.typeValues.VoidTypeValue;
 public class NullValue implements ValueInterface {
 
 	private static NullValue instance;
-	String id;
+	private String id;
 
 	private NullValue() {
 		this.id = "null";

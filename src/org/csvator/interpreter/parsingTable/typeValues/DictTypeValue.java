@@ -7,7 +7,7 @@ import org.csvator.interpreter.parsingTable.ValueInterface;
 public class DictTypeValue implements TypeValueInterface {
 
 	private static DictTypeValue instance;
-	String id;
+	private String id;
 
 	public DictTypeValue() {
 		this.id = "dict";

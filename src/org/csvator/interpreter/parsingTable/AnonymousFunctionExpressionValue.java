@@ -7,8 +7,8 @@ import org.csvator.interpreter.parsingTable.typeValues.TypeValueInterface;
 
 public class AnonymousFunctionExpressionValue implements ExpressionValueInterface {
 
-	String id;
-	UserDefinedFunctionValue function;
+	private String id;
+	private UserDefinedFunctionValue function;
 
 	public AnonymousFunctionExpressionValue(String id, UserDefinedFunctionValue function) {
 		this.id = id;

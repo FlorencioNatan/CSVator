@@ -7,7 +7,7 @@ import org.csvator.interpreter.parsingTable.ValueInterface;
 public class AnyTypeValue implements TypeValueInterface {
 
 	private static AnyTypeValue instance;
-	String id;
+	private String id;
 
 	private AnyTypeValue() {
 		this.id = "any";

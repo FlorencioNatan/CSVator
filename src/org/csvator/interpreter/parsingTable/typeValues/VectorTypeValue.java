@@ -7,7 +7,7 @@ import org.csvator.interpreter.parsingTable.ValueInterface;
 public class VectorTypeValue implements TypeValueInterface {
 
 	private static VectorTypeValue instance;
-	String id;
+	private String id;
 
 	public VectorTypeValue() {
 		this.id = "vector";

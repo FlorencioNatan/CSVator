@@ -6,8 +6,8 @@ import org.csvator.interpreter.parsingTable.typeValues.TypeValueInterface;
 
 public class IntegerValue implements ValueInterface {
 
-	String id;
-	int value;
+	private String id;
+	private int value;
 
 	public IntegerValue(String id, String strValue) {
 		this.id = id;
@@ -54,7 +54,7 @@ public class IntegerValue implements ValueInterface {
 			return this.value == ((IntegerValue) obj).value;
 		}
 		if ((obj instanceof DoubleValue)) {
-			return this.value == ((DoubleValue) obj).value;
+			return this.value == ((DoubleValue) obj).getDoubleValue();
 		}
 		return false;
 	}

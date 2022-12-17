@@ -8,9 +8,9 @@ import org.csvator.interpreter.parsingTable.ValueInterface;
 
 public class FunctionTypeValue implements TypeValueInterface {
 
-	String id;
-	LinkedList<TypeValueInterface> parametersTypes;
-	TypeValueInterface returnType;
+	private String id;
+	private LinkedList<TypeValueInterface> parametersTypes;
+	private TypeValueInterface returnType;
 
 	public FunctionTypeValue(LinkedList<TypeValueInterface> parametersTypes, TypeValueInterface returnType) {
 		this.id = "function";

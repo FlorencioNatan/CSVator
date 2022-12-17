@@ -6,8 +6,8 @@ import org.csvator.interpreter.parsingTable.typeValues.VariableTypeValue;
 
 public class VariableValue implements ValueInterface {
 
-	String id;
-	ValueInterface value;
+	private String id;
+	private ValueInterface value;
 
 	public VariableValue(String id, ValueInterface value) {
 		this.id = id;

@@ -6,9 +6,9 @@ import org.csvator.interpreter.parsingTable.typeValues.TypeValueInterface;
 
 public class UnaryExpressionValue implements ExpressionValueInterface {
 
-	String id;
-	OperatorInterface operator;
-	ValueInterface lho;
+	private String id;
+	private OperatorInterface operator;
+	private ValueInterface lho;
 
 	public UnaryExpressionValue(String id, OperatorInterface operator, ValueInterface lho) {
 		this.id = id;

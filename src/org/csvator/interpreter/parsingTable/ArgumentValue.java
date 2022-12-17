@@ -5,9 +5,9 @@ import org.csvator.interpreter.parsingTable.typeValues.TypeValueInterface;
 
 public class ArgumentValue implements ValueInterface {
 
-	String id;
-	String idVariable;
-	TypeValueInterface type;
+	private String id;
+	private String idVariable;
+	private TypeValueInterface type;
 
 	public ArgumentValue(String id, String idVariable, TypeValueInterface type) {
 		this.id = id;

@@ -7,7 +7,7 @@ import org.csvator.interpreter.parsingTable.ValueInterface;
 public class KeyValueTypeValue implements TypeValueInterface {
 
 	private static KeyValueTypeValue instance;
-	String id;
+	private String id;
 
 	public KeyValueTypeValue() {
 		this.id = "key -> value";

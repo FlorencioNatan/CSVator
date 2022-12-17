@@ -7,7 +7,7 @@ import org.csvator.interpreter.parsingTable.ValueInterface;
 public class BoolTypeValue implements TypeValueInterface {
 
 	private static BoolTypeValue instance;
-	String id;
+	private String id;
 
 	private BoolTypeValue() {
 		this.id = "bool";

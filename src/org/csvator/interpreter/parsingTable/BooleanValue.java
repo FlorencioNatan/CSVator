@@ -6,8 +6,8 @@ import org.csvator.interpreter.parsingTable.typeValues.TypeValueInterface;
 
 public class BooleanValue implements ValueInterface {
 
-	String id;
-	boolean value;
+	private String id;
+	private boolean value;
 
 	public BooleanValue(String id, String strValue) {
 		this.id = id;

@@ -7,7 +7,7 @@ import org.csvator.interpreter.parsingTable.ValueInterface;
 public class DoubleTypeValue implements TypeValueInterface {
 
 	private static DoubleTypeValue instance;
-	String id;
+	private String id;
 
 	private DoubleTypeValue() {
 		this.id = "double";

@@ -7,7 +7,7 @@ import org.csvator.interpreter.parsingTable.ValueInterface;
 public class IntTypeValue implements TypeValueInterface {
 
 	private static IntTypeValue instance;
-	String id;
+	private String id;
 
 	private IntTypeValue() {
 		this.id = "int";

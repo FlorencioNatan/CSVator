@@ -7,10 +7,10 @@ import org.csvator.interpreter.parsingTable.typeValues.TypeValueInterface;
 
 public class BinaryExpressionValue implements ExpressionValueInterface {
 
-	String id;
-	OperatorInterface operator;
-	ValueInterface lho;
-	ValueInterface rho;
+	private String id;
+	private OperatorInterface operator;
+	private ValueInterface lho;
+	private ValueInterface rho;
 
 	public BinaryExpressionValue(String id, OperatorInterface operator, ValueInterface lho, ValueInterface rho) {
 		this.id = id;

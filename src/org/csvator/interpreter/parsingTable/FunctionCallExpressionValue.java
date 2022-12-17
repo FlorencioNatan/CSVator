@@ -10,9 +10,9 @@ import org.csvator.interpreter.parsingTable.typeValues.TypeValueInterface;
 
 public class FunctionCallExpressionValue implements ExpressionValueInterface {
 
-	String id;
-	FunctionCall call;
-	LinkedList<ValueInterface> expressions;
+	private String id;
+	private FunctionCall call;
+	private LinkedList<ValueInterface> expressions;
 
 	public FunctionCallExpressionValue(String id, FunctionCall call, LinkedList<ValueInterface> expressions) {
 		this.id = id;

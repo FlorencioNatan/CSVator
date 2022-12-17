@@ -62,7 +62,7 @@ public class VectorValue implements CollectionValueInterface {
 		if (value instanceof KeyValueExpressionValue) {
 			KeyValueExpressionValue keyValue = (KeyValueExpressionValue) value;
 			IntegerValue key = (IntegerValue) keyValue.getKey();
-			this.value.add(key.value, keyValue.getValue());
+			this.value.add(key.getIntValue(), keyValue.getValue());
 			return this;
 		}
 
@@ -84,7 +84,7 @@ public class VectorValue implements CollectionValueInterface {
 		if (value instanceof KeyValueExpressionValue) {
 			KeyValueExpressionValue keyValue = (KeyValueExpressionValue) value;
 			IntegerValue key = (IntegerValue) keyValue.getKey();
-			this.value.add(key.value, keyValue.getValue());
+			this.value.add(key.getIntValue(), keyValue.getValue());
 			return this;
 		}
 
@@ -97,7 +97,7 @@ public class VectorValue implements CollectionValueInterface {
 		if (!(value instanceof IntegerValue)) {
 			throw new TypeMismatchException("The index to be removed must of type " + IntTypeValue.getInstance());
 		}
-		this.value.remove(((IntegerValue) value).value);
+		this.value.remove(((IntegerValue) value).getIntValue());
 	}
 
 	@Override
@@ -105,7 +105,7 @@ public class VectorValue implements CollectionValueInterface {
 		if (!(value instanceof IntegerValue)) {
 			throw new TypeMismatchException("The index must of type " + IntTypeValue.getInstance());
 		}
-		return this.value.get(((IntegerValue) value).value);
+		return this.value.get(((IntegerValue) value).getIntValue());
 	}
 
 	@Override
@@ -143,7 +143,7 @@ public class VectorValue implements CollectionValueInterface {
 			throw new TypeMismatchException("The index must of type " + IntTypeValue.getInstance());
 		}
 
-		this.value.set(((IntegerValue) index).value, value);
+		this.value.set(((IntegerValue) index).getIntValue(), value);
 		return this;
 	}
 
@@ -157,8 +157,8 @@ public class VectorValue implements CollectionValueInterface {
 			throw new TypeMismatchException("The secondIndex must of type " + IntTypeValue.getInstance());
 		}
 
-		int fIndex = ((IntegerValue) firstIndex).value;
-		int sIndex = ((IntegerValue) secondIndex).value;
+		int fIndex = ((IntegerValue) firstIndex).getIntValue();
+		int sIndex = ((IntegerValue) secondIndex).getIntValue();
 
 		ValueInterface temp = this.value.get(fIndex);
 
@@ -176,7 +176,7 @@ public class VectorValue implements CollectionValueInterface {
 				throw new TypeMismatchException("Sort function must return a " + IntTypeValue.getInstance() + ". A " + result.getType() + " returned.");
 			}
 
-			return ((IntegerValue) result).value;
+			return ((IntegerValue) result).getIntValue();
 		});
 		return this;
 	}

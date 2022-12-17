@@ -5,8 +5,8 @@ import org.csvator.interpreter.parsingTable.typeValues.TypeValueInterface;
 
 public class NullaryExpressionValue implements ExpressionValueInterface {
 
-	String id;
-	ValueInterface value;
+	private String id;
+	private ValueInterface value;
 
 	public NullaryExpressionValue(String id, ValueInterface value) {
 		this.id = id;

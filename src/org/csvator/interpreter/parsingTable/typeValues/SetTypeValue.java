@@ -7,7 +7,7 @@ import org.csvator.interpreter.parsingTable.ValueInterface;
 public class SetTypeValue implements TypeValueInterface {
 
 	private static SetTypeValue instance;
-	String id;
+	private String id;
 
 	public SetTypeValue() {
 		this.id = "set";

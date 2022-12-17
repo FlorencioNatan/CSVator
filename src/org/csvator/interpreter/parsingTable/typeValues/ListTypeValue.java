@@ -7,7 +7,7 @@ import org.csvator.interpreter.parsingTable.ValueInterface;
 public class ListTypeValue implements TypeValueInterface {
 
 	private static ListTypeValue instance;
-	String id;
+	private String id;
 
 	public ListTypeValue() {
 		this.id = "list";

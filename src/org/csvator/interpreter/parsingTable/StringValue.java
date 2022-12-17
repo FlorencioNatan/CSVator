@@ -10,8 +10,8 @@ import org.csvator.interpreter.parsingTable.typeValues.TypeValueInterface;
 
 public class StringValue implements CollectionValueInterface {
 
-	String id;
-	String value;
+	private String id;
+	private String value;
 
 	public StringValue(String id, String strValue) {
 		this.id = id;
@@ -83,7 +83,7 @@ public class StringValue implements CollectionValueInterface {
 		if (!(value instanceof IntegerValue)) {
 			throw new TypeMismatchException("The index to be removed must of type " + IntTypeValue.getInstance());
 		}
-		int index = ((IntegerValue) value).value;
+		int index = ((IntegerValue) value).getIntValue();
 		this.value = this.value.substring(0, index) + this.value.substring(index + 1);
 	}
 
@@ -93,7 +93,7 @@ public class StringValue implements CollectionValueInterface {
 			throw new TypeMismatchException("The index must of type " + IntTypeValue.getInstance());
 		}
 
-		String character = String.valueOf(this.value.charAt(((IntegerValue) value).value));
+		String character = String.valueOf(this.value.charAt(((IntegerValue) value).getIntValue()));
 		return new StringValue(character, character);
 	}
 
@@ -135,7 +135,7 @@ public class StringValue implements CollectionValueInterface {
 			throw new TypeMismatchException("The value must of type " + StringTypeValue.getInstance());
 		}
 
-		int intIndex = ((IntegerValue) index).value;
+		int intIndex = ((IntegerValue) index).getIntValue();
 		String strValue = ((StringValue) value).value;
 
 		this.value = this.value.substring(0, intIndex)
@@ -153,8 +153,8 @@ public class StringValue implements CollectionValueInterface {
 			throw new TypeMismatchException("The secondIndex must of type " + IntTypeValue.getInstance());
 		}
 
-		int fIndex = ((IntegerValue) firstIndex).value;
-		int sIndex = ((IntegerValue) secondIndex).value;
+		int fIndex = ((IntegerValue) firstIndex).getIntValue();
+		int sIndex = ((IntegerValue) secondIndex).getIntValue();
 
 		int smallerIndex = Math.min(fIndex, sIndex);
 		int biggerIndex = Math.max(fIndex, sIndex);

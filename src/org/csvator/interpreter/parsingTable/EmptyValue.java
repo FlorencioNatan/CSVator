@@ -6,7 +6,7 @@ import org.csvator.interpreter.parsingTable.typeValues.VoidTypeValue;
 
 public class EmptyValue implements ValueInterface {
 
-	String id;
+	private String id;
 
 	public EmptyValue(String id) {
 		this.id = id;
