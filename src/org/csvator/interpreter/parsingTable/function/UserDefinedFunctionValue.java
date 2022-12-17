@@ -53,6 +53,10 @@ public class UserDefinedFunctionValue implements FunctionValueInterface, Cloneab
 	}
 
 	public Environment createLocalEnvironment(LinkedList<ValueInterface> values, Environment father) throws TypeMismatchException {
+		if (values.size() != arguments.size()) {
+			throw new InvalidNumberOfParametersException("The function " + this.id.trim() + " expects "
+				+ arguments.size() + " parameters, but " + values.size() +  " are found.");
+		}
 		Environment local = new Environment();
 		if (closure == null) {
 			local.setFatherEnvironment(father);

@@ -6,6 +6,7 @@ import org.csvator.interpreter.environment.Environment;
 import org.csvator.interpreter.parsingTable.CollectionValueInterface;
 import org.csvator.interpreter.parsingTable.ValueInterface;
 import org.csvator.interpreter.parsingTable.function.FunctionValueInterface;
+import org.csvator.interpreter.parsingTable.function.InvalidNumberOfParametersException;
 import org.csvator.interpreter.parsingTable.function.TypeMismatchException;
 import org.csvator.interpreter.parsingTable.typeValues.AnyTypeValue;
 import org.csvator.interpreter.parsingTable.typeValues.CollectionTypeValue;
@@ -33,6 +34,9 @@ public class Sort implements FunctionValueInterface {
 	}
 
 	public Environment createLocalEnvironment(LinkedList<ValueInterface> values, Environment father) throws TypeMismatchException {
+		if (values.size() != 2) {
+			throw new InvalidNumberOfParametersException("The function sort expects 2 parameters, but " + values.size() +  " are found.");
+		}
 		Environment local = new Environment();
 		local.setFatherEnvironment(father);
 		CollectionValueInterface collection = (CollectionValueInterface) values.get(0).evaluate(father);
