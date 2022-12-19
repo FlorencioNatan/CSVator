@@ -4,7 +4,7 @@ import org.csvator.interpreter.environment.Environment;
 import org.csvator.interpreter.environment.operators.OperatorInterface;
 import org.csvator.interpreter.parsingTable.typeValues.TypeValueInterface;
 
-public class UnaryExpressionValue implements ExpressionValueInterface {
+public class UnaryExpressionValue implements ValueInterface {
 
 	private String id;
 	private OperatorInterface operator;

@@ -8,7 +8,7 @@ import org.csvator.interpreter.parsingTable.function.TypeMismatchException;
 import org.csvator.interpreter.parsingTable.typeValues.FunctionTypeValue;
 import org.csvator.interpreter.parsingTable.typeValues.TypeValueInterface;
 
-public class FunctionCallExpressionValue implements ExpressionValueInterface {
+public class FunctionCallExpressionValue implements ValueInterface {
 
 	private String id;
 	private FunctionCall call;

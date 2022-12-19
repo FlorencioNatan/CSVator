@@ -5,7 +5,7 @@ import org.csvator.interpreter.environment.operators.OperatorInterface;
 import org.csvator.interpreter.parsingTable.typeValues.DoubleTypeValue;
 import org.csvator.interpreter.parsingTable.typeValues.TypeValueInterface;
 
-public class BinaryExpressionValue implements ExpressionValueInterface {
+public class BinaryExpressionValue implements ValueInterface {
 
 	private String id;
 	private OperatorInterface operator;

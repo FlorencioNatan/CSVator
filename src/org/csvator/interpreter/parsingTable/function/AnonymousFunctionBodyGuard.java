@@ -2,7 +2,6 @@ package org.csvator.interpreter.parsingTable.function;
 
 import org.csvator.interpreter.environment.Environment;
 import org.csvator.interpreter.parsingTable.BooleanValue;
-import org.csvator.interpreter.parsingTable.ExpressionValueInterface;
 import org.csvator.interpreter.parsingTable.NullValue;
 import org.csvator.interpreter.parsingTable.ValueInterface;
 import org.csvator.interpreter.parsingTable.typeValues.TypeValueInterface;
@@ -10,10 +9,10 @@ import org.csvator.interpreter.parsingTable.typeValues.TypeValueInterface;
 public class AnonymousFunctionBodyGuard implements ValueInterface {
 
 	private String id;
-	private ExpressionValueInterface condition;
-	private ExpressionValueInterface result;
+	private ValueInterface condition;
+	private ValueInterface result;
 
-	public AnonymousFunctionBodyGuard(ExpressionValueInterface condition, ExpressionValueInterface result) {
+	public AnonymousFunctionBodyGuard(ValueInterface condition, ValueInterface result) {
 		this.condition = condition;
 		this.result = result;
 	}

@@ -3,7 +3,6 @@ package org.csvator.interpreter.parsingTable.function;
 import java.util.LinkedList;
 
 import org.csvator.interpreter.environment.Environment;
-import org.csvator.interpreter.parsingTable.ExpressionValueInterface;
 import org.csvator.interpreter.parsingTable.NullValue;
 import org.csvator.interpreter.parsingTable.ValueInterface;
 import org.csvator.interpreter.parsingTable.typeValues.TypeValueInterface;
@@ -12,9 +11,9 @@ public class AnonymousFunctionBody implements ValueInterface {
 
 	private String id;
 	private LinkedList<AnonymousFunctionBodyGuard> guards;
-	private ExpressionValueInterface expression;
+	private ValueInterface expression;
 
-	public AnonymousFunctionBody(ExpressionValueInterface expression) {
+	public AnonymousFunctionBody(ValueInterface expression) {
 		this.expression = expression;
 	}
 
@@ -26,7 +25,7 @@ public class AnonymousFunctionBody implements ValueInterface {
 		return expression != null;
 	}
 
-	public ExpressionValueInterface getExpression() {
+	public ValueInterface getExpression() {
 		return expression;
 	}
 

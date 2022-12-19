@@ -3,15 +3,14 @@ package org.csvator.interpreter.parsingTable.function;
 import org.csvator.interpreter.environment.Environment;
 import org.csvator.interpreter.parsingTable.AnonymousFunctionExpressionValue;
 import org.csvator.interpreter.parsingTable.BooleanValue;
-import org.csvator.interpreter.parsingTable.ExpressionValueInterface;
 import org.csvator.interpreter.parsingTable.ValueInterface;
 
 public class Guard {
 
-	private ExpressionValueInterface condition;
-	private ExpressionValueInterface result;
+	private ValueInterface condition;
+	private ValueInterface result;
 
-	public Guard(ExpressionValueInterface condition, ExpressionValueInterface result) {
+	public Guard(ValueInterface condition, ValueInterface result) {
 		this.condition = condition;
 		this.result = result;
 	}

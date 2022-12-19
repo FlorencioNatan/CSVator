@@ -36,7 +36,6 @@ import org.csvator.interpreter.parsingTable.BinaryExpressionValue;
 import org.csvator.interpreter.parsingTable.BooleanValue;
 import org.csvator.interpreter.parsingTable.DictValue;
 import org.csvator.interpreter.parsingTable.DoubleValue;
-import org.csvator.interpreter.parsingTable.ExpressionValueInterface;
 import org.csvator.interpreter.parsingTable.FunctionCallExpressionValue;
 import org.csvator.interpreter.parsingTable.IntegerValue;
 import org.csvator.interpreter.parsingTable.KeyValueExpressionValue;
@@ -705,9 +704,9 @@ public class Interpreter extends DepthFirstAdapter {
 
 		String functionIdentifier = node.getFunctionIdentifier().getText();
 		UserDefinedFunctionValue function = (UserDefinedFunctionValue) global.getValueOf(functionIdentifier);
-		ExpressionValueInterface condition = (ExpressionValueInterface) parsingTable.getValueOf(node.getCondition());
+		ValueInterface condition = parsingTable.getValueOf(node.getCondition());
 
-		ExpressionValueInterface result = (ExpressionValueInterface) parsingTable.getValueOf(node.getResult());
+		ValueInterface result = parsingTable.getValueOf(node.getResult());
 
 		function.addExpression(condition, result);
 	}
@@ -720,7 +719,7 @@ public class Interpreter extends DepthFirstAdapter {
 		UserDefinedFunctionValue function = (UserDefinedFunctionValue) global.getValueOf(functionIdentifier);
 		NullaryExpressionValue condition = new NullaryExpressionValue("Tautology", new BooleanValue("True", true));
 
-		ExpressionValueInterface result = (ExpressionValueInterface) parsingTable.getValueOf(node.getResult());
+		ValueInterface result = parsingTable.getValueOf(node.getResult());
 
 		function.addExpression(condition, result);
 	}
@@ -760,8 +759,8 @@ public class Interpreter extends DepthFirstAdapter {
 	public void outAAnonymousFunctionBodyGuard(AAnonymousFunctionBodyGuard node) {
 		super.outAAnonymousFunctionBodyGuard(node);
 
-		ExpressionValueInterface condition = (ExpressionValueInterface) parsingTable.getValueOf(node.getCondition());
-		ExpressionValueInterface result = (ExpressionValueInterface) parsingTable.getValueOf(node.getResult());
+		ValueInterface condition = parsingTable.getValueOf(node.getCondition());
+		ValueInterface result = parsingTable.getValueOf(node.getResult());
 		AnonymousFunctionBodyGuard bodyGuard = new AnonymousFunctionBodyGuard(condition, result);
 		parsingTable.putValue(node, bodyGuard);
 	}
@@ -770,7 +769,7 @@ public class Interpreter extends DepthFirstAdapter {
 	public void outASingleExpressionAnonymousFunctionBody(ASingleExpressionAnonymousFunctionBody node) {
 		super.outASingleExpressionAnonymousFunctionBody(node);
 
-		ExpressionValueInterface expression = (ExpressionValueInterface) parsingTable.getValueOf(node.getExpression());
+		ValueInterface expression = parsingTable.getValueOf(node.getExpression());
 		AnonymousFunctionBody body = new AnonymousFunctionBody(expression);
 		parsingTable.putValue(node, body);
 	}

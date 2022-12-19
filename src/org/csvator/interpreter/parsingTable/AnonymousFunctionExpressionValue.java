@@ -5,7 +5,7 @@ import org.csvator.interpreter.environment.Environment;
 import org.csvator.interpreter.parsingTable.function.UserDefinedFunctionValue;
 import org.csvator.interpreter.parsingTable.typeValues.TypeValueInterface;
 
-public class AnonymousFunctionExpressionValue implements ExpressionValueInterface {
+public class AnonymousFunctionExpressionValue implements ValueInterface {
 
 	private String id;
 	private UserDefinedFunctionValue function;

@@ -7,8 +7,6 @@ import org.csvator.interpreter.environment.Environment;
 import org.csvator.interpreter.parsingTable.ArgumentValue;
 import org.csvator.interpreter.parsingTable.DoubleValue;
 import org.csvator.interpreter.parsingTable.EmptyValue;
-import org.csvator.interpreter.parsingTable.ExpressionValueInterface;
-import org.csvator.interpreter.parsingTable.FunctionCallExpressionValue;
 import org.csvator.interpreter.parsingTable.IntegerValue;
 import org.csvator.interpreter.parsingTable.ValueInterface;
 import org.csvator.interpreter.parsingTable.typeValues.DoubleTypeValue;
@@ -39,7 +37,7 @@ public class UserDefinedFunctionValue implements FunctionValueInterface, Cloneab
 		this.expressions = new LinkedList<>();
 	}
 
-	public void addExpression(ExpressionValueInterface condition, ExpressionValueInterface result) {
+	public void addExpression(ValueInterface condition, ValueInterface result) {
 		Guard guarda = new Guard(condition, result);
 		this.expressions.add(guarda);
 	}
@@ -72,9 +70,7 @@ public class UserDefinedFunctionValue implements FunctionValueInterface, Cloneab
 
 			if (arguments.get(i).getType().getClass() == FunctionTypeValue.class) {
 				try {
-					if (parameterValue instanceof FunctionCallExpressionValue) {
-						parameterValue = parameterValue.evaluate(father);
-					}
+					parameterValue = parameterValue.evaluate(father);
 
 					UserDefinedFunctionValue paramenterFunction = (UserDefinedFunctionValue) this.extractFunctionFromParameter(parameterValue, father);
 					parameterValue = paramenterFunction;

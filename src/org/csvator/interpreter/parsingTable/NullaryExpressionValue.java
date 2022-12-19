@@ -3,7 +3,7 @@ package org.csvator.interpreter.parsingTable;
 import org.csvator.interpreter.environment.Environment;
 import org.csvator.interpreter.parsingTable.typeValues.TypeValueInterface;
 
-public class NullaryExpressionValue implements ExpressionValueInterface {
+public class NullaryExpressionValue implements ValueInterface {
 
 	private String id;
 	private ValueInterface value;

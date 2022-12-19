@@ -317,6 +317,7 @@ map(myVect, \(int a -> int : a + 1));
 map(myList, \(int a -> int : a * 2));
 map(mySet, \(int a -> int : a + 5));
 map(myDict, \(string k, int v -> (string -> int) : (("new_" ++ k) -> v * 10)));
+map(myStr, \(string a -> string : [a = "o"] "0" | [a = "!"] "1" | [true] a));
 
 filter(myVect, \(int a -> int : a < 3));
 filter(myList, \(int a -> int : a > 7));
