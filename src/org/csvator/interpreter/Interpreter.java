@@ -51,7 +51,6 @@ import org.csvator.interpreter.parsingTable.VariableValue;
 import org.csvator.interpreter.parsingTable.VectorValue;
 import org.csvator.interpreter.parsingTable.function.AnonymousFunctionBody;
 import org.csvator.interpreter.parsingTable.function.AnonymousFunctionBodyGuard;
-import org.csvator.interpreter.parsingTable.function.FunctionCall;
 import org.csvator.interpreter.parsingTable.function.FunctionValueInterface;
 import org.csvator.interpreter.parsingTable.function.UserDefinedFunctionValue;
 import org.csvator.interpreter.parsingTable.function.builtIn.ClassLoader.BuiltInFunctionClassLoader;
@@ -550,7 +549,7 @@ public class Interpreter extends DepthFirstAdapter {
 
 		ValueInterface value = parsingTable.getValueOf(node.getExpression());
 		VariableValue variableValue;
-		if (value instanceof FunctionCallExpressionValue || value instanceof FunctionCall) {
+		if (value instanceof FunctionCallExpressionValue) {
 			value = value.evaluate(global);
 			variableValue = new VariableValue(node.getVariable().getText(), value);
 		} else {
@@ -729,7 +728,6 @@ public class Interpreter extends DepthFirstAdapter {
 		super.outAFunctionApplicationWithArgumentExpression(node);
 
 		String functionIdentifier = node.getFunctionIdentifier().getText();
-		FunctionCall call = new FunctionCall(functionIdentifier);
 		ValueInterface value = parsingTable.getValueOf(node.getFirst());
 		LinkedList<ValueInterface> expressions = new LinkedList<>();
 		expressions.add(value);
@@ -739,8 +737,7 @@ public class Interpreter extends DepthFirstAdapter {
 			expressions.add(value);
 		}
 
-		FunctionCallExpressionValue functionExpression = new FunctionCallExpressionValue(functionIdentifier, call,
-				expressions);
+		FunctionCallExpressionValue functionExpression = new FunctionCallExpressionValue(functionIdentifier, expressions);
 		parsingTable.putValue(node, functionExpression);
 	}
 
