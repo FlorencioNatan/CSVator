@@ -55,9 +55,9 @@ public class Map implements FunctionValueInterface {
 	@Override
 	public ValueInterface apply(Environment env) {
 		CollectionValueInterface collection = (CollectionValueInterface) env.getValueOf("collection");
-		FunctionValueInterface sortFunction = (FunctionValueInterface) env.getValueOf("mapFunction");
+		FunctionValueInterface mapFunction = (FunctionValueInterface) env.getValueOf("mapFunction");
 
-		return collection.map(sortFunction);
+		return collection.map(mapFunction);
 	}
 
 }
