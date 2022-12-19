@@ -183,4 +183,13 @@ public class DictValue implements CollectionValueInterface {
 		return mappedDict;
 	}
 
+	@Override
+	public ValueInterface reduce(FunctionValueInterface reduceFunction, ValueInterface reduceValue) {
+		ValueInterface reducedValue = reduceValue;
+		for (Map.Entry<ValueInterface, ValueInterface> set : value.entrySet()) {
+			reducedValue = reduceFunction.apply(set.getKey(), set.getValue(), reducedValue);
+		}
+		return reducedValue;
+	}
+
 }

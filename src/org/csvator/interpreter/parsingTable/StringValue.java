@@ -216,4 +216,13 @@ public class StringValue implements CollectionValueInterface {
 		return mappedStr;
 	}
 
+	@Override
+	public ValueInterface reduce(FunctionValueInterface reduceFunction, ValueInterface reduceValue) {
+		ValueInterface reducedValue = reduceValue;
+		for (char elem : value.toCharArray()) {
+			reducedValue = reduceFunction.apply(new StringValue(String.valueOf(elem), String.valueOf(elem)), reducedValue);
+		}
+		return reducedValue;
+	}
+
 }

@@ -213,4 +213,13 @@ public class VectorValue implements CollectionValueInterface {
 		return filteredVec;
 	}
 
+	@Override
+	public ValueInterface reduce(FunctionValueInterface reduceFunction, ValueInterface reduceValue) {
+		ValueInterface reducedValue = reduceValue;
+		for (ValueInterface elem : value) {
+			reducedValue = reduceFunction.apply(elem, reducedValue);
+		}
+		return reducedValue;
+	}
+
 }

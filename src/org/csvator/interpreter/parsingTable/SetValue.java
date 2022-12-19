@@ -149,4 +149,13 @@ public class SetValue implements CollectionValueInterface {
 		return mappedSet;
 	}
 
+	@Override
+	public ValueInterface reduce(FunctionValueInterface reduceFunction, ValueInterface reduceValue) {
+		ValueInterface reducedValue = reduceValue;
+		for (ValueInterface elem : value) {
+			reducedValue = reduceFunction.apply(elem, reducedValue);
+		}
+		return reducedValue;
+	}
+
 }

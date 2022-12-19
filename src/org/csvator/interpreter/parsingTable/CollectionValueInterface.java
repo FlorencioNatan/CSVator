@@ -30,4 +30,6 @@ public interface CollectionValueInterface extends ValueInterface {
 
 	public CollectionValueInterface filter(FunctionValueInterface filterFunction);
 
+	public ValueInterface reduce(FunctionValueInterface reduceFunction, ValueInterface reduceValue);
+
 }

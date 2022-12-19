@@ -212,4 +212,13 @@ public class ListValue implements CollectionValueInterface {
 		return filteredList;
 	}
 
+	@Override
+	public ValueInterface reduce(FunctionValueInterface reduceFunction, ValueInterface reduceValue) {
+		ValueInterface reducedValue = reduceValue;
+		for (ValueInterface elem : value) {
+			reducedValue = reduceFunction.apply(elem, reducedValue);
+		}
+		return reducedValue;
+	}
+
 }

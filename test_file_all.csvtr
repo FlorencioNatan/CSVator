@@ -323,3 +323,9 @@ filter(myList, \(int a -> int : a > 7));
 filter(mySet, \(int a -> int : a > 5 or a < 3));
 filter(myDict, \(string a, int b -> int : (a !! 0) = "t" or b = 1));
 filter(myStr, \(string a -> int : a <> "a" and a <> "e" and a <> "i" and a <> "o" and a <> "u"));
+
+reduce(myVect, \(int a, int b -> int : a + b), 0);
+reduce(myList, \(int a, int b -> int : b - a), 1000);
+reduce(mySet, \(int a, int b -> int : a * b), 1);
+reduce(myDict, \(string a, int b, string c -> int : c ++ a ++ " "), "");
+reduce(myStr, \(string a, string b -> string : b ++ a), "Nova string ");
