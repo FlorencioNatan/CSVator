@@ -5,6 +5,7 @@ import java.util.Vector;
 import org.csvator.interpreter.environment.Environment;
 import org.csvator.interpreter.parsingTable.function.FunctionValueInterface;
 import org.csvator.interpreter.parsingTable.function.TypeMismatchException;
+import org.csvator.interpreter.parsingTable.typeValues.BoolTypeValue;
 import org.csvator.interpreter.parsingTable.typeValues.IntTypeValue;
 import org.csvator.interpreter.parsingTable.typeValues.TypeValueInterface;
 import org.csvator.interpreter.parsingTable.typeValues.VectorTypeValue;
@@ -190,6 +191,26 @@ public class VectorValue implements CollectionValueInterface {
 
 		VectorValue mappedVec = new VectorValue(id, mappedValue);
 		return mappedVec;
+	}
+
+	@Override
+	public CollectionValueInterface filter(FunctionValueInterface filterFunction) {
+		Vector<ValueInterface> filteredValue = new Vector<>();
+		for (ValueInterface elem : value) {
+			ValueInterface result = filterFunction.apply(elem);
+
+			if (! (result instanceof BooleanValue)) {
+				throw new TypeMismatchException("Map function must return a " + BoolTypeValue.getInstance() + ". A " + result.getType() + " returned.");
+			}
+
+			BooleanValue filtered = (BooleanValue) result;
+			if (filtered.getBooleanValue()) {
+				filteredValue.add(elem);
+			}
+		}
+
+		VectorValue filteredVec = new VectorValue(id, filteredValue);
+		return filteredVec;
 	}
 
 }

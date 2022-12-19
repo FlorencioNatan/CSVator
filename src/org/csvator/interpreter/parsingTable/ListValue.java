@@ -5,6 +5,7 @@ import java.util.LinkedList;
 import org.csvator.interpreter.environment.Environment;
 import org.csvator.interpreter.parsingTable.function.FunctionValueInterface;
 import org.csvator.interpreter.parsingTable.function.TypeMismatchException;
+import org.csvator.interpreter.parsingTable.typeValues.BoolTypeValue;
 import org.csvator.interpreter.parsingTable.typeValues.IntTypeValue;
 import org.csvator.interpreter.parsingTable.typeValues.ListTypeValue;
 import org.csvator.interpreter.parsingTable.typeValues.TypeValueInterface;
@@ -189,6 +190,26 @@ public class ListValue implements CollectionValueInterface {
 
 		ListValue mappedList = new ListValue(id, mappedValue);
 		return mappedList;
+	}
+
+	@Override
+	public CollectionValueInterface filter(FunctionValueInterface filterFunction) {
+		LinkedList<ValueInterface> filteredValue = new LinkedList<>();
+		for (ValueInterface elem : value) {
+			ValueInterface result = filterFunction.apply(elem);
+
+			if (! (result instanceof BooleanValue)) {
+				throw new TypeMismatchException("Map function must return a " + BoolTypeValue.getInstance() + ". A " + result.getType() + " returned.");
+			}
+
+			BooleanValue filtered = (BooleanValue) result;
+			if (filtered.getBooleanValue()) {
+				filteredValue.add(elem);
+			}
+		}
+
+		ListValue filteredList = new ListValue(id, filteredValue);
+		return filteredList;
 	}
 
 }

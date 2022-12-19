@@ -28,4 +28,6 @@ public interface CollectionValueInterface extends ValueInterface {
 
 	public CollectionValueInterface map(FunctionValueInterface mapFunction);
 
+	public CollectionValueInterface filter(FunctionValueInterface filterFunction);
+
 }

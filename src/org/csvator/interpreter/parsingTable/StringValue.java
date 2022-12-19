@@ -4,6 +4,7 @@ import org.csvator.interpreter.environment.Environment;
 import org.csvator.interpreter.environment.operators.InvalidOperationException;
 import org.csvator.interpreter.parsingTable.function.FunctionValueInterface;
 import org.csvator.interpreter.parsingTable.function.TypeMismatchException;
+import org.csvator.interpreter.parsingTable.typeValues.BoolTypeValue;
 import org.csvator.interpreter.parsingTable.typeValues.IntTypeValue;
 import org.csvator.interpreter.parsingTable.typeValues.StringTypeValue;
 import org.csvator.interpreter.parsingTable.typeValues.TypeValueInterface;
@@ -191,6 +192,27 @@ public class StringValue implements CollectionValueInterface {
 
 		String strMapped = mappedValue.toString();
 		StringValue mappedStr = new StringValue(strMapped, strMapped);
+		return mappedStr;
+	}
+
+	@Override
+	public CollectionValueInterface filter(FunctionValueInterface filterFunction) {
+		StringBuilder filteredValue = new StringBuilder();
+		for (char elem : value.toCharArray()) {
+			ValueInterface result = filterFunction.apply(new StringValue(String.valueOf(elem), String.valueOf(elem)));
+
+			if (! (result instanceof BooleanValue)) {
+				throw new TypeMismatchException("Map function must return a " + BoolTypeValue.getInstance() + ". A " + result.getType() + " returned.");
+			}
+
+			BooleanValue filtered = (BooleanValue) result;
+			if (filtered.getBooleanValue()) {
+				filteredValue.append(elem);
+			}
+		}
+
+		String strFiltered = filteredValue.toString();
+		StringValue mappedStr = new StringValue(strFiltered, strFiltered);
 		return mappedStr;
 	}
 

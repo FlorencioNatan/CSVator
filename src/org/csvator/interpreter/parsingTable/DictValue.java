@@ -7,6 +7,7 @@ import org.csvator.interpreter.environment.Environment;
 import org.csvator.interpreter.environment.operators.InvalidOperationException;
 import org.csvator.interpreter.parsingTable.function.FunctionValueInterface;
 import org.csvator.interpreter.parsingTable.function.TypeMismatchException;
+import org.csvator.interpreter.parsingTable.typeValues.BoolTypeValue;
 import org.csvator.interpreter.parsingTable.typeValues.DictTypeValue;
 import org.csvator.interpreter.parsingTable.typeValues.KeyValueTypeValue;
 import org.csvator.interpreter.parsingTable.typeValues.TypeValueInterface;
@@ -158,6 +159,27 @@ public class DictValue implements CollectionValueInterface {
 		}
 
 		DictValue mappedDict = new DictValue(id, mappedValue);
+		return mappedDict;
+	}
+
+	@Override
+	public CollectionValueInterface filter(FunctionValueInterface filterFunction) {
+		HashMap<ValueInterface, ValueInterface> filteredValue = new HashMap<>();
+
+		for (Map.Entry<ValueInterface, ValueInterface> set : value.entrySet()) {
+			ValueInterface result = filterFunction.apply(set.getKey(), set.getValue());
+
+			if (! (result instanceof BooleanValue)) {
+				throw new TypeMismatchException("Map function must return a " + BoolTypeValue.getInstance() + ". A " + result.getType() + " returned.");
+			}
+
+			BooleanValue filtered = (BooleanValue) result;
+			if (filtered.getBooleanValue()) {
+				filteredValue.put(set.getKey(), set.getValue());
+			}
+		}
+
+		DictValue mappedDict = new DictValue(id, filteredValue);
 		return mappedDict;
 	}
 

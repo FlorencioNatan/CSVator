@@ -6,6 +6,8 @@ import java.util.HashSet;
 import org.csvator.interpreter.environment.Environment;
 import org.csvator.interpreter.environment.operators.InvalidOperationException;
 import org.csvator.interpreter.parsingTable.function.FunctionValueInterface;
+import org.csvator.interpreter.parsingTable.function.TypeMismatchException;
+import org.csvator.interpreter.parsingTable.typeValues.BoolTypeValue;
 import org.csvator.interpreter.parsingTable.typeValues.SetTypeValue;
 import org.csvator.interpreter.parsingTable.typeValues.TypeValueInterface;
 
@@ -124,6 +126,26 @@ public class SetValue implements CollectionValueInterface {
 		}
 
 		SetValue mappedSet = new SetValue(id, mappedValue);
+		return mappedSet;
+	}
+
+	@Override
+	public CollectionValueInterface filter(FunctionValueInterface filterFunction) {
+		HashSet<ValueInterface> filteredValue = new HashSet<>();
+		for (ValueInterface elem : value) {
+			ValueInterface result = filterFunction.apply(elem);
+
+			if (! (result instanceof BooleanValue)) {
+				throw new TypeMismatchException("Map function must return a " + BoolTypeValue.getInstance() + ". A " + result.getType() + " returned.");
+			}
+
+			BooleanValue filtered = (BooleanValue) result;
+			if (filtered.getBooleanValue()) {
+				filteredValue.add(elem);
+			}
+		}
+
+		SetValue mappedSet = new SetValue(id, filteredValue);
 		return mappedSet;
 	}
 
