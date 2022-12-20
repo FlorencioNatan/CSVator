@@ -330,3 +330,14 @@ reduce(myList, \(int a, int b -> int : b - a), 1000);
 reduce(mySet, \(int a, int b -> int : a * b), 1);
 reduce(myDict, \(string a, int b, string c -> int : c ++ a ++ " "), "");
 reduce(myStr, \(string a, string b -> string : b ++ a), "Nova string ");
+
+type person := record
+	fields
+		string name;
+		int age;
+	end
+end;
+
+joe := person("joe", 28);
+
+joe;

@@ -36,8 +36,10 @@ import org.csvator.interpreter.parsingTable.BinaryExpressionValue;
 import org.csvator.interpreter.parsingTable.BooleanValue;
 import org.csvator.interpreter.parsingTable.DictValue;
 import org.csvator.interpreter.parsingTable.DoubleValue;
+import org.csvator.interpreter.parsingTable.FieldValue;
 import org.csvator.interpreter.parsingTable.FunctionCallExpressionValue;
 import org.csvator.interpreter.parsingTable.IntegerValue;
+import org.csvator.interpreter.parsingTable.InvariantsDefinition;
 import org.csvator.interpreter.parsingTable.KeyValueExpressionValue;
 import org.csvator.interpreter.parsingTable.ListValue;
 import org.csvator.interpreter.parsingTable.NullValue;
@@ -61,6 +63,7 @@ import org.csvator.interpreter.parsingTable.typeValues.DoubleTypeValue;
 import org.csvator.interpreter.parsingTable.typeValues.FunctionTypeValue;
 import org.csvator.interpreter.parsingTable.typeValues.IntTypeValue;
 import org.csvator.interpreter.parsingTable.typeValues.ListTypeValue;
+import org.csvator.interpreter.parsingTable.typeValues.RecordTypeValue;
 import org.csvator.interpreter.parsingTable.typeValues.SetTypeValue;
 import org.csvator.interpreter.parsingTable.typeValues.StringTypeValue;
 import org.csvator.interpreter.parsingTable.typeValues.TypeValueInterface;
@@ -93,6 +96,7 @@ import org.csvator.core.node.AEmptyVectorExpression;
 import org.csvator.core.node.AEqualExpression;
 import org.csvator.core.node.AExpressionLineLine;
 import org.csvator.core.node.AFalseExpression;
+import org.csvator.core.node.AField;
 import org.csvator.core.node.AFunctionApplicationWithArgumentExpression;
 import org.csvator.core.node.AFunctionApplicationWithoutArgumentExpression;
 import org.csvator.core.node.AFunctionTypeSpecifierNoParametersTypeSpecifier;
@@ -104,6 +108,7 @@ import org.csvator.core.node.AImpliesExpression;
 import org.csvator.core.node.AIndexExpressionExpression;
 import org.csvator.core.node.AIntExpression;
 import org.csvator.core.node.AIntTypeSpecifier;
+import org.csvator.core.node.AInvariantsDefinition;
 import org.csvator.core.node.AKeyValueExpression;
 import org.csvator.core.node.ALessEqualExpression;
 import org.csvator.core.node.ALessExpression;
@@ -115,6 +120,7 @@ import org.csvator.core.node.ANotExpression;
 import org.csvator.core.node.ANullExpression;
 import org.csvator.core.node.AOrExpression;
 import org.csvator.core.node.AParenExpression;
+import org.csvator.core.node.ARecordType;
 import org.csvator.core.node.ARemoveExpressionExpression;
 import org.csvator.core.node.ASetExpression;
 import org.csvator.core.node.ASetTypeSpecifier;
@@ -126,6 +132,7 @@ import org.csvator.core.node.ASubExpression;
 import org.csvator.core.node.ASumExpression;
 import org.csvator.core.node.ATailExpression;
 import org.csvator.core.node.ATrueExpression;
+import org.csvator.core.node.ATypeDefinition;
 import org.csvator.core.node.AVarExpression;
 import org.csvator.core.node.AVariableDefinition;
 import org.csvator.core.node.AVectorExpression;
@@ -135,6 +142,7 @@ import org.csvator.core.node.Node;
 import org.csvator.core.node.PAnonymousFunctionBodyGuard;
 import org.csvator.core.node.PArgument;
 import org.csvator.core.node.PExpression;
+import org.csvator.core.node.PField;
 import org.csvator.core.node.PTypeSpecifier;
 
 public class Interpreter extends DepthFirstAdapter {
@@ -557,6 +565,60 @@ public class Interpreter extends DepthFirstAdapter {
 		}
 		parsingTable.putValue(node.getVariable(), variableValue);
 		global.putValue(node.getVariable().getText(), value);
+	}
+
+	@Override
+	public void outATypeDefinition(ATypeDefinition node) {
+		super.outATypeDefinition(node);
+		String typeName = node.getName().getText();
+		RecordTypeValue record = (RecordTypeValue) parsingTable.getValueOf(node.getRecordType());
+		record.setId(typeName);
+		global.putValue(typeName, record);
+	}
+
+	@Override
+	public void outARecordType(ARecordType node) {
+		super.outARecordType(node);
+		LinkedList<FieldValue> fieldList = new LinkedList<FieldValue>();
+		FieldValue value;
+		for (PField nodeField : node.getFields()) {
+			value = (FieldValue) parsingTable.getValueOf(nodeField);
+			fieldList.add(value);
+		}
+
+		RecordTypeValue record = new RecordTypeValue(fieldList);
+		if (node.getInvariantsDefinition() != null) {
+			InvariantsDefinition invariants = (InvariantsDefinition) parsingTable.getValueOf(node.getInvariantsDefinition());
+			record.setInvariants(invariants.getInvariants());
+		}
+
+		parsingTable.putValue(node, record);
+	}
+
+	@Override
+	public void outAInvariantsDefinition(AInvariantsDefinition node) {
+		super.outAInvariantsDefinition(node);
+		LinkedList<ValueInterface> invariantList = new LinkedList<ValueInterface>();
+
+		ValueInterface value;
+		for (PExpression nodeExpression : node.getExpressions()) {
+			value = parsingTable.getValueOf(nodeExpression).evaluate(global);
+			invariantList.add(value);
+		}
+
+		InvariantsDefinition invariants = new InvariantsDefinition(invariantList);
+		parsingTable.putValue(node, invariants);
+	}
+
+	@Override
+	public void outAField(AField node) {
+		super.outAField(node);
+
+		String fieldName = node.getName().getText();
+		TypeValueInterface type = (TypeValueInterface) parsingTable.getValueOf(node.getType());
+		FieldValue field = new FieldValue(fieldName, fieldName, type);
+
+		parsingTable.putValue(node, field);
 	}
 
 	@Override

@@ -66,6 +66,11 @@ Tokens
 	kw_dict = 'dict';
 	kw_set = 'set';
 	kw_list = 'list';
+	kw_type = 'type';
+	kw_record = 'record';
+	kw_fields = 'fields';
+	kw_invariants = 'invariants';
+	kw_end = 'end';
 	tok_semicolon = ';';
 	tok_colon = ':';
 	tok_comma = ',';
@@ -87,7 +92,8 @@ Productions
 	line =
 		{expression_line} expression tok_semicolon {-> New line.expression_line(expression)} |
 		{function_definition} function_definition tok_semicolon {-> New line.function_definition(function_definition)} |
-		{variable_definition} variable_definition tok_semicolon {-> New line.variable_definition(variable_definition)} ;
+		{variable_definition} variable_definition tok_semicolon {-> New line.variable_definition(variable_definition)} |
+		{type_definition}  type_definition tok_semicolon {-> New line.type_definition(type_definition)} ;
 
 	expression {-> expression} = 
 		{concat_expression} concat_expression {-> concat_expression.expression};
@@ -233,13 +239,24 @@ Productions
 
 	variable_definition = [variable]:identifier tok_attribution expression {-> New variable_definition(variable, expression)};
 
+	type_definition = kw_type [name]:identifier tok_attribution record_type {-> New type_definition(name, record_type)};
+
+	record_type = kw_record kw_fields field+ [field_end]:kw_end invariants_definition? [record_end]:kw_end {-> New record_type([field], invariants_definition)};
+
+	field = [type]:type_specifier [name]:identifier tok_semicolon {-> New field(type, name)};
+
+	invariants_definition = kw_invariants invariant+ kw_end {-> New invariants_definition([invariant.expression])};
+
+	invariant {-> expression} = expression tok_semicolon {-> expression};
+
 Abstract Syntax Tree
 	program = line*;
 
 	line =
 		{expression_line} expression |
 		{function_definition} function_definition |
-		{variable_definition} variable_definition;
+		{variable_definition} variable_definition |
+		{type_definition} type_definition;
 
 	expression = 
 		{sum} [left]:expression [right]:expression |
@@ -319,3 +336,11 @@ Abstract Syntax Tree
 	variable_definition = [variable]:identifier expression;
 
 	argument = type_specifier identifier;
+
+	type_definition = [name]:identifier record_type;
+
+	record_type = [fields]:field* invariants_definition?;
+
+	field = [type]:type_specifier [name]:identifier;
+
+	invariants_definition = [expressions]:expression*;
