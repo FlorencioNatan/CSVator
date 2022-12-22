@@ -354,4 +354,4 @@ end;
 
 content := readCSVFile("brazilian_states.csv", bState);
 
-content;
+printTable(content);
