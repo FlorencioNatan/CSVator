@@ -19,7 +19,6 @@ import org.csvator.interpreter.parsingTable.VectorValue;
 import org.csvator.interpreter.parsingTable.function.FunctionValueInterface;
 import org.csvator.interpreter.parsingTable.function.InvalidNumberOfParametersException;
 import org.csvator.interpreter.parsingTable.function.TypeMismatchException;
-import org.csvator.interpreter.parsingTable.typeValues.AnyFunctionTypeValue;
 import org.csvator.interpreter.parsingTable.typeValues.AnyTypeValue;
 import org.csvator.interpreter.parsingTable.typeValues.BoolTypeValue;
 import org.csvator.interpreter.parsingTable.typeValues.CollectionTypeValue;
@@ -88,6 +87,7 @@ public class ReadCSVFile implements FunctionValueInterface {
 		return CollectionTypeValue.getInstance();
 	}
 
+	@SuppressWarnings("unused")
 	@Override
 	public ValueInterface apply(Environment env) {
 		StringValue file = (StringValue) env.getValueOf("file");
