@@ -222,4 +222,35 @@ public class VectorValue implements CollectionValueInterface {
 		return reducedValue;
 	}
 
+	@Override
+	public String[][] buildTable() {
+		String[][] table = new String[this.value.size()][];
+
+		int i = 0;
+		for (ValueInterface element : this.value) {
+			table[i] = new String[1];
+			if (element instanceof CollectionValueInterface) {
+				table[i] = ((CollectionValueInterface) element).buildTableLine();
+			} else {
+				table[i][0] = element.toString();
+			}
+			i++;
+		}
+
+		return table;
+	}
+
+	@Override
+	public String[] buildTableLine() {
+		String[] line = new String[this.value.size()];
+
+		int i = 0;
+		for (ValueInterface element : this.value) {
+			line[i] = element.toString();
+			i++;
+		}
+
+		return line;
+	}
+
 }

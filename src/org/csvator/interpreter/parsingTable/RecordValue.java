@@ -104,4 +104,43 @@ public class RecordValue extends DictValue {
 		return this.type;
 	}
 
+	@Override
+	public String[][] buildTable() {
+		String[][] table = new String[this.fields.size()][];
+
+		int i = 0;
+		for (FieldValue field : this.fields) {
+			String idVariable = field.getIdVariable();
+			StringValue fieldKey = new StringValue(idVariable, idVariable);
+			ValueInterface fieldValue = this.get(fieldKey);
+
+			table[i] = new String[1];
+			if (fieldValue instanceof CollectionValueInterface) {
+				table[i] = ((CollectionValueInterface) fieldValue).buildTableLine();
+			} else {
+				table[i][0] = fieldValue.toString();
+			}
+			i++;
+		}
+
+		return table;
+	}
+
+	@Override
+	public String[] buildTableLine() {
+		String[] line = new String[this.fields.size()];
+
+		int i = 0;
+		for (FieldValue field : this.fields) {
+			String idVariable = field.getIdVariable();
+			StringValue fieldKey = new StringValue(idVariable, idVariable);
+			ValueInterface fieldValue = this.get(fieldKey);
+
+			line[i] = fieldValue.toString();
+			i++;
+		}
+
+		return line;
+	}
+
 }

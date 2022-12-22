@@ -225,4 +225,16 @@ public class StringValue implements CollectionValueInterface {
 		return reducedValue;
 	}
 
+	@Override
+	public String[][] buildTable() {
+		String[][] table = { { this.value } };
+		return table;
+	}
+
+	@Override
+	public String[] buildTableLine() {
+		String[] line = { this.value };
+		return line;
+	}
+
 }

@@ -32,4 +32,8 @@ public interface CollectionValueInterface extends ValueInterface {
 
 	public ValueInterface reduce(FunctionValueInterface reduceFunction, ValueInterface reduceValue);
 
+	public String[][] buildTable();
+
+	public String[] buildTableLine();
+
 }
