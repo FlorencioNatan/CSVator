@@ -341,3 +341,17 @@ end;
 joe := person("joe", 28);
 
 joe;
+
+type bState := record
+	fields
+		string name;
+		string abbreviation;
+		string capital;
+		double area;
+		int population;
+	end
+end;
+
+content := readCSVFile("brazilian_states.csv", bState);
+
+content;
