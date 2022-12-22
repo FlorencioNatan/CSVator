@@ -91,4 +91,9 @@ public class FunctionTypeValue implements TypeValueInterface {
 		return false;
 	}
 
+	@Override
+	public ValueInterface createValue(String strValue) {
+		return null;
+	}
+
 }

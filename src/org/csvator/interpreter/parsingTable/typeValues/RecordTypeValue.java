@@ -183,4 +183,9 @@ public class RecordTypeValue implements TypeValueInterface, FunctionValueInterfa
 		return str.toString();
 	}
 
+	@Override
+	public ValueInterface createValue(String strValue) {
+		return null;
+	}
+
 }

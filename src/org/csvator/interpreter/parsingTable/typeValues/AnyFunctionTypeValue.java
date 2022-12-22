@@ -58,4 +58,9 @@ public class AnyFunctionTypeValue implements TypeValueInterface {
 		return false;
 	}
 
+	@Override
+	public ValueInterface createValue(String strValue) {
+		return null;
+	}
+
 }

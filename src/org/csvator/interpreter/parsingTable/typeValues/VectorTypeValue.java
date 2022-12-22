@@ -3,6 +3,7 @@ package org.csvator.interpreter.parsingTable.typeValues;
 import org.csvator.interpreter.environment.Environment;
 import org.csvator.interpreter.parsingTable.EmptyValue;
 import org.csvator.interpreter.parsingTable.ValueInterface;
+import org.csvator.interpreter.parsingTable.VectorValue;
 
 public class VectorTypeValue implements TypeValueInterface {
 
@@ -55,6 +56,11 @@ public class VectorTypeValue implements TypeValueInterface {
 		}
 
 		return false;
+	}
+
+	@Override
+	public ValueInterface createValue(String strValue) {
+		return new VectorValue(strValue);
 	}
 
 }

@@ -1,6 +1,7 @@
 package org.csvator.interpreter.parsingTable.typeValues;
 
 import org.csvator.interpreter.environment.Environment;
+import org.csvator.interpreter.parsingTable.DictValue;
 import org.csvator.interpreter.parsingTable.EmptyValue;
 import org.csvator.interpreter.parsingTable.ValueInterface;
 
@@ -55,6 +56,11 @@ public class DictTypeValue implements TypeValueInterface {
 		}
 
 		return false;
+	}
+
+	@Override
+	public ValueInterface createValue(String strValue) {
+		return new DictValue(strValue);
 	}
 
 }

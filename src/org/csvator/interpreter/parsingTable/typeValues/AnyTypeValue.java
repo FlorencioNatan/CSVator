@@ -45,4 +45,9 @@ public class AnyTypeValue implements TypeValueInterface {
 		return true;
 	}
 
+	@Override
+	public ValueInterface createValue(String strValue) {
+		return null;
+	}
+
 }

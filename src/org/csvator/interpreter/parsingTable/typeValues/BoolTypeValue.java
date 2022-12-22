@@ -1,6 +1,7 @@
 package org.csvator.interpreter.parsingTable.typeValues;
 
 import org.csvator.interpreter.environment.Environment;
+import org.csvator.interpreter.parsingTable.BooleanValue;
 import org.csvator.interpreter.parsingTable.EmptyValue;
 import org.csvator.interpreter.parsingTable.ValueInterface;
 
@@ -51,6 +52,11 @@ public class BoolTypeValue implements TypeValueInterface {
 		}
 
 		return false;
+	}
+
+	@Override
+	public ValueInterface createValue(String strValue) {
+		return new BooleanValue(strValue, strValue);
 	}
 
 }

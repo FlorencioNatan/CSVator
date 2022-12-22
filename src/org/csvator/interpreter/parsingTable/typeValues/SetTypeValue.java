@@ -2,6 +2,7 @@ package org.csvator.interpreter.parsingTable.typeValues;
 
 import org.csvator.interpreter.environment.Environment;
 import org.csvator.interpreter.parsingTable.EmptyValue;
+import org.csvator.interpreter.parsingTable.SetValue;
 import org.csvator.interpreter.parsingTable.ValueInterface;
 
 public class SetTypeValue implements TypeValueInterface {
@@ -56,5 +57,11 @@ public class SetTypeValue implements TypeValueInterface {
 
 		return false;
 	}
+
+	@Override
+	public ValueInterface createValue(String strValue) {
+		return new SetValue(strValue);
+	}
+
 
 }
