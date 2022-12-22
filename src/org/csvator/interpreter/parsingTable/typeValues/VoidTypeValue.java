@@ -33,7 +33,7 @@ public class VoidTypeValue implements TypeValueInterface {
 
 	@Override
 	public String toString() {
-		return "string";
+		return "void";
 	}
 
 	@Override
