@@ -1,5 +1,6 @@
 package org.csvator.main;
 
+import java.awt.EventQueue;
 import java.io.ByteArrayInputStream;
 import java.io.FileReader;
 import java.io.InputStream;
@@ -13,6 +14,7 @@ import org.csvator.core.node.Start;
 import org.csvator.core.parser.Parser;
 import org.csvator.interpreter.Interpreter;
 import org.csvator.interpreter.tablePrinterStrategy.SimpleCSVTablePrinter;
+import org.csvator.main.gui.CSVatorIDE;
 
 
 public class Main {
@@ -32,7 +34,7 @@ public class Main {
 			Main.runsFile(args);
 			return;
 		}
-		if (args.length == 2 && Main.shouldLaunchIDE(args) && !Main.shouldPrintHelp(args)) {
+		if (args.length >= 1 && Main.shouldLaunchIDE(args) && !Main.shouldPrintHelp(args)) {
 			Main.launchIDE(args);
 			return;
 		}
@@ -97,7 +99,16 @@ public class Main {
 	}
 
 	private static void launchIDE(String[] args) {
-
+		EventQueue.invokeLater(new Runnable() {
+			public void run() {
+				try {
+					CSVatorIDE frame = new CSVatorIDE();
+					frame.setVisible(true);
+				} catch (Exception e) {
+					e.printStackTrace();
+				}
+			}
+		});
 	}
 
 	private static boolean shouldPrintHelp(String[] args) {
