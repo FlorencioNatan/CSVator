@@ -149,6 +149,7 @@ public class Interpreter extends DepthFirstAdapter {
 
 	private ParsingTable parsingTable;
 	private Environment global;
+	private String prompt = "";
 
 	public Interpreter() {
 		parsingTable = new ParsingTable();
@@ -159,6 +160,10 @@ public class Interpreter extends DepthFirstAdapter {
 		} catch (Exception e) {
 			// do nothing
 		}
+	}
+
+	public void setPromptString(String prompt) {
+		this.prompt = prompt;
 	}
 
 	@Override
@@ -901,7 +906,7 @@ public class Interpreter extends DepthFirstAdapter {
 		super.outAExpressionLineLine(node);
 
 		ValueInterface value = parsingTable.getValueOf(node.getExpression());
-		System.out.println("Resultado: " + value.evaluate(global));
+		System.out.println(this.prompt + value.evaluate(global));
 	}
 
 	private BinaryExpressionValue buildExpression(String id, Node lho, Node rho, OperatorInterface op) {
