@@ -12,6 +12,7 @@ import org.csvator.core.lexer.Lexer;
 import org.csvator.core.node.Start;
 import org.csvator.core.parser.Parser;
 import org.csvator.interpreter.Interpreter;
+import org.csvator.interpreter.tablePrinterStrategy.SimpleCSVTablePrinter;
 
 
 public class Main {
@@ -42,25 +43,31 @@ public class Main {
 	private static void launchRepl() {
 			Scanner in = new Scanner(System.in);
 			Interpreter interpreter = new Interpreter();
-			int i = 1;
+			interpreter.setTablePrinter(new SimpleCSVTablePrinter());
+
 			String inPrompt = "\nIn[%d]: ";
 			String outPrompt = "Out[%d]: ";
 			if (System.getProperty("os.name").equals("Linux")) {
 				inPrompt = "\n" + FONT_COLOR_GREEN + "In [" + FONT_COLOR_GREEN_BOLD +"%d" + FONT_COLOR_GREEN + "]: " + FONT_COLOR_DEFAULT;
 				outPrompt = FONT_COLOR_RED + "Out[" + FONT_COLOR_RED_BOLD + "%d" + FONT_COLOR_RED + "]: " + FONT_COLOR_DEFAULT;
 			}
+
+			int i = 1;
 			while (true) {
 				System.out.print(String.format(inPrompt, i));
 				String line = in.nextLine();
+
 				if (line.trim().equals("exit") || line.trim().equals("exit;") ||
 					line.trim().equals("quit") || line.trim().equals("quit;")
 				) {
 					break;
 				}
+
 				InputStream streamLine = new ByteArrayInputStream(line.getBytes(StandardCharsets.UTF_8));
 				InputStreamReader reader = new InputStreamReader(streamLine);
 				Lexer lexer = new Lexer(new PushbackReader(reader, 1024));
 				Parser parser = new Parser(lexer);
+
 				try {
 					Start ast = parser.parse();
 					interpreter.setPromptString(String.format(outPrompt, i));

@@ -14,8 +14,15 @@ import org.csvator.interpreter.parsingTable.typeValues.FunctionTypeValue;
 import org.csvator.interpreter.parsingTable.typeValues.TypeValueInterface;
 import org.csvator.interpreter.parsingTable.typeValues.VoidTypeValue;
 import org.csvator.interpreter.tablePrinterStrategy.SimpleCSVTablePrinter;
+import org.csvator.interpreter.tablePrinterStrategy.TablePrinterStrategy;
 
 public class PrintTable implements FunctionValueInterface {
+
+	private TablePrinterStrategy printer;
+
+	public PrintTable() {
+		printer = new SimpleCSVTablePrinter();
+	}
 
 	@Override
 	public String getId() {
@@ -34,6 +41,7 @@ public class PrintTable implements FunctionValueInterface {
 		return new FunctionTypeValue(parametersType, getReturnType());
 	}
 
+	@Override
 	public Environment createLocalEnvironment(LinkedList<ValueInterface> values, Environment father) throws TypeMismatchException {
 		if (values.size() != 1) {
 			throw new InvalidNumberOfParametersException("The function printTable expects 1 parameter, but " + values.size() +  " are found.");
@@ -47,10 +55,12 @@ public class PrintTable implements FunctionValueInterface {
 		return local;
 	}
 
+	@Override
 	public TypeValueInterface getReturnType() {
 		return VoidTypeValue.getInstance();
 	}
 
+	@Override
 	public ValueInterface apply(Environment env) {
 		ValueInterface tableValue = (ValueInterface) env.getValueOf("tableValue");
 
@@ -61,10 +71,13 @@ public class PrintTable implements FunctionValueInterface {
 			table[0][0] = tableValue.toString();
 		}
 
-		SimpleCSVTablePrinter simple = new SimpleCSVTablePrinter();
-		simple.printTable(table);
+		this.printer.printTable(table);
 
 		return NullValue.getInstace();
+	}
+
+	public void setTablePrinter(TablePrinterStrategy printer) {
+		this.printer = printer;
 	}
 
 }

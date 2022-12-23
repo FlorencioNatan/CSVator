@@ -55,6 +55,7 @@ import org.csvator.interpreter.parsingTable.function.AnonymousFunctionBody;
 import org.csvator.interpreter.parsingTable.function.AnonymousFunctionBodyGuard;
 import org.csvator.interpreter.parsingTable.function.FunctionValueInterface;
 import org.csvator.interpreter.parsingTable.function.UserDefinedFunctionValue;
+import org.csvator.interpreter.parsingTable.function.builtIn.PrintTable;
 import org.csvator.interpreter.parsingTable.function.builtIn.ClassLoader.BuiltInFunctionClassLoader;
 import org.csvator.interpreter.parsingTable.typeValues.AnyTypeValue;
 import org.csvator.interpreter.parsingTable.typeValues.BoolTypeValue;
@@ -68,6 +69,7 @@ import org.csvator.interpreter.parsingTable.typeValues.SetTypeValue;
 import org.csvator.interpreter.parsingTable.typeValues.StringTypeValue;
 import org.csvator.interpreter.parsingTable.typeValues.TypeValueInterface;
 import org.csvator.interpreter.parsingTable.typeValues.VectorTypeValue;
+import org.csvator.interpreter.tablePrinterStrategy.TablePrinterStrategy;
 import org.csvator.core.analysis.DepthFirstAdapter;
 import org.csvator.core.node.AAndExpression;
 import org.csvator.core.node.AAnonymousFunctionBodyGuard;
@@ -164,6 +166,11 @@ public class Interpreter extends DepthFirstAdapter {
 
 	public void setPromptString(String prompt) {
 		this.prompt = prompt;
+	}
+
+	public void setTablePrinter(TablePrinterStrategy printer) {
+		PrintTable printTable = (PrintTable) this.global.getValueOf("printTable");
+		printTable.setTablePrinter(printer);
 	}
 
 	@Override
