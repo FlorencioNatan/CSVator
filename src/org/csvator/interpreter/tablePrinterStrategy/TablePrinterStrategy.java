@@ -3,6 +3,6 @@ package org.csvator.interpreter.tablePrinterStrategy;
 
 public interface TablePrinterStrategy {
 
-	public void printTable(String[][] table);
+	public void printTable(String[][] table, String[] header);
 
 }

@@ -3,7 +3,7 @@ package org.csvator.interpreter.tablePrinterStrategy;
 public class SimpleASCIITablePrinter implements TablePrinterStrategy {
 
 	@Override
-	public void printTable(String[][] table) {
+	public void printTable(String[][] table, String[] header) {
 		int[] tableSize = this.calculateColumnSize(table);
 		table = this.formatColumns(table, tableSize);
 		StringBuilder content = new StringBuilder();
@@ -14,12 +14,12 @@ public class SimpleASCIITablePrinter implements TablePrinterStrategy {
 		}
 		blankLine += "+\n";
 
-		//Header
-		content.append(blankLine);
-		content.append("| " + String.join(" | ", table[0]) + " |\n");
-		content.append(blankLine);
+		if (header != null) {
+			content.append(blankLine);
+			content.append("| " + String.join(" | ", header) + " |\n");
+			content.append(blankLine);
+		}
 
-		//Body
 		for (int i = 1; i < table.length; i++) {
 			content.append("| " + String.join(" | ", table[i]) + " |\n");
 		}

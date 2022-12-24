@@ -65,13 +65,15 @@ public class PrintTable implements FunctionValueInterface {
 		ValueInterface tableValue = (ValueInterface) env.getValueOf("tableValue");
 
 		String[][] table = { { NullValue.getInstace().toString() } };
+		String[] header = {"Result"};
 		if (tableValue instanceof CollectionValueInterface) {
 			table = ((CollectionValueInterface) tableValue).buildTable();
+			header = ((CollectionValueInterface) tableValue).buildTableHeader();
 		} else {
 			table[0][0] = tableValue.toString();
 		}
 
-		this.printer.printTable(table);
+		this.printer.printTable(table, header);
 
 		return NullValue.getInstace();
 	}
