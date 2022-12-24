@@ -39,8 +39,11 @@ import javax.swing.JSplitPane;
 import javax.swing.JTable;
 import javax.swing.JTextPane;
 import javax.swing.JToolBar;
+import javax.swing.KeyStroke;
 import javax.swing.SwingUtilities;
 import javax.swing.border.EmptyBorder;
+import javax.swing.filechooser.FileFilter;
+import javax.swing.filechooser.FileNameExtensionFilter;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.text.BadLocationException;
 import javax.swing.text.Document;
@@ -87,6 +90,8 @@ public class CSVatorIDE extends JFrame {
 						mntmOpen.addActionListener(new ActionListener() {
 							public void actionPerformed(ActionEvent e) {
 								JFileChooser fileChooser = new JFileChooser();
+								fileChooser.setAcceptAllFileFilterUsed(false);
+								fileChooser.setFileFilter(CSVatorIDE.this.getFileFiler());
 								int option = fileChooser.showOpenDialog(mntmOpen);
 								if (option == JFileChooser.APPROVE_OPTION) {
 									File file = fileChooser.getSelectedFile();
@@ -109,6 +114,7 @@ public class CSVatorIDE extends JFrame {
 								}
 							}
 						});
+						mntmOpen.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_O, KeyEvent.CTRL_DOWN_MASK));
 						mnFile.add(mntmOpen);
 						
 						JMenuItem mntmSave = new JMenuItem("Save", KeyEvent.VK_S);
@@ -121,6 +127,7 @@ public class CSVatorIDE extends JFrame {
 								}
 							}
 						});
+						mntmSave.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_S, KeyEvent.CTRL_DOWN_MASK));
 						mnFile.add(mntmSave);
 						
 						JMenuItem mntmSaveAs = new JMenuItem("Save As ...", KeyEvent.VK_A);
@@ -129,6 +136,7 @@ public class CSVatorIDE extends JFrame {
 								saveAsTextFile(mntmSaveAs);
 							}
 						});
+						mntmSaveAs.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_S, KeyEvent.CTRL_DOWN_MASK | KeyEvent.SHIFT_DOWN_MASK));
 						mnFile.add(mntmSaveAs);
 						
 						JMenuItem mntmExit = new JMenuItem("Exit", KeyEvent.VK_X);
@@ -138,6 +146,7 @@ public class CSVatorIDE extends JFrame {
 								CSVatorIDE.this.dispose();
 							}
 						});
+						mntmExit.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_Q, KeyEvent.CTRL_DOWN_MASK));
 						mnFile.add(mntmExit);
 						
 						JMenu mnRun = new JMenu("Run");
@@ -147,14 +156,17 @@ public class CSVatorIDE extends JFrame {
 						JMenuItem mntmRunFile = new JMenuItem("Run file", KeyEvent.VK_F);
 						mntmRunFile.setHorizontalAlignment(SwingConstants.LEFT);
 						mntmRunFile.addActionListener(mnRunFile());
+						mntmRunFile.setAccelerator(KeyStroke.getKeyStroke("F9"));
 						mnRun.add(mntmRunFile);
 						
 						JMenuItem mntmRunSelection = new JMenuItem("Run selection", KeyEvent.VK_S);
 						mntmRunSelection.addActionListener(mnRunSelection());
+						mntmRunSelection.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_ENTER, KeyEvent.CTRL_DOWN_MASK));
 						mnRun.add(mntmRunSelection);
 						
 						JMenuItem mntmResetEnvironment = new JMenuItem("Reset Environment", KeyEvent.VK_E);
 						mntmResetEnvironment.addActionListener(mnResetEnvironment());
+						mntmResetEnvironment.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_T, KeyEvent.CTRL_DOWN_MASK));
 						mnRun.add(mntmResetEnvironment);
 						
 						JMenu mnHelp = new JMenu("Help");
@@ -171,6 +183,7 @@ public class CSVatorIDE extends JFrame {
 								dialog.setVisible(true);
 							}
 						});
+						mntmAbout.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_B, KeyEvent.CTRL_DOWN_MASK));
 						mnHelp.add(mntmAbout);
 		contentPane = new JPanel();
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
@@ -295,6 +308,9 @@ public class CSVatorIDE extends JFrame {
 
 	private void saveAsTextFile(Component parent) {
 		JFileChooser fileChooser = new JFileChooser();
+		fileChooser.setSelectedFile(new File("code.csvtr"));
+		fileChooser.setAcceptAllFileFilterUsed(false);
+		fileChooser.setFileFilter(getFileFiler());
 		int option = fileChooser.showSaveDialog(parent);
 		if (option == JFileChooser.APPROVE_OPTION) {
 			File file = fileChooser.getSelectedFile();
@@ -323,6 +339,9 @@ public class CSVatorIDE extends JFrame {
 		}
 	}
 
+	private FileFilter getFileFiler() {
+		return new FileNameExtensionFilter("CSVator source file", "csvtr");
+	}
 }
 
 class TextPaneOutputStream extends OutputStream {
