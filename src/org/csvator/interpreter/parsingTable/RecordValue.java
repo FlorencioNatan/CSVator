@@ -143,4 +143,17 @@ public class RecordValue extends DictValue {
 		return line;
 	}
 
+	@Override
+	public String[] buildTableHeader() {
+		String[] line = new String[this.fields.size()];
+
+		int i = 0;
+		for (FieldValue field : this.fields) {
+			line[i] = field.getIdVariable();
+			i++;
+		}
+
+		return line;
+	}
+
 }

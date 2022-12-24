@@ -223,4 +223,17 @@ public class DictValue implements CollectionValueInterface {
 		return line;
 	}
 
+	@Override
+	public String[] buildTableHeader() {
+		String[] header = new String[this.value.size()];
+
+		int i = 0;
+		for (ValueInterface element : this.value.keySet()) {
+			header[i] = element.toString();
+			i++;
+		}
+
+		return header;
+	}
+
 }

@@ -237,4 +237,10 @@ public class StringValue implements CollectionValueInterface {
 		return line;
 	}
 
+	@Override
+	public String[] buildTableHeader() {
+		String[] header = {"Col 1"};
+		return header;
+	}
+
 }

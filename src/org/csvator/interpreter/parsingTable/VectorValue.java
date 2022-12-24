@@ -253,4 +253,18 @@ public class VectorValue implements CollectionValueInterface {
 		return line;
 	}
 
+	@Override
+	public String[] buildTableHeader() {
+		ValueInterface first = this.value.firstElement();
+		if (first instanceof CollectionValueInterface) {
+			return ((CollectionValueInterface) first).buildTableHeader();
+		}
+		String[] header = new String[this.value.size()];
+
+		for (int i = 0 ; i < this.value.size(); i++) {
+			header[i] = "Col " + (i + 1);
+		}
+		return header;
+	}
+
 }

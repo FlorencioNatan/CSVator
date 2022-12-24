@@ -36,4 +36,6 @@ public interface CollectionValueInterface extends ValueInterface {
 
 	public String[] buildTableLine();
 
+	public String[] buildTableHeader();
+
 }
