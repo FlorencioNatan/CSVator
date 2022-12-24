@@ -41,6 +41,7 @@ import javax.swing.JTextPane;
 import javax.swing.JToolBar;
 import javax.swing.SwingUtilities;
 import javax.swing.border.EmptyBorder;
+import javax.swing.table.DefaultTableModel;
 import javax.swing.text.BadLocationException;
 import javax.swing.text.Document;
 
@@ -50,6 +51,7 @@ import org.csvator.core.node.Start;
 import org.csvator.core.parser.Parser;
 import org.csvator.core.parser.ParserException;
 import org.csvator.interpreter.Interpreter;
+import org.csvator.interpreter.tablePrinterStrategy.JTableTablePrinter;
 
 import javax.swing.SwingConstants;
 import java.awt.Color;
@@ -73,8 +75,6 @@ public class CSVatorIDE extends JFrame {
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setBounds(100, 100, 800, 600);
 		this.setExtendedState(getExtendedState() | JFrame.MAXIMIZED_BOTH);
-
-		interpreter = new Interpreter();
 
 		JMenuBar menuBar = new JMenuBar();
 		setJMenuBar(menuBar);
@@ -233,6 +233,9 @@ public class CSVatorIDE extends JFrame {
 		JScrollPane scrollPaneOutput = new JScrollPane(textPaneOutput);
 		splitPaneOutput.setRightComponent(scrollPaneOutput);
 
+		interpreter = new Interpreter();
+		interpreter.setTablePrinter(new JTableTablePrinter(table));
+
 		TextPaneOutputStream textPaneOutputStream = new TextPaneOutputStream(textPaneOutput);
 		System.setOut(new PrintStream(textPaneOutputStream));
 		System.setErr(new PrintStream(textPaneOutputStream));
@@ -247,6 +250,9 @@ public class CSVatorIDE extends JFrame {
 				Lexer lexer = new Lexer(new PushbackReader(reader, 1024));
 				Parser parser = new Parser(lexer);
 				Start ast;
+
+				textPaneOutput.setText("");
+
 				try {
 					ast = parser.parse();
 					ast.apply(interpreter);
@@ -280,6 +286,9 @@ public class CSVatorIDE extends JFrame {
 		return new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				interpreter = new Interpreter();
+				interpreter.setTablePrinter(new JTableTablePrinter(table));
+				textPaneOutput.setText("");
+				table.setModel(new DefaultTableModel());
 			}
 		};
 	}
