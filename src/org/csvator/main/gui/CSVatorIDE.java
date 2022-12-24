@@ -7,13 +7,22 @@ import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
+import java.io.ByteArrayInputStream;
 import java.io.File;
 import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.io.OutputStream;
+import java.io.PrintStream;
+import java.io.PushbackReader;
 import java.nio.charset.Charset;
+import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.nio.file.StandardOpenOption;
+import java.util.LinkedList;
+import java.util.List;
 
 import javax.swing.Box;
 import javax.swing.BoxLayout;
@@ -32,9 +41,18 @@ import javax.swing.JTextPane;
 import javax.swing.JToolBar;
 import javax.swing.SwingUtilities;
 import javax.swing.border.EmptyBorder;
-import javax.swing.table.DefaultTableModel;
-import javax.swing.table.TableModel;
+import javax.swing.text.BadLocationException;
+import javax.swing.text.Document;
+
+import org.csvator.core.lexer.Lexer;
+import org.csvator.core.lexer.LexerException;
+import org.csvator.core.node.Start;
+import org.csvator.core.parser.Parser;
+import org.csvator.core.parser.ParserException;
+import org.csvator.interpreter.Interpreter;
+
 import javax.swing.SwingConstants;
+import java.awt.Color;
 
 public class CSVatorIDE extends JFrame {
 
@@ -42,7 +60,10 @@ public class CSVatorIDE extends JFrame {
 	private JPanel contentPane;
 	private JTable table;
 	private JTextPane textPane;
+	private JTextPane textPaneOutput;
 	private String filePath = "";
+
+	private Interpreter interpreter;
 
 	/**
 	 * Create the frame.
@@ -52,6 +73,8 @@ public class CSVatorIDE extends JFrame {
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setBounds(100, 100, 800, 600);
 		this.setExtendedState(getExtendedState() | JFrame.MAXIMIZED_BOTH);
+
+		interpreter = new Interpreter();
 
 		JMenuBar menuBar = new JMenuBar();
 		setJMenuBar(menuBar);
@@ -178,35 +201,58 @@ public class CSVatorIDE extends JFrame {
 		contentPane.add(splitPane);
 		splitPane.setOneTouchExpandable(true);
 
+		JSplitPane splitPaneOutput = new JSplitPane();
+		splitPaneOutput.setOrientation(JSplitPane.VERTICAL_SPLIT);
+		splitPane.setRightComponent(splitPaneOutput);
+		splitPaneOutput.setOneTouchExpandable(true);
+
 		SwingUtilities.invokeLater(new Runnable() {
 			@Override
 			public void run() {
 				splitPane.setDividerLocation(0.5);
 				splitPane.setResizeWeight(0.5);
+
+				splitPaneOutput.setDividerLocation(0.7);
+				splitPaneOutput.setResizeWeight(0.7);
 			}
 		});
-
-		table = new JTable();
-		JScrollPane scrollPaneTable = new JScrollPane(table);
-		splitPane.setRightComponent(scrollPaneTable);
 
 		textPane = new JTextPane();
 		textPane.setFont(new Font("Fira Code Retina", Font.PLAIN, 14));
 		JScrollPane scrollPaneTextPane = new JScrollPane(textPane);
 		splitPane.setLeftComponent(scrollPaneTextPane);
+
+		table = new JTable();
+		JScrollPane scrollPaneTable = new JScrollPane(table);
+		splitPaneOutput.setLeftComponent(scrollPaneTable);
+
+		textPaneOutput = new JTextPane();
+		textPaneOutput.setEditable(false);
+		textPaneOutput.setForeground(new Color(222, 221, 218));
+		textPaneOutput.setBackground(new Color(0, 0, 0));
+		JScrollPane scrollPaneOutput = new JScrollPane(textPaneOutput);
+		splitPaneOutput.setRightComponent(scrollPaneOutput);
+
+		TextPaneOutputStream textPaneOutputStream = new TextPaneOutputStream(textPaneOutput);
+		System.setOut(new PrintStream(textPaneOutputStream));
+		System.setErr(new PrintStream(textPaneOutputStream));
 	}
 
 	private ActionListener mnRunFile() {
 		return new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				String[][] mockData = {
-						{"Line 1, col 1", "Line 1, col 2", "Line 1, col 3"},
-						{"Line 2, col 1", "Line 2, col 2", "Line 2, col 3"},
-						{"Line 3, col 1", "Line 3, col 2", "Line 3, col 3"},
-				};
-				String[] columns = {"Col 1", "Col 2", "Col 3"};
-				TableModel model = new DefaultTableModel(mockData, columns);
-				table.setModel(model);
+				String script = textPane.getText();
+				InputStream streamLine = new ByteArrayInputStream(script.getBytes(StandardCharsets.UTF_8));
+				InputStreamReader reader = new InputStreamReader(streamLine);
+				Lexer lexer = new Lexer(new PushbackReader(reader, 1024));
+				Parser parser = new Parser(lexer);
+				Start ast;
+				try {
+					ast = parser.parse();
+					ast.apply(interpreter);
+				} catch (ParserException | LexerException | IOException e1) {
+					e1.printStackTrace();
+				}
 			}
 		};
 	}
@@ -214,12 +260,18 @@ public class CSVatorIDE extends JFrame {
 	private ActionListener mnRunSelection() {
 		return new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				String[][] mockData = {
-						{"Col 1", "Col 2", "Col 3"},
-				};
-				String[] columns = {"Col 1", "Col 2", "Col 3"};
-				TableModel model = new DefaultTableModel(mockData, columns);
-				table.setModel(model);
+				String selection = textPane.getSelectedText();
+				InputStream streamLine = new ByteArrayInputStream(selection.getBytes(StandardCharsets.UTF_8));
+				InputStreamReader reader = new InputStreamReader(streamLine);
+				Lexer lexer = new Lexer(new PushbackReader(reader, 1024));
+				Parser parser = new Parser(lexer);
+				Start ast;
+				try {
+					ast = parser.parse();
+					ast.apply(interpreter);
+				} catch (ParserException | LexerException | IOException e1) {
+					e1.printStackTrace();
+				}
 			}
 		};
 	}
@@ -227,12 +279,7 @@ public class CSVatorIDE extends JFrame {
 	private ActionListener mnResetEnvironment() {
 		return new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				String[][] mockData = {
-						{"Data"},
-				};
-				String[] columns = {"Result"};
-				TableModel model = new DefaultTableModel(mockData, columns);
-				table.setModel(model);
+				interpreter = new Interpreter();
 			}
 		};
 	}
@@ -267,4 +314,41 @@ public class CSVatorIDE extends JFrame {
 		}
 	}
 
+}
+
+class TextPaneOutputStream extends OutputStream {
+
+	JTextPane outputPane;
+	StringBuilder content;
+	List<Byte>  bytes;
+
+	public TextPaneOutputStream(JTextPane outputPane) {
+		this.outputPane = outputPane;
+		this.bytes = new LinkedList<Byte>();
+	}
+
+	@Override
+	public void write(int b) throws IOException {
+		this.bytes.add(Byte.valueOf((byte) b));
+		if ((byte) b == 10) { // The byte readed is line break;
+			String cnt = new String(buildByteArray());
+			this.bytes = new LinkedList<Byte>();
+			try {
+				Document document = (Document) outputPane.getDocument();
+				document.insertString(document.getLength(), cnt, null);
+			} catch (BadLocationException e) {
+				e.printStackTrace();
+			}
+		}
+	}
+
+	private byte[] buildByteArray() {
+		byte[] byteArray = new byte[bytes.size()];
+		int i = 0;
+		for (byte c : bytes) {
+			byteArray[i] = c;
+			i++;
+		}
+		return byteArray;
+	}
 }
