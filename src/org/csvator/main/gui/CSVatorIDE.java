@@ -26,6 +26,8 @@ import java.util.List;
 
 import javax.swing.Box;
 import javax.swing.BoxLayout;
+import javax.swing.Icon;
+import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JDialog;
 import javax.swing.JFileChooser;
@@ -77,6 +79,8 @@ public class CSVatorIDE extends JFrame {
 		setTitle("CSVator IDE");
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setBounds(100, 100, 800, 600);
+		ImageIcon icon = new ImageIcon("resources/images/icon.png");
+		setIconImage(icon.getImage());
 		this.setExtendedState(getExtendedState() | JFrame.MAXIMIZED_BOTH);
 
 		JMenuBar menuBar = new JMenuBar();
@@ -114,6 +118,9 @@ public class CSVatorIDE extends JFrame {
 								}
 							}
 						});
+						
+						Icon iconCsvatorFile = new ImageIcon("resources/images/csvator_file_24.png");
+						mntmOpen.setIcon(iconCsvatorFile);
 						mntmOpen.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_O, KeyEvent.CTRL_DOWN_MASK));
 						mnFile.add(mntmOpen);
 						
@@ -157,16 +164,22 @@ public class CSVatorIDE extends JFrame {
 						mntmRunFile.setHorizontalAlignment(SwingConstants.LEFT);
 						mntmRunFile.addActionListener(mnRunFile());
 						mntmRunFile.setAccelerator(KeyStroke.getKeyStroke("F9"));
+						Icon iconRunFile24 = new ImageIcon("resources/images/run_24.png");
+						mntmRunFile.setIcon(iconRunFile24);
 						mnRun.add(mntmRunFile);
 						
 						JMenuItem mntmRunSelection = new JMenuItem("Run selection", KeyEvent.VK_S);
 						mntmRunSelection.addActionListener(mnRunSelection());
 						mntmRunSelection.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_ENTER, KeyEvent.CTRL_DOWN_MASK));
+						Icon iconRunSelection24 = new ImageIcon("resources/images/run_selection_24.png");
+						mntmRunSelection.setIcon(iconRunSelection24);
 						mnRun.add(mntmRunSelection);
 						
 						JMenuItem mntmResetEnvironment = new JMenuItem("Reset Environment", KeyEvent.VK_E);
 						mntmResetEnvironment.addActionListener(mnResetEnvironment());
 						mntmResetEnvironment.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_T, KeyEvent.CTRL_DOWN_MASK));
+						Icon iconResetEnvironment24 = new ImageIcon("resources/images/reset_environment_24.png");
+						mntmResetEnvironment.setIcon(iconResetEnvironment24);
 						mnRun.add(mntmResetEnvironment);
 						
 						JMenu mnHelp = new JMenu("Help");
@@ -197,14 +210,20 @@ public class CSVatorIDE extends JFrame {
 
 		JButton btnRunFile = new JButton("Run file");
 		btnRunFile.addActionListener(mnRunFile());
+		Icon iconRunFile32 = new ImageIcon("resources/images/run_32.png");
+		btnRunFile.setIcon(iconRunFile32);
 		toolBar.add(btnRunFile);
 
 		JButton btnRunSelection = new JButton("Run selection");
 		btnRunSelection.addActionListener(mnRunSelection());
+		Icon iconRunSelection32 = new ImageIcon("resources/images/run_selection_32.png");
+		btnRunSelection.setIcon(iconRunSelection32);
 		toolBar.add(btnRunSelection);
 		
 		JButton btnResetEnvironment = new JButton("Reset Environment");
 		btnResetEnvironment.addActionListener(mnResetEnvironment());
+		Icon iconResetEnvironment32 = new ImageIcon("resources/images/reset_environment_32.png");
+		btnResetEnvironment.setIcon(iconResetEnvironment32);
 		toolBar.add(btnResetEnvironment);
 
 		Component horizontalGlue = Box.createHorizontalGlue();
