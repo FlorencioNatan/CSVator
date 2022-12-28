@@ -243,11 +243,11 @@ Productions
 
 	record_type = kw_record kw_fields field+ [field_end]:kw_end invariants_definition? [record_end]:kw_end {-> New record_type([field], invariants_definition)};
 
-	field = [type]:type_specifier [name]:identifier tok_semicolon {-> New field(type, name)};
+	field = [type]:type_specifier [name]:identifier tok_comma {-> New field(type, name)};
 
 	invariants_definition = kw_invariants invariant+ kw_end {-> New invariants_definition([invariant.expression])};
 
-	invariant {-> expression} = expression tok_semicolon {-> expression};
+	invariant {-> expression} = expression tok_comma {-> expression};
 
 Abstract Syntax Tree
 	program = line*;

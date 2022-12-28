@@ -333,8 +333,8 @@ reduce(myStr, \(string a, string b -> string : b ++ a), "Nova string ");
 
 type person := record
 	fields
-		string name;
-		int age;
+		string name,
+		int age,
 	end
 end;
 
@@ -344,11 +344,11 @@ joe;
 
 type bState := record
 	fields
-		string name;
-		string abbreviation;
-		string capital;
-		double area;
-		int population;
+		string name,
+		string abbreviation,
+		string capital,
+		double area,
+		int population,
 	end
 end;
 
