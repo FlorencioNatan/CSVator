@@ -59,9 +59,10 @@ public class Main {
 			}
 
 			int i = 1;
+			StringBuilder buffer = new StringBuilder();
+			System.out.print(String.format(inPrompt, i));
 			while (true) {
-				System.out.print(String.format(inPrompt, i));
-				String line = in.nextLine();
+				String line = in.nextLine() + "\n";
 
 				if (line.trim().equals("exit") || line.trim().equals("exit;") ||
 					line.trim().equals("quit") || line.trim().equals("quit;")
@@ -69,7 +70,22 @@ public class Main {
 					break;
 				}
 
-				InputStream streamLine = new ByteArrayInputStream(line.getBytes(StandardCharsets.UTF_8));
+				if (!line.contains(";")) {
+					buffer.append(line);
+					continue;
+				}
+
+				String[] lineSplited = line.split(";");
+				for (int j = 0; j < lineSplited.length - 1; j++) {
+					buffer.append(lineSplited[j]);
+					buffer.append(";");
+				}
+
+				String input = buffer.toString();
+				buffer = new StringBuilder();
+				buffer.append(lineSplited[lineSplited.length - 1]); 
+
+				InputStream streamLine = new ByteArrayInputStream(input.toString().getBytes(StandardCharsets.UTF_8));
 				InputStreamReader reader = new InputStreamReader(streamLine);
 				Lexer lexer = new Lexer(new PushbackReader(reader, 1024));
 				Parser parser = new Parser(lexer);
@@ -81,7 +97,9 @@ public class Main {
 				} catch (Exception e) {
 					System.out.println(e);
 				}
+
 				i++;
+				System.out.print(String.format(inPrompt, i));
 			}
 	}
 
