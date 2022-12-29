@@ -1,7 +1,6 @@
 package org.csvator.main.gui;
 
 import java.awt.Component;
-import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
@@ -57,6 +56,7 @@ import org.csvator.core.parser.Parser;
 import org.csvator.core.parser.ParserException;
 import org.csvator.interpreter.Interpreter;
 import org.csvator.interpreter.tablePrinterStrategy.JTableTablePrinter;
+import org.csvator.main.gui.CSVatorCodeEditor.CodeEditor;
 
 import javax.swing.SwingConstants;
 import java.awt.Color;
@@ -66,7 +66,7 @@ public class CSVatorIDE extends JFrame {
 	private static final long serialVersionUID = 209033612627417086L;
 	private JPanel contentPane;
 	private JTable table;
-	private JTextPane textPane;
+	private CodeEditor codeEditor;
 	private JTextPane textPaneOutput;
 	private String filePath = "";
 
@@ -114,7 +114,7 @@ public class CSVatorIDE extends JFrame {
 										e1.printStackTrace();
 									}
 
-									textPane.setText(fileContent.toString());
+									codeEditor.setText(fileContent.toString());
 								}
 							}
 						});
@@ -249,9 +249,8 @@ public class CSVatorIDE extends JFrame {
 			}
 		});
 
-		textPane = new JTextPane();
-		textPane.setFont(new Font("Fira Code Retina", Font.PLAIN, 14));
-		JScrollPane scrollPaneTextPane = new JScrollPane(textPane);
+		codeEditor = new CodeEditor();
+		JScrollPane scrollPaneTextPane = new JScrollPane(codeEditor);
 		splitPane.setLeftComponent(scrollPaneTextPane);
 
 		table = new JTable();
@@ -276,7 +275,7 @@ public class CSVatorIDE extends JFrame {
 	private ActionListener mnRunFile() {
 		return new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				String script = textPane.getText();
+				String script = codeEditor.getText();
 				InputStream streamLine = new ByteArrayInputStream(script.getBytes(StandardCharsets.UTF_8));
 				InputStreamReader reader = new InputStreamReader(streamLine);
 				Lexer lexer = new Lexer(new PushbackReader(reader, 1024));
@@ -298,7 +297,7 @@ public class CSVatorIDE extends JFrame {
 	private ActionListener mnRunSelection() {
 		return new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				String selection = textPane.getSelectedText();
+				String selection = codeEditor.getSelectedText();
 				InputStream streamLine = new ByteArrayInputStream(selection.getBytes(StandardCharsets.UTF_8));
 				InputStreamReader reader = new InputStreamReader(streamLine);
 				Lexer lexer = new Lexer(new PushbackReader(reader, 1024));
@@ -338,7 +337,7 @@ public class CSVatorIDE extends JFrame {
 			try {
 				BufferedWriter writer = Files.newBufferedWriter(path, Charset.forName("UTF-8"), StandardOpenOption.CREATE);
 
-				writer.write(textPane.getText());
+				writer.write(codeEditor.getText());
 				writer.close();
 			} catch (IOException e1) {
 				e1.printStackTrace();
@@ -351,7 +350,7 @@ public class CSVatorIDE extends JFrame {
 		try {
 			BufferedWriter writer = Files.newBufferedWriter(path, Charset.forName("UTF-8"), StandardOpenOption.CREATE);
 
-			writer.write(textPane.getText());
+			writer.write(codeEditor.getText());
 			writer.close();
 		} catch (IOException e1) {
 			e1.printStackTrace();
