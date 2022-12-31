@@ -1,9 +1,12 @@
 package org.csvator.main.gui;
 
+import java.awt.Color;
 import java.awt.Component;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
 import java.io.ByteArrayInputStream;
@@ -35,19 +38,25 @@ import javax.swing.JMenu;
 import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
 import javax.swing.JPanel;
+import javax.swing.JPopupMenu;
 import javax.swing.JScrollPane;
+import javax.swing.JSeparator;
 import javax.swing.JSplitPane;
 import javax.swing.JTable;
 import javax.swing.JTextPane;
 import javax.swing.JToolBar;
 import javax.swing.KeyStroke;
+import javax.swing.SwingConstants;
 import javax.swing.SwingUtilities;
 import javax.swing.border.EmptyBorder;
+import javax.swing.event.UndoableEditEvent;
+import javax.swing.event.UndoableEditListener;
 import javax.swing.filechooser.FileFilter;
 import javax.swing.filechooser.FileNameExtensionFilter;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.text.BadLocationException;
 import javax.swing.text.Document;
+import javax.swing.undo.UndoManager;
 
 import org.csvator.core.lexer.Lexer;
 import org.csvator.core.lexer.LexerException;
@@ -58,15 +67,13 @@ import org.csvator.interpreter.Interpreter;
 import org.csvator.interpreter.tablePrinterStrategy.JTableTablePrinter;
 import org.csvator.main.gui.CSVatorCodeEditor.CodeEditor;
 
-import javax.swing.SwingConstants;
-import java.awt.Color;
-
 public class CSVatorIDE extends JFrame {
 
 	private static final long serialVersionUID = 209033612627417086L;
 	private JPanel contentPane;
 	private JTable table;
 	private CodeEditor codeEditor;
+	private UndoManager undoManager = new UndoManager();
 	private JTextPane textPaneOutput;
 	private String filePath = "";
 
@@ -155,6 +162,60 @@ public class CSVatorIDE extends JFrame {
 						});
 						mntmExit.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_Q, KeyEvent.CTRL_DOWN_MASK));
 						mnFile.add(mntmExit);
+						
+						JMenu mnEdit = new JMenu("Edit");
+						mnEdit.setMnemonic(KeyEvent.VK_E);
+						menuBar.add(mnEdit);
+						
+						JMenuItem mntmUndo = new JMenuItem("Undo");
+						JMenuItem mntmRedo = new JMenuItem("Redo");
+						mntmUndo.addActionListener(this.mnUndo(mntmUndo, mntmRedo));
+						mntmUndo.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_Z, KeyEvent.CTRL_DOWN_MASK));
+						mntmUndo.setMnemonic(KeyEvent.VK_U);
+						mntmUndo.setEnabled(false);
+						mnEdit.add(mntmUndo);
+						
+						mntmRedo.addActionListener(this.mnRedo(mntmUndo, mntmRedo));
+						mntmRedo.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_Z, KeyEvent.CTRL_DOWN_MASK | KeyEvent.SHIFT_DOWN_MASK));
+						mntmRedo.setMnemonic(KeyEvent.VK_R);
+						mntmRedo.setEnabled(false);
+						mnEdit.add(mntmRedo);
+						
+						JSeparator separator = new JSeparator();
+						mnEdit.add(separator);
+						
+						JMenuItem mntmSelectAll = new JMenuItem("Select All");
+						mntmSelectAll.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_A, KeyEvent.CTRL_DOWN_MASK));
+						mntmSelectAll.setMnemonic(KeyEvent.VK_A);
+						mntmSelectAll.addActionListener(this.mnSelectAll());
+						mnEdit.add(mntmSelectAll);
+						
+						JMenuItem mntmCut = new JMenuItem("Cut");
+						mntmCut.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_X, KeyEvent.CTRL_DOWN_MASK));
+						mntmCut.setMnemonic(KeyEvent.VK_C);
+						mntmCut.addActionListener(this.mnCut());
+						mnEdit.add(mntmCut);
+						
+						JMenuItem mntmCopy = new JMenuItem("Copy");
+						mntmCopy.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_C, KeyEvent.CTRL_DOWN_MASK));
+						mntmCopy.setMnemonic(KeyEvent.VK_Y);
+						mntmCopy.addActionListener(this.mnCopy());
+						mnEdit.add(mntmCopy);
+						
+						JMenuItem mntmPaste = new JMenuItem("Paste");
+						mntmPaste.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_V, KeyEvent.CTRL_DOWN_MASK));
+						mntmPaste.setMnemonic(KeyEvent.VK_P);
+						mntmPaste.addActionListener(this.mnPaste());
+						mnEdit.add(mntmPaste);
+						
+						JSeparator separator_1 = new JSeparator();
+						mnEdit.add(separator_1);
+						
+						JMenuItem mntmComment = new JMenuItem("Toggle Comment");
+						mntmComment.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_SLASH, KeyEvent.CTRL_DOWN_MASK));
+						mntmComment.setMnemonic(KeyEvent.VK_M);
+						mntmComment.addActionListener(this.mnToggleComment());
+						mnEdit.add(mntmComment);
 						
 						JMenu mnRun = new JMenu("Run");
 						mnRun.setMnemonic(KeyEvent.VK_R);
@@ -251,7 +312,40 @@ public class CSVatorIDE extends JFrame {
 
 		codeEditor = new CodeEditor();
 		JScrollPane scrollPaneTextPane = new JScrollPane(codeEditor);
+		
+		JPopupMenu codeEditorPopupMenu = new JPopupMenu();
+		
+		JMenuItem mntmPopUpSelectAll = new JMenuItem("Select All");
+		mntmPopUpSelectAll.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_A, KeyEvent.CTRL_DOWN_MASK));
+		mntmPopUpSelectAll.addActionListener(this.mnSelectAll());
+		codeEditorPopupMenu.add(mntmPopUpSelectAll);
+		
+		JMenuItem mntmPopUpCut = new JMenuItem("Cut");
+		mntmPopUpCut.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_X, KeyEvent.CTRL_DOWN_MASK));
+		mntmPopUpCut.addActionListener(this.mnCut());
+		codeEditorPopupMenu.add(mntmPopUpCut);
+		
+		JMenuItem mntmPopUpCopy = new JMenuItem("Copy");
+		mntmPopUpCopy.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_C, KeyEvent.CTRL_DOWN_MASK));
+		mntmPopUpCopy.addActionListener(this.mnCopy());
+		codeEditorPopupMenu.add(mntmPopUpCopy);
+		
+		JMenuItem mntmPopUpPaste = new JMenuItem("Paste");
+		mntmPopUpPaste.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_V, KeyEvent.CTRL_DOWN_MASK));
+		mntmPopUpPaste.addActionListener(this.mnPaste());
+		codeEditorPopupMenu.add(mntmPopUpPaste);
+		
+		JSeparator popUpSeparator = new JSeparator();
+		codeEditorPopupMenu.add(popUpSeparator);
+		
+		JMenuItem mntmPopUpComment = new JMenuItem("Toggle Comment");
+		mntmPopUpComment.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_SLASH, KeyEvent.CTRL_DOWN_MASK));
+		mntmPopUpComment.addActionListener(this.mnToggleComment());
+		codeEditorPopupMenu.add(mntmPopUpComment);
+
+		addPopup(codeEditor, codeEditorPopupMenu);
 		splitPane.setLeftComponent(scrollPaneTextPane);
+		codeEditor.getDocument().addUndoableEditListener(new UndoListener(mntmUndo, mntmRedo));
 
 		table = new JTable();
 		JScrollPane scrollPaneTable = new JScrollPane(table);
@@ -359,6 +453,113 @@ public class CSVatorIDE extends JFrame {
 
 	private FileFilter getFileFiler() {
 		return new FileNameExtensionFilter("CSVator source file", "csvtr");
+	}
+
+	private ActionListener mnUndo(JMenuItem mntmUndo, JMenuItem mntmRedo) {
+		return new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				if (undoManager.canUndo()) {
+					undoManager.undo();
+					mntmUndo.setEnabled(undoManager.canUndo());
+					mntmRedo.setEnabled(undoManager.canRedo());
+				}
+			}
+		};
+	}
+
+	private ActionListener mnRedo(JMenuItem mntmUndo, JMenuItem mntmRedo) {
+		return new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				if (undoManager.canRedo()) {
+					undoManager.redo();
+					mntmUndo.setEnabled(undoManager.canUndo());
+					mntmRedo.setEnabled(undoManager.canRedo());
+				}
+			}
+		};
+	}
+
+	private ActionListener mnSelectAll() {
+		return new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				codeEditor.selectAll();
+			}
+		};
+	}
+
+	private ActionListener mnCut() {
+		return new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				codeEditor.cut();
+			}
+		};
+	}
+
+	private ActionListener mnCopy() {
+		return new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				codeEditor.copy();
+			}
+		};
+	}
+
+	private ActionListener mnPaste() {
+		return new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				codeEditor.paste();
+			}
+		};
+	}
+
+	private ActionListener mnToggleComment() {
+		return new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				String text = codeEditor.getSelectedText();
+				if (text.substring(0, 3).equals("// ")) {
+					text = text.substring(3);
+					text = text.replaceAll("\\n// ", "\n");
+					codeEditor.replaceSelection(text);
+					return;
+				}
+				text = "// " + text;
+				text = text.replaceAll("\\n", "\n// ");
+				codeEditor.replaceSelection(text);
+			}
+		};
+	}
+
+	private static void addPopup(Component component, final JPopupMenu popup) {
+		component.addMouseListener(new MouseAdapter() {
+			public void mousePressed(MouseEvent e) {
+				if (e.isPopupTrigger()) {
+					showMenu(e);
+				}
+			}
+			public void mouseReleased(MouseEvent e) {
+				if (e.isPopupTrigger()) {
+					showMenu(e);
+				}
+			}
+			private void showMenu(MouseEvent e) {
+				popup.show(e.getComponent(), e.getX(), e.getY());
+			}
+		});
+	}
+
+	class UndoListener implements UndoableEditListener {
+		private JMenuItem mntmUndo;
+		private JMenuItem mntmRedo;
+
+		public UndoListener(JMenuItem mntmUndo, JMenuItem mntmRedo) {
+			this.mntmUndo = mntmUndo;
+			this.mntmRedo = mntmRedo;
+		}
+
+		public void undoableEditHappened(UndoableEditEvent e) {
+			undoManager.addEdit(e.getEdit());
+			this.mntmUndo.setEnabled(undoManager.canUndo());
+			this.mntmRedo.setEnabled(undoManager.canRedo());
+		}
 	}
 }
 
