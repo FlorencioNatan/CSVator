@@ -546,6 +546,43 @@ public class CSVatorIDE extends JFrame {
 		});
 	}
 
+	class TextPaneOutputStream extends OutputStream {
+
+		JTextPane outputPane;
+		StringBuilder content;
+		List<Byte>  bytes;
+
+		public TextPaneOutputStream(JTextPane outputPane) {
+			this.outputPane = outputPane;
+			this.bytes = new LinkedList<Byte>();
+		}
+
+		@Override
+		public void write(int b) throws IOException {
+			this.bytes.add(Byte.valueOf((byte) b));
+			if ((byte) b == 10) { // The byte readed is line break;
+				String cnt = new String(buildByteArray());
+				this.bytes = new LinkedList<Byte>();
+				try {
+					Document document = (Document) outputPane.getDocument();
+					document.insertString(document.getLength(), cnt, null);
+				} catch (BadLocationException e) {
+					e.printStackTrace();
+				}
+			}
+		}
+
+		private byte[] buildByteArray() {
+			byte[] byteArray = new byte[bytes.size()];
+			int i = 0;
+			for (byte c : bytes) {
+				byteArray[i] = c;
+				i++;
+			}
+			return byteArray;
+		}
+	}
+
 	class UndoListener implements UndoableEditListener {
 		private JMenuItem mntmUndo;
 		private JMenuItem mntmRedo;
@@ -563,39 +600,3 @@ public class CSVatorIDE extends JFrame {
 	}
 }
 
-class TextPaneOutputStream extends OutputStream {
-
-	JTextPane outputPane;
-	StringBuilder content;
-	List<Byte>  bytes;
-
-	public TextPaneOutputStream(JTextPane outputPane) {
-		this.outputPane = outputPane;
-		this.bytes = new LinkedList<Byte>();
-	}
-
-	@Override
-	public void write(int b) throws IOException {
-		this.bytes.add(Byte.valueOf((byte) b));
-		if ((byte) b == 10) { // The byte readed is line break;
-			String cnt = new String(buildByteArray());
-			this.bytes = new LinkedList<Byte>();
-			try {
-				Document document = (Document) outputPane.getDocument();
-				document.insertString(document.getLength(), cnt, null);
-			} catch (BadLocationException e) {
-				e.printStackTrace();
-			}
-		}
-	}
-
-	private byte[] buildByteArray() {
-		byte[] byteArray = new byte[bytes.size()];
-		int i = 0;
-		for (byte c : bytes) {
-			byteArray[i] = c;
-			i++;
-		}
-		return byteArray;
-	}
-}
