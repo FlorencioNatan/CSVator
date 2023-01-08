@@ -13,6 +13,7 @@ import org.csvator.core.lexer.Lexer;
 import org.csvator.core.node.Start;
 import org.csvator.core.parser.Parser;
 import org.csvator.interpreter.Interpreter;
+import org.csvator.interpreter.tablePrinterStrategy.SimpleASCIITablePrinter;
 import org.csvator.interpreter.tablePrinterStrategy.SimpleCSVTablePrinter;
 import org.csvator.main.gui.CSVatorIDE;
 
@@ -49,7 +50,7 @@ public class Main {
 	private static void launchRepl() {
 			Scanner in = new Scanner(System.in);
 			Interpreter interpreter = new Interpreter();
-			interpreter.setTablePrinter(new SimpleCSVTablePrinter());
+			interpreter.setTablePrinter(new SimpleASCIITablePrinter());
 
 			String inPrompt = "\nIn[%d]: ";
 			String outPrompt = "Out[%d]: ";
