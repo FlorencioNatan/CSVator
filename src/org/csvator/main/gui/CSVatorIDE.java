@@ -25,6 +25,8 @@ import java.nio.file.Paths;
 import java.nio.file.StandardOpenOption;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import javax.swing.Box;
 import javax.swing.BoxLayout;
@@ -66,6 +68,10 @@ import org.csvator.core.parser.ParserException;
 import org.csvator.interpreter.Interpreter;
 import org.csvator.interpreter.tablePrinterStrategy.JTableTablePrinter;
 import org.csvator.main.gui.CSVatorCodeEditor.CodeEditor;
+import javax.swing.SpringLayout;
+import javax.swing.JTextField;
+import javax.swing.JLabel;
+import java.awt.event.KeyAdapter;
 
 public class CSVatorIDE extends JFrame {
 
@@ -76,6 +82,12 @@ public class CSVatorIDE extends JFrame {
 	private UndoManager undoManager = new UndoManager();
 	private JTextPane textPaneOutput;
 	private String filePath = "";
+	private JTextField tFFind;
+	private JTextField tFReplace;
+	private JPanel panelEditor;
+	private JPanel panelSearchReplace;
+	private JPanel panelReplace;
+	private Matcher matcher;
 
 	private Interpreter interpreter;
 
@@ -217,6 +229,41 @@ public class CSVatorIDE extends JFrame {
 						mntmComment.addActionListener(this.mnToggleComment());
 						mnEdit.add(mntmComment);
 						
+						JMenu mnFind = new JMenu("Find");
+						mnFind.setMnemonic(KeyEvent.VK_I);
+						menuBar.add(mnFind);
+						
+						JMenuItem mntmFind = new JMenuItem("Find");
+						mntmFind.addActionListener(new ActionListener() {
+							public void actionPerformed(ActionEvent e) {
+								panelSearchReplace.setVisible(false);
+								SpringLayout sl_panelEditor = (SpringLayout) panelEditor.getLayout();
+								sl_panelEditor.putConstraint(SpringLayout.NORTH, panelSearchReplace, -25, SpringLayout.SOUTH, panelEditor);
+								panelReplace.setVisible(false);
+								panelSearchReplace.setVisible(true);
+								tFFind.requestFocus();
+							}
+						});
+						mntmFind.setMnemonic(KeyEvent.VK_F);
+						mntmFind.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_F, KeyEvent.CTRL_DOWN_MASK));
+						mnFind.add(mntmFind);
+						
+						JMenuItem mntmReplace = new JMenuItem("Replace");
+						mntmReplace.addActionListener(new ActionListener() {
+							public void actionPerformed(ActionEvent e) {
+								panelSearchReplace.setVisible(false);
+								panelSearchReplace.setVisible(true);
+								SpringLayout sl_panelEditor = (SpringLayout) panelEditor.getLayout();
+								sl_panelEditor.putConstraint(SpringLayout.NORTH, panelSearchReplace, -50, SpringLayout.SOUTH, panelEditor);
+								panelReplace.setVisible(true);
+								panelSearchReplace.setVisible(true);
+								tFFind.requestFocus();
+							}
+						});
+						mntmReplace.setMnemonic(KeyEvent.VK_R);
+						mntmReplace.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_R, KeyEvent.CTRL_DOWN_MASK));
+						mnFind.add(mntmReplace);
+						
 						JMenu mnRun = new JMenu("Run");
 						mnRun.setMnemonic(KeyEvent.VK_R);
 						menuBar.add(mnRun);
@@ -312,7 +359,141 @@ public class CSVatorIDE extends JFrame {
 
 		codeEditor = new CodeEditor();
 		JScrollPane scrollPaneTextPane = new JScrollPane(codeEditor);
+		panelEditor = new JPanel();
+		panelSearchReplace = new JPanel();
+		panelSearchReplace.setVisible(false);
+		SpringLayout sl_panelEditor = new SpringLayout();
+		sl_panelEditor.putConstraint(SpringLayout.SOUTH, scrollPaneTextPane, 0, SpringLayout.NORTH, panelSearchReplace);
+		sl_panelEditor.putConstraint(SpringLayout.NORTH, scrollPaneTextPane, 0, SpringLayout.NORTH, panelEditor);
+		sl_panelEditor.putConstraint(SpringLayout.WEST, panelSearchReplace, 0, SpringLayout.WEST, panelEditor);
+		sl_panelEditor.putConstraint(SpringLayout.SOUTH, panelSearchReplace, 0, SpringLayout.SOUTH, panelEditor);
+		sl_panelEditor.putConstraint(SpringLayout.EAST, panelSearchReplace, 0, SpringLayout.EAST, panelEditor);
+		sl_panelEditor.putConstraint(SpringLayout.WEST, scrollPaneTextPane, 0, SpringLayout.WEST, panelEditor);
+		sl_panelEditor.putConstraint(SpringLayout.EAST, scrollPaneTextPane, 0, SpringLayout.EAST, panelEditor);
+		panelEditor.setLayout(sl_panelEditor);
+		panelEditor.add(scrollPaneTextPane);
+		panelEditor.add(panelSearchReplace);
+		panelSearchReplace.setLayout(new BoxLayout(panelSearchReplace, BoxLayout.Y_AXIS));
 		
+		JPanel panelSearch = new JPanel();
+		panelSearchReplace.add(panelSearch);
+		SpringLayout sl_panelSearch = new SpringLayout();
+		panelSearch.setLayout(sl_panelSearch);
+		
+		JLabel lblFind = new JLabel("Find:");
+		sl_panelSearch.putConstraint(SpringLayout.NORTH, lblFind, 0, SpringLayout.NORTH, panelSearch);
+		sl_panelSearch.putConstraint(SpringLayout.WEST, lblFind, 0, SpringLayout.WEST, panelSearch);
+		sl_panelSearch.putConstraint(SpringLayout.SOUTH, lblFind, 0, SpringLayout.SOUTH, panelSearch);
+		panelSearch.add(lblFind);
+		
+		tFFind = new JTextField();
+		tFFind.addKeyListener(new KeyAdapter() {
+			@Override
+			public void keyReleased(KeyEvent e) {
+				if (e.getKeyCode() == 27){
+					panelSearchReplace.setVisible(false);
+					sl_panelEditor.putConstraint(SpringLayout.NORTH, panelSearchReplace, 0, SpringLayout.SOUTH, panelEditor);
+				}
+			}
+		});
+		sl_panelSearch.putConstraint(SpringLayout.NORTH, tFFind, 0, SpringLayout.NORTH, panelSearch);
+		sl_panelSearch.putConstraint(SpringLayout.WEST, tFFind, 64, SpringLayout.WEST, panelSearch);
+		sl_panelSearch.putConstraint(SpringLayout.SOUTH, tFFind, 0, SpringLayout.SOUTH, panelSearch);
+		panelSearch.add(tFFind);
+		tFFind.setColumns(10);
+		
+		JButton btnFind = new JButton("Find");
+		btnFind.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				if (matcher != null && matcher.pattern().toString().equals(tFFind.getText())) {
+					if (matcher.find()) {
+						int start = matcher.start();
+						int end = matcher.end();
+						codeEditor.select(start, end);
+						codeEditor.getCaret().setSelectionVisible(true);
+						codeEditor.requestFocus();
+						return;
+					}
+				}
+				Pattern regex = Pattern.compile(tFFind.getText());
+				matcher = regex.matcher(codeEditor.getText());
+				if (matcher.find()) {
+					int start = matcher.start();
+					int end = matcher.end();
+					codeEditor.select(start, end);
+					codeEditor.getCaret().setSelectionVisible(true);
+					codeEditor.requestFocus();
+				}
+			}
+		});
+		sl_panelSearch.putConstraint(SpringLayout.WEST, btnFind, -197, SpringLayout.EAST, panelSearch);
+		sl_panelSearch.putConstraint(SpringLayout.EAST, tFFind, 0, SpringLayout.WEST, btnFind);
+		sl_panelSearch.putConstraint(SpringLayout.NORTH, btnFind, 0, SpringLayout.NORTH, panelSearch);
+		sl_panelSearch.putConstraint(SpringLayout.SOUTH, btnFind, 0, SpringLayout.SOUTH, panelSearch);
+		panelSearch.add(btnFind);
+		
+		JButton btnFindAll = new JButton("Find All");
+		sl_panelSearch.putConstraint(SpringLayout.WEST, btnFindAll, -107, SpringLayout.EAST, panelSearch);
+		sl_panelSearch.putConstraint(SpringLayout.EAST, btnFindAll, 0, SpringLayout.EAST, panelSearch);
+		sl_panelSearch.putConstraint(SpringLayout.EAST, btnFind, 0, SpringLayout.WEST, btnFindAll);
+		sl_panelSearch.putConstraint(SpringLayout.NORTH, btnFindAll, 0, SpringLayout.NORTH, panelSearch);
+		sl_panelSearch.putConstraint(SpringLayout.SOUTH, btnFindAll, 0, SpringLayout.SOUTH, panelSearch);
+		panelSearch.add(btnFindAll);
+		
+		panelReplace = new JPanel();
+		panelSearchReplace.add(panelReplace);
+		SpringLayout sl_panelReplace = new SpringLayout();
+		panelReplace.setLayout(sl_panelReplace);
+		
+		JLabel lblReplace = new JLabel("Replace:");
+		sl_panelReplace.putConstraint(SpringLayout.NORTH, lblReplace, 0, SpringLayout.NORTH, panelReplace);
+		sl_panelReplace.putConstraint(SpringLayout.WEST, lblReplace, 0, SpringLayout.WEST, panelReplace);
+		sl_panelReplace.putConstraint(SpringLayout.SOUTH, lblReplace, 0, SpringLayout.SOUTH, panelReplace);
+		panelReplace.add(lblReplace);
+		
+		tFReplace = new JTextField();
+		tFReplace.addKeyListener(new KeyAdapter() {
+			@Override
+			public void keyReleased(KeyEvent e) {
+				if (e.getKeyCode() == 27){
+					panelSearchReplace.setVisible(false);
+					sl_panelEditor.putConstraint(SpringLayout.NORTH, panelSearchReplace, 0, SpringLayout.SOUTH, panelEditor);
+				}
+			}
+		});
+		sl_panelReplace.putConstraint(SpringLayout.NORTH, tFReplace, 0, SpringLayout.NORTH, panelReplace);
+		sl_panelReplace.putConstraint(SpringLayout.WEST, tFReplace, 64, SpringLayout.WEST, panelReplace);
+		sl_panelReplace.putConstraint(SpringLayout.SOUTH, tFReplace, 0, SpringLayout.SOUTH, panelReplace);
+		panelReplace.add(tFReplace);
+		tFReplace.setColumns(10);
+		
+		JButton btnReplace = new JButton("Replace");
+		btnReplace.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				String text = codeEditor.getText().replaceFirst(tFFind.getText(), tFReplace.getText());
+				codeEditor.setText(text);
+			}
+		});
+		sl_panelReplace.putConstraint(SpringLayout.NORTH, btnReplace, 0, SpringLayout.NORTH, panelReplace);
+		sl_panelReplace.putConstraint(SpringLayout.SOUTH, btnReplace, 0, SpringLayout.SOUTH, panelReplace);
+		sl_panelReplace.putConstraint(SpringLayout.EAST, tFReplace, 0, SpringLayout.WEST, btnReplace);
+		panelReplace.add(btnReplace);
+		
+		JButton btnReplaceall = new JButton("ReplaceAll");
+		btnReplaceall.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				String text = codeEditor.getText().replaceAll(tFFind.getText(), tFReplace.getText());
+				codeEditor.setText(text);
+			}
+		});
+		sl_panelReplace.putConstraint(SpringLayout.NORTH, btnReplaceall, 0, SpringLayout.NORTH, panelReplace);
+		sl_panelReplace.putConstraint(SpringLayout.SOUTH, btnReplaceall, 0, SpringLayout.SOUTH, panelReplace);
+		sl_panelReplace.putConstraint(SpringLayout.EAST, btnReplaceall, 0, SpringLayout.EAST, panelReplace);
+		sl_panelReplace.putConstraint(SpringLayout.EAST, btnReplace, 0, SpringLayout.WEST, btnReplaceall);
+		panelReplace.add(btnReplaceall);
+
+		splitPane.setLeftComponent(panelEditor);
+
 		JPopupMenu codeEditorPopupMenu = new JPopupMenu();
 		
 		JMenuItem mntmPopUpSelectAll = new JMenuItem("Select All");
@@ -344,7 +525,7 @@ public class CSVatorIDE extends JFrame {
 		codeEditorPopupMenu.add(mntmPopUpComment);
 
 		addPopup(codeEditor, codeEditorPopupMenu);
-		splitPane.setLeftComponent(scrollPaneTextPane);
+
 		codeEditor.getDocument().addUndoableEditListener(new UndoListener(mntmUndo, mntmRedo));
 
 		table = new JTable();
@@ -362,6 +543,7 @@ public class CSVatorIDE extends JFrame {
 		interpreter.setTablePrinter(new JTableTablePrinter(table));
 
 		TextPaneOutputStream textPaneOutputStream = new TextPaneOutputStream(textPaneOutput);
+		
 		System.setOut(new PrintStream(textPaneOutputStream));
 		System.setErr(new PrintStream(textPaneOutputStream));
 	}
