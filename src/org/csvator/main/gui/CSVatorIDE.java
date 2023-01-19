@@ -25,6 +25,7 @@ import java.nio.file.Paths;
 import java.nio.file.StandardOpenOption;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.ListIterator;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -88,6 +89,9 @@ public class CSVatorIDE extends JFrame {
 	private JPanel panelSearchReplace;
 	private JPanel panelReplace;
 	private Matcher matcher;
+	private LinkedList<FindMatch> findMacthes;
+	private ListIterator<FindMatch> findPos;
+	private boolean findDirectionNext = true;
 
 	private Interpreter interpreter;
 
@@ -406,24 +410,21 @@ public class CSVatorIDE extends JFrame {
 		btnFind.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				if (matcher != null && matcher.pattern().toString().equals(tFFind.getText())) {
-					if (matcher.find()) {
-						int start = matcher.start();
-						int end = matcher.end();
-						codeEditor.select(start, end);
-						codeEditor.getCaret().setSelectionVisible(true);
-						codeEditor.requestFocus();
-						return;
-					}
+					nextMatch();
+					return;
 				}
+
 				Pattern regex = Pattern.compile(tFFind.getText());
 				matcher = regex.matcher(codeEditor.getText());
-				if (matcher.find()) {
+				findMacthes = new LinkedList<>();
+				while(matcher.find()) {
 					int start = matcher.start();
 					int end = matcher.end();
-					codeEditor.select(start, end);
-					codeEditor.getCaret().setSelectionVisible(true);
-					codeEditor.requestFocus();
+					findMacthes.add(new FindMatch(start, end));
 				}
+
+				findPos = findMacthes.listIterator();
+				nextMatch();
 			}
 		});
 		sl_panelSearch.putConstraint(SpringLayout.WEST, btnFind, -197, SpringLayout.EAST, panelSearch);
@@ -431,14 +432,34 @@ public class CSVatorIDE extends JFrame {
 		sl_panelSearch.putConstraint(SpringLayout.NORTH, btnFind, 0, SpringLayout.NORTH, panelSearch);
 		sl_panelSearch.putConstraint(SpringLayout.SOUTH, btnFind, 0, SpringLayout.SOUTH, panelSearch);
 		panelSearch.add(btnFind);
-		
-		JButton btnFindAll = new JButton("Find All");
-		sl_panelSearch.putConstraint(SpringLayout.WEST, btnFindAll, -107, SpringLayout.EAST, panelSearch);
-		sl_panelSearch.putConstraint(SpringLayout.EAST, btnFindAll, 0, SpringLayout.EAST, panelSearch);
-		sl_panelSearch.putConstraint(SpringLayout.EAST, btnFind, 0, SpringLayout.WEST, btnFindAll);
-		sl_panelSearch.putConstraint(SpringLayout.NORTH, btnFindAll, 0, SpringLayout.NORTH, panelSearch);
-		sl_panelSearch.putConstraint(SpringLayout.SOUTH, btnFindAll, 0, SpringLayout.SOUTH, panelSearch);
-		panelSearch.add(btnFindAll);
+
+		JButton btnFindPrev = new JButton("Find Prev");
+		btnFindPrev.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				if (matcher != null && matcher.pattern().toString().equals(tFFind.getText())) {
+					prevMatch();
+					return;
+				}
+
+				Pattern regex = Pattern.compile(tFFind.getText());
+				matcher = regex.matcher(codeEditor.getText());
+				findMacthes = new LinkedList<>();
+				while(matcher.find()) {
+					int start = matcher.start();
+					int end = matcher.end();
+					findMacthes.add(new FindMatch(start, end));
+				}
+
+				findPos = findMacthes.listIterator(findMacthes.size());
+				prevMatch();
+			}
+		});
+		sl_panelSearch.putConstraint(SpringLayout.WEST, btnFindPrev, -107, SpringLayout.EAST, panelSearch);
+		sl_panelSearch.putConstraint(SpringLayout.EAST, btnFindPrev, 0, SpringLayout.EAST, panelSearch);
+		sl_panelSearch.putConstraint(SpringLayout.EAST, btnFind, 0, SpringLayout.WEST, btnFindPrev);
+		sl_panelSearch.putConstraint(SpringLayout.NORTH, btnFindPrev, 0, SpringLayout.NORTH, panelSearch);
+		sl_panelSearch.putConstraint(SpringLayout.SOUTH, btnFindPrev, 0, SpringLayout.SOUTH, panelSearch);
+		panelSearch.add(btnFindPrev);
 		
 		panelReplace = new JPanel();
 		panelSearchReplace.add(panelReplace);
@@ -728,6 +749,42 @@ public class CSVatorIDE extends JFrame {
 		});
 	}
 
+	private void nextMatch() {
+		if(!findDirectionNext) {
+			findPos.next();
+			findDirectionNext = true;
+		}
+
+		if (!findPos.hasNext()) {
+			findPos = findMacthes.listIterator();
+		}
+
+		if (findPos.hasNext()) {
+			FindMatch currentPos = findPos.next();
+			codeEditor.select(currentPos.start, currentPos.end);
+			codeEditor.getCaret().setSelectionVisible(true);
+			codeEditor.requestFocus();
+		}
+	}
+
+	private void prevMatch() {
+		if(findDirectionNext) {
+			findPos.previous();
+			findDirectionNext = false;
+		}
+
+		if (!findPos.hasPrevious()) {
+			findPos = findMacthes.listIterator(findMacthes.size());
+		}
+
+		if (findPos.hasPrevious()) {
+			FindMatch currentPos = findPos.previous();
+			codeEditor.select(currentPos.start, currentPos.end);
+			codeEditor.getCaret().setSelectionVisible(true);
+			codeEditor.requestFocus();
+		}
+	}
+
 	class TextPaneOutputStream extends OutputStream {
 
 		JTextPane outputPane;
@@ -778,6 +835,16 @@ public class CSVatorIDE extends JFrame {
 			undoManager.addEdit(e.getEdit());
 			this.mntmUndo.setEnabled(undoManager.canUndo());
 			this.mntmRedo.setEnabled(undoManager.canRedo());
+		}
+	}
+
+	class FindMatch {
+		public int start;
+		public int end;
+
+		public FindMatch(int start, int end) {
+			this.start = start;
+			this.end = end;
 		}
 	}
 }
