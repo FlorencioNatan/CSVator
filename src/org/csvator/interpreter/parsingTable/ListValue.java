@@ -258,11 +258,8 @@ public class ListValue implements CollectionValueInterface {
 		if (first instanceof CollectionValueInterface) {
 			return ((CollectionValueInterface) first).buildTableHeader();
 		}
-		String[] header = new String[this.value.size()];
 
-		for (int i = 0 ; i < this.value.size(); i++) {
-			header[i] = "Col " + (i + 1);
-		}
+		String[] header = {"Col 1"};
 		return header;
 	}
 

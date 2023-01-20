@@ -355,3 +355,10 @@ end;
 content := readCSVFile("brazilian_states.csv", bState);
 
 printTable(content);
+
+printTable("My string");
+printTable(myVect);
+printTable(myList);
+printTable(mySet);
+printTable(myDict);
+

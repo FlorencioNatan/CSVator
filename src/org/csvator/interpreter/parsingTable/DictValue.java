@@ -194,18 +194,10 @@ public class DictValue implements CollectionValueInterface {
 
 	@Override
 	public String[][] buildTable() {
-		String[][] table = new String[this.value.size()][];
+		String[][] table = new String[1][];
 
 		int i = 0;
-		for (ValueInterface element : this.value.values()) {
-			table[i] = new String[1];
-			if (element instanceof CollectionValueInterface) {
-				table[i] = ((CollectionValueInterface) element).buildTableLine();
-			} else {
-				table[i][0] = element.toString();
-			}
-			i++;
-		}
+		table[i] = this.buildTableLine();
 
 		return table;
 	}
