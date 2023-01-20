@@ -8,6 +8,7 @@ public class SimpleCSVTablePrinter implements TablePrinterStrategy {
 
 		if (header != null) {
 			content.append(String.join(",", header));
+			content.append("\n");
 		}
 
 		for (String[] strings : table) {

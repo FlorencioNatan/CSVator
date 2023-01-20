@@ -4,8 +4,9 @@ public class SimpleASCIITablePrinter implements TablePrinterStrategy {
 
 	@Override
 	public void printTable(String[][] table, String[] header) {
-		int[] tableSize = this.calculateColumnSize(table);
+		int[] tableSize = this.calculateColumnSize(table, header);
 		table = this.formatColumns(table, tableSize);
+		header = this.formatHeader(header, tableSize);
 		StringBuilder content = new StringBuilder();
 		String blankLine = "";
 
@@ -20,7 +21,7 @@ public class SimpleASCIITablePrinter implements TablePrinterStrategy {
 			content.append(blankLine);
 		}
 
-		for (int i = 1; i < table.length; i++) {
+		for (int i = 0; i < table.length; i++) {
 			content.append("| " + String.join(" | ", table[i]) + " |\n");
 		}
 		content.append(blankLine);
@@ -28,7 +29,7 @@ public class SimpleASCIITablePrinter implements TablePrinterStrategy {
 		System.out.println(content);
 	}
 
-	private int[] calculateColumnSize(String[][] table) {
+	private int[] calculateColumnSize(String[][] table, String[] header) {
 		int[] size = new int[table[0].length];
 
 		for(int i = 0; i < table.length; i++) {
@@ -36,6 +37,12 @@ public class SimpleASCIITablePrinter implements TablePrinterStrategy {
 				if (table[i][j].length() > size[j]) {
 					size[j] = table[i][j].length();
 				}
+			}
+		}
+
+		for(int i = 0; i < size.length; i++) {
+			if (header[i].length() > size[i]) {
+				size[i] = header[i].length();
 			}
 		}
 
@@ -50,6 +57,14 @@ public class SimpleASCIITablePrinter implements TablePrinterStrategy {
 		}
 
 		return table;
+	}
+
+	private String[] formatHeader(String[] header, int[] tableSize) {
+		for(int i = 0; i < tableSize.length; i++) {
+			header[i] = String.format("%-" + tableSize[i] + "s", header[i]);
+		}
+
+		return header;
 	}
 
 }
