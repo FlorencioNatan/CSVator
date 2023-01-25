@@ -40,7 +40,9 @@ public class RecordValue extends DictValue {
 	public CollectionValueInterface concatAtHead(ValueInterface value) {
 		if (value instanceof KeyValueExpressionValue) {
 			this.validateField(value);
-			return super.concatAtHead(value);
+			super.concatAtHead(value);
+			this.type.checkInvariants(getDictValue());
+			return this;
 		}
 
 		throw new TypeMismatchException("It's not possible to concatenate a record with a " + value.getType());
@@ -50,7 +52,9 @@ public class RecordValue extends DictValue {
 	public CollectionValueInterface concatAtTail(ValueInterface value) {
 		if (value instanceof KeyValueExpressionValue) {
 			this.validateField(value);
-			return super.concatAtTail(value);
+			super.concatAtTail(value);
+			this.type.checkInvariants(getDictValue());
+			return this;
 		}
 
 		throw new TypeMismatchException("It's not possible to concatenate a record with a " + value.getType());
@@ -64,7 +68,9 @@ public class RecordValue extends DictValue {
 	@Override
 	public CollectionValueInterface update(ValueInterface index, ValueInterface value) {
 		this.validateField(index, value);
-		return super.update(index, value);
+		super.update(index, value);
+		this.type.checkInvariants(getDictValue());
+		return this;
 	}
 
 	@Override
@@ -73,7 +79,9 @@ public class RecordValue extends DictValue {
 		ValueInterface secondValue = this.get(secondIndex);
 		this.validateField(firstIndex, firstValue);
 		this.validateField(secondIndex, secondValue);
-		return super.swap(firstIndex, secondIndex);
+		super.swap(firstIndex, secondIndex);
+		this.type.checkInvariants(getDictValue());
+		return this;
 	}
 
 	private void validateField(ValueInterface value) {

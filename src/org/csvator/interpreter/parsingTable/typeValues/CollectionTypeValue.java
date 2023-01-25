@@ -69,6 +69,10 @@ public class CollectionTypeValue implements TypeValueInterface {
 			return true;
 		}
 
+		if (type instanceof RecordTypeValue) {
+			return true;
+		}
+
 		return false;
 	}
 

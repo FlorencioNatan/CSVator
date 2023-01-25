@@ -335,10 +335,19 @@ type person := record
 	fields
 		string name,
 		int age,
+		int favoriteNumber,
+	end
+	invariants
+		age >= 0,
+		age <= 100,
 	end
 end;
 
-joe := person("joe", 28);
+joe := person("joe", 28, 10);
+// joe := person("joe", -2, 10);
+// joe ++ ("age" -> 102);
+// update(joe, "age", -8);
+// swap(joe, "age", "favoriteNumber");
 
 joe;
 

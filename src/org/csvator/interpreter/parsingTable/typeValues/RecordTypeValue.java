@@ -1,9 +1,11 @@
 package org.csvator.interpreter.parsingTable.typeValues;
 
 import java.security.InvalidParameterException;
+import java.util.HashMap;
 import java.util.LinkedList;
 
 import org.csvator.interpreter.environment.Environment;
+import org.csvator.interpreter.parsingTable.BooleanValue;
 import org.csvator.interpreter.parsingTable.DoubleValue;
 import org.csvator.interpreter.parsingTable.FieldValue;
 import org.csvator.interpreter.parsingTable.IntegerValue;
@@ -29,6 +31,31 @@ public class RecordTypeValue implements TypeValueInterface, FunctionValueInterfa
 
 	public void setInvariants(LinkedList<ValueInterface> invariants) {
 		this.invariants = invariants;
+	}
+
+	public void checkInvariants(HashMap<ValueInterface, ValueInterface> value) {
+		LinkedList<ValueInterface> valueList = new LinkedList<ValueInterface>();
+		for (FieldValue fieldValue : fields) {
+			StringValue identifier = new StringValue(fieldValue.getIdVariable(), fieldValue.getIdVariable());
+			valueList.add(value.get(identifier));
+		}
+
+		try {
+			Environment env = this.createLocalEnvironment(valueList, null);
+			for (ValueInterface invariant : invariants) {
+				ValueInterface result = invariant.evaluate(env);
+				if (!(result instanceof BooleanValue)) {
+					throw new InvariantException("Record " + this.id + " violates invariant!");
+				}
+
+				BooleanValue boolResult = (BooleanValue) result;
+				if (!boolResult.getBooleanValue()) {
+					throw new InvariantException("Record " + this.id + " violates invariant!");
+				}
+			}
+		} catch (NullPointerException e) {
+			return;
+		}
 	}
 
 	public LinkedList<FieldValue> getFields() {

@@ -614,7 +614,7 @@ public class Interpreter extends DepthFirstAdapter {
 
 		ValueInterface value;
 		for (PExpression nodeExpression : node.getExpressions()) {
-			value = parsingTable.getValueOf(nodeExpression).evaluate(global);
+			value = parsingTable.getValueOf(nodeExpression);
 			invariantList.add(value);
 		}
 
