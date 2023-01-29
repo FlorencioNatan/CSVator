@@ -382,4 +382,11 @@ dtTime := DateTime("31/12/2012 10:45:00", "dd/MM/yyyy H:m:s");
 dtTime;
 
 
+dt := Date();
+dt;
 
+dt := Date("2000-01-01");
+dt;
+
+dt := Date("31/12/2012", "dd/MM/yyyy");
+dt;
