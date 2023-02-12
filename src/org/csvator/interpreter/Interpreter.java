@@ -58,6 +58,8 @@ import org.csvator.interpreter.parsingTable.function.builtIn.PrintTable;
 import org.csvator.interpreter.parsingTable.function.builtIn.ClassLoader.BuiltInFunctionClassLoader;
 import org.csvator.interpreter.parsingTable.typeValues.AnyTypeValue;
 import org.csvator.interpreter.parsingTable.typeValues.BoolTypeValue;
+import org.csvator.interpreter.parsingTable.typeValues.DateTimeTypeValue;
+import org.csvator.interpreter.parsingTable.typeValues.DateTypeValue;
 import org.csvator.interpreter.parsingTable.typeValues.DictTypeValue;
 import org.csvator.interpreter.parsingTable.typeValues.DoubleTypeValue;
 import org.csvator.interpreter.parsingTable.typeValues.FunctionTypeValue;
@@ -82,6 +84,8 @@ import org.csvator.core.node.ABodyGuardFunctionDefinition;
 import org.csvator.core.node.ABoolTypeSpecifier;
 import org.csvator.core.node.AConcatExpressionExpression;
 import org.csvator.core.node.AContainsExpressionExpression;
+import org.csvator.core.node.ADateTypeSpecifier;
+import org.csvator.core.node.ADatetimeTypeSpecifier;
 import org.csvator.core.node.ADeclarationFunctionDefinition;
 import org.csvator.core.node.ADeclarationWithArgumentFunctionDefinition;
 import org.csvator.core.node.ADictExpression;
@@ -728,6 +732,22 @@ public class Interpreter extends DepthFirstAdapter {
 			parametersTypes.add(pType);
 		}
 		FunctionTypeValue type = new FunctionTypeValue(parametersTypes, result);
+		parsingTable.putValue(node, type);
+	}
+
+	@Override
+	public void outADatetimeTypeSpecifier(ADatetimeTypeSpecifier node) {
+		super.outADatetimeTypeSpecifier(node);
+
+		DateTimeTypeValue type = DateTimeTypeValue.getInstance();
+		parsingTable.putValue(node, type);
+	}
+
+	@Override
+	public void outADateTypeSpecifier(ADateTypeSpecifier node) {
+		super.outADateTypeSpecifier(node);
+
+		DateTypeValue type = DateTypeValue.getInstance();
 		parsingTable.putValue(node, type);
 	}
 
