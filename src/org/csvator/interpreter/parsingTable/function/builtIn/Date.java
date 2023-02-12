@@ -60,7 +60,6 @@ public class Date implements FunctionValueInterface {
 		return DateTypeValue.getInstance();
 	}
 
-	@SuppressWarnings("unused")
 	@Override
 	public ValueInterface apply(Environment env) {
 		if (!env.containsKey("dtTime")) {
