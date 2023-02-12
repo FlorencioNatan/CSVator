@@ -1,47 +1,20 @@
 package org.csvator.interpreter.environment.operators.comparsion;
 
-import org.csvator.interpreter.environment.Environment;
-import org.csvator.interpreter.parsingTable.BooleanValue;
-import org.csvator.interpreter.parsingTable.DoubleValue;
-import org.csvator.interpreter.parsingTable.IntegerValue;
-import org.csvator.interpreter.parsingTable.StringValue;
-import org.csvator.interpreter.parsingTable.ValueInterface;
-
-public class Different extends EqualityOperator {
+public class Different extends ComparsionOperator {
 
 	@Override
-	public ValueInterface apply(ValueInterface lho, ValueInterface rho, Environment env) {
-		boolean result = false;
+	protected boolean operationOnInt(int lho, int rho) {
+		return lho != rho;
+	}
 
-		if (lho instanceof IntegerValue && rho instanceof DoubleValue) {
-			result = ((IntegerValue) lho).getIntValue() != ((DoubleValue) rho).getDoubleValue();
-		}
+	@Override
+	protected boolean operationOnDouble(double lho, double rho) {
+		return  lho != rho;
+	}
 
-		if (lho instanceof DoubleValue && rho instanceof IntegerValue) {
-			result = ((DoubleValue) lho).getDoubleValue() != ((IntegerValue) rho).getIntValue();
-		}
-
-		if (lho.getClass() != rho.getClass()) {
-			return this.createResult(lho, rho, result, env);
-		}
-
-		if (lho instanceof IntegerValue) {
-			result = ((IntegerValue) lho).getIntValue() != ((IntegerValue) rho).getIntValue();
-		}
-
-		if (lho instanceof DoubleValue) {
-			result = ((DoubleValue) lho).getDoubleValue() != ((DoubleValue) rho).getDoubleValue();
-		}
-
-		if (lho instanceof StringValue) {
-			result = !((StringValue) lho).getStrValue().equals(((StringValue) rho).getStrValue());
-		}
-
-		if (lho instanceof BooleanValue) {
-			result = ((BooleanValue) lho).getBooleanValue() != ((BooleanValue) rho).getBooleanValue();
-		}
-
-		return this.createResult(lho, rho, result, env);
+	@Override
+	protected boolean operationOnString(String lho, String rho) {
+		return !lho.equals(rho);
 	}
 
 }
