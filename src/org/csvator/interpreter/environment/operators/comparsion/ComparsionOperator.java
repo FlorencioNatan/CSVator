@@ -12,39 +12,57 @@ import org.csvator.interpreter.parsingTable.typeValues.StringTypeValue;
 
 public abstract class ComparsionOperator implements OperatorInterface {
 
+	private BooleanValue comparsionResult;
+
 	public ValueInterface apply(ValueInterface lho, ValueInterface rho, Environment env) {
-		if (lho.getType() == rho.getType() && lho.getType() == IntTypeValue.getInstance()) {
-			IntegerValue intLho = this.castToIntegerValue(lho);
-			IntegerValue intRho = this.castToIntegerValue(rho);
-			boolean result = this.operationOnInt(intLho.getIntValue(), intRho.getIntValue());
+		intComparsion(lho, rho, env);
+		stringComparsion(lho, rho, env);
+		defaultNumericComparsion(lho, rho, env);
 
-			return this.createResult(intLho, intRho, result, env);
-		}
+		return comparsionResult;
+	}
 
-		if (lho.getType() == rho.getType() && lho.getType() == StringTypeValue.getInstance()) {
-			StringValue strLho = this.castToStringValue(lho);
-			StringValue strRho = this.castToStringValue(rho);
-			boolean result = this.operationOnString(strLho.getStrValue(), strRho.getStrValue());
-
-			return this.createResult(strLho, strRho, result, env);
-		}
-
+	private void defaultNumericComparsion(ValueInterface lho, ValueInterface rho, Environment env) {
 		double doubleLho = 0.0;
 		if (lho.getType() == IntTypeValue.getInstance()) {
 			doubleLho = this.castToIntegerValue(lho).getIntValue();
-		} else {
+		} else if(lho.getType() == DoubleTypeValue.getInstance()) {
 			doubleLho = this.castToDoubleValue(lho).getDoubleValue();
+		} else {
+			return;
 		}
 
 		double doubleRho = 0.0;
 		if (rho.getType() == IntTypeValue.getInstance()) {
 			doubleRho = this.castToIntegerValue(rho).getIntValue();
-		} else {
+		} else if(rho.getType() == DoubleTypeValue.getInstance()) {
 			doubleRho = this.castToDoubleValue(rho).getDoubleValue();
+		} else {
+			return;
 		}
 		boolean result = this.operationOnDouble(doubleLho, doubleRho);
 
-		return this.createResult(lho, rho, result, env);
+		comparsionResult = this.createResult(lho, rho, result, env);
+	}
+
+	private void stringComparsion(ValueInterface lho, ValueInterface rho, Environment env) {
+		if (lho.getType() == rho.getType() && lho.getType() == StringTypeValue.getInstance()) {
+			StringValue strLho = this.castToStringValue(lho);
+			StringValue strRho = this.castToStringValue(rho);
+			boolean result = this.operationOnString(strLho.getStrValue(), strRho.getStrValue());
+
+			comparsionResult = this.createResult(strLho, strRho, result, env);
+		}
+	}
+
+	private void intComparsion(ValueInterface lho, ValueInterface rho, Environment env) {
+		if (lho.getType() == rho.getType() && lho.getType() == IntTypeValue.getInstance()) {
+			IntegerValue intLho = this.castToIntegerValue(lho);
+			IntegerValue intRho = this.castToIntegerValue(rho);
+			boolean result = this.operationOnInt(intLho.getIntValue(), intRho.getIntValue());
+
+			comparsionResult = this.createResult(intLho, intRho, result, env);
+		}
 	}
 
 	abstract protected boolean operationOnInt(int lho, int rho);
