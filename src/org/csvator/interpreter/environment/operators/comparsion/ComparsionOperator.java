@@ -51,19 +51,19 @@ public abstract class ComparsionOperator implements OperatorInterface {
 	abstract protected boolean operationOnDouble(double lho, double rho);
 	abstract protected boolean operationOnString(String lho, String rho);
 
-	protected IntegerValue castToIntegerValue(ValueInterface value) {
+	private IntegerValue castToIntegerValue(ValueInterface value) {
 		return (IntegerValue) value;
 	}
 
-	protected DoubleValue castToDoubleValue(ValueInterface value) {
+	private DoubleValue castToDoubleValue(ValueInterface value) {
 		return (DoubleValue) value;
 	}
 
-	protected StringValue castToStringValue(ValueInterface value) {
+	private StringValue castToStringValue(ValueInterface value) {
 		return (StringValue) value;
 	}
 
-	protected BooleanValue createResult(ValueInterface lho, ValueInterface rho, boolean result, Environment env) {
+	private BooleanValue createResult(ValueInterface lho, ValueInterface rho, boolean result, Environment env) {
 		return new BooleanValue(lho.evaluate(env) + " " + rho.evaluate(env), result);
 	}
 
