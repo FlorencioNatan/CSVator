@@ -584,7 +584,8 @@ public class Interpreter extends DepthFirstAdapter {
 
 	@Override
 	public void outARecordTypeTypeDefinition(ARecordTypeTypeDefinition node) {
-		// TODO Auto-generated method stub
+		super.outARecordTypeTypeDefinition(node);
+
 		String typeName = node.getName().getText();
 		RecordTypeValue record = (RecordTypeValue) parsingTable.getValueOf(node.getRecordType());
 		record.setId(typeName);
@@ -821,6 +822,7 @@ public class Interpreter extends DepthFirstAdapter {
 		super.outAFunctionApplicationWithArgumentExpression(node);
 
 		String functionIdentifier = node.getFunctionIdentifier().getText();
+
 		ValueInterface value = parsingTable.getValueOf(node.getFirst());
 		LinkedList<ValueInterface> expressions = new LinkedList<>();
 		expressions.add(value);
