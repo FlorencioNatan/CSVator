@@ -70,6 +70,7 @@ Tokens
 	kw_record = 'record';
 	kw_fields = 'fields';
 	kw_invariants = 'invariants';
+	kw_union = 'union';
 	kw_end = 'end';
 	tok_semicolon = ';';
 	tok_colon = ':';
@@ -230,6 +231,7 @@ Productions
 		{dict} kw_dict {-> New type_specifier.dict()} |
 		{set} kw_set {-> New type_specifier.set()} |
 		{list} kw_list {-> New type_specifier.list()} |
+		{custom} identifier {-> New type_specifier.custom(identifier)} |
 		{function_type_specifier} function_type_specifier {-> function_type_specifier.type_specifier};
 
 	function_type_specifier {-> type_specifier} =
@@ -240,9 +242,18 @@ Productions
 
 	variable_definition = [variable]:identifier tok_attribution expression {-> New variable_definition(variable, expression)};
 
-	type_definition = kw_type [name]:identifier tok_attribution record_type {-> New type_definition(name, record_type)};
+	type_definition =
+		{record_type} kw_type [name]:identifier tok_attribution record_type {-> New type_definition.record_type(name, record_type)} |
+		{invariant_type} kw_type [name]:identifier tok_attribution invariant_type {-> New type_definition.invariant_type(name, invariant_type)} |
+		{union_type} kw_type [name]:identifier tok_attribution union_type {-> New type_definition.union_type(name, union_type)};
 
 	record_type = kw_record kw_fields field+ [field_end]:kw_end invariants_definition? [record_end]:kw_end {-> New record_type([field], invariants_definition)};
+
+	invariant_type = invariants_definition {-> New invariant_type(invariants_definition)};
+
+	union_type = kw_union [types]:type_specifier_union_list+ kw_end {-> New union_type([types.type_specifier])};
+
+	type_specifier_union_list {-> type_specifier} = type_specifier tok_comma {-> type_specifier};
 
 	field = [type]:type_specifier [name]:identifier tok_comma {-> New field(type, name)};
 
@@ -325,6 +336,7 @@ Abstract Syntax Tree
 		{dict} |
 		{set} |
 		{list} |
+		{custom} identifier |
 		{function_type_specifier_no_parameters} [result]:type_specifier |
 		{function_type_specifier_with_parameters} [first]:type_specifier [rest]:type_specifier* [result]:type_specifier;
 
@@ -338,9 +350,15 @@ Abstract Syntax Tree
 
 	argument = type_specifier identifier;
 
-	type_definition = [name]:identifier record_type;
+	type_definition = {record_type} [name]:identifier record_type |
+		{invariant_type} [name]:identifier invariant_type |
+		{union_type} [name]:identifier union_type;
 
 	record_type = [fields]:field* invariants_definition?;
+
+	invariant_type = invariants_definition;
+
+	union_type = [types]:type_specifier*;
 
 	field = [type]:type_specifier [name]:identifier;
 

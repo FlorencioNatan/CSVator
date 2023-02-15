@@ -126,6 +126,7 @@ import org.csvator.core.node.ANullExpression;
 import org.csvator.core.node.AOrExpression;
 import org.csvator.core.node.AParenExpression;
 import org.csvator.core.node.ARecordType;
+import org.csvator.core.node.ARecordTypeTypeDefinition;
 import org.csvator.core.node.ARemoveExpressionExpression;
 import org.csvator.core.node.ASetExpression;
 import org.csvator.core.node.ASetTypeSpecifier;
@@ -137,7 +138,6 @@ import org.csvator.core.node.ASubExpression;
 import org.csvator.core.node.ASumExpression;
 import org.csvator.core.node.ATailExpression;
 import org.csvator.core.node.ATrueExpression;
-import org.csvator.core.node.ATypeDefinition;
 import org.csvator.core.node.AVarExpression;
 import org.csvator.core.node.AVariableDefinition;
 import org.csvator.core.node.AVectorExpression;
@@ -583,8 +583,8 @@ public class Interpreter extends DepthFirstAdapter {
 	}
 
 	@Override
-	public void outATypeDefinition(ATypeDefinition node) {
-		super.outATypeDefinition(node);
+	public void outARecordTypeTypeDefinition(ARecordTypeTypeDefinition node) {
+		// TODO Auto-generated method stub
 		String typeName = node.getName().getText();
 		RecordTypeValue record = (RecordTypeValue) parsingTable.getValueOf(node.getRecordType());
 		record.setId(typeName);
