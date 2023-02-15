@@ -1,13 +1,13 @@
-pair: any a, any b -> (string -> any);
+pair :: any a, any b -> (string -> any);
 pair: \( string command -> any : [command = "car"] a | [command = "cdr"] b) ;
 
-car: (string -> any) myList -> any;
+car :: (string -> any) myList -> any;
 car: myList("car");
 
-cdr: (string -> any) myList -> any;
+cdr :: (string -> any) myList -> any;
 cdr: myList("cdr");
 
-cons: any element, (string -> any) myList -> (string -> any);
+cons :: any element, (string -> any) myList -> (string -> any);
 cons: pair(element, myList);
 
 myList := pair(10, null);
@@ -27,7 +27,7 @@ car(cdr(myList));
 car(cdr(cdr(myList)));
 
 
-find: any element, (string -> any) myList -> bool;
+find :: any element, (string -> any) myList -> bool;
 find [element = car(myList)]: true = true;
 find [cdr(myList) = null]: false = true;
 find: find(element, cdr(myList));

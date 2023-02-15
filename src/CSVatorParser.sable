@@ -73,6 +73,7 @@ Tokens
 	kw_end = 'end';
 	tok_semicolon = ';';
 	tok_colon = ':';
+	tok_colon_colon = '::';
 	tok_comma = ',';
 	tok_right_arrow = '->';
 	tok_attribution = ':=';
@@ -205,8 +206,8 @@ Productions
 		tok_pipe anonymous_function_body_guard {-> anonymous_function_body_guard};
 
 	function_definition =
-		{declaration} [function_identifier]:identifier tok_colon tok_right_arrow type_specifier {-> New function_definition.declaration(function_identifier, type_specifier)} |
-		{declaration_with_argument} [function_identifier]:identifier tok_colon argument argument_list* tok_right_arrow type_specifier {-> New function_definition.declaration_with_argument(function_identifier, argument, [argument_list.argument], type_specifier)} |
+		{declaration} [function_identifier]:identifier tok_colon_colon tok_right_arrow type_specifier {-> New function_definition.declaration(function_identifier, type_specifier)} |
+		{declaration_with_argument} [function_identifier]:identifier tok_colon_colon argument argument_list* tok_right_arrow type_specifier {-> New function_definition.declaration_with_argument(function_identifier, argument, [argument_list.argument], type_specifier)} |
 		{body_guard} [function_identifier]:identifier tok_op_square [condition]:expression tok_cl_square tok_colon [result]:expression {-> New function_definition.body_guard(function_identifier, condition, result)} |
 		{body} [function_identifier]:identifier tok_colon [result]:expression {-> New function_definition.body(function_identifier, result)};
 

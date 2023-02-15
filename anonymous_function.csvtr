@@ -2,7 +2,7 @@ soma := \( int a, int b -> int : a + b);
 
 soma(3,5);
 
-firstOrSecond: bool first, (int, int -> int) f, (int, int -> int) s -> (int, int -> int);
+firstOrSecond :: bool first, (int, int -> int) f, (int, int -> int) s -> (int, int -> int);
 firstOrSecond [first] : f;
 firstOrSecond [not first] : s;
 
@@ -15,7 +15,7 @@ newSub(1,2);
 
 
 
-firstOrSecondTwo: bool first -> (int, int -> int);
+firstOrSecondTwo :: bool first -> (int, int -> int);
 firstOrSecondTwo [first] : \(int a, int b -> int : a * b);
 firstOrSecondTwo [not first] : \(int a, int b -> int : a / b);
 
@@ -26,10 +26,10 @@ newMult(6,2);
 newDiv := firstOrSecondTwo(false);
 newDiv(6,2);
 
-applyFunction: int a, (int -> int) f -> int;
+applyFunction :: int a, (int -> int) f -> int;
 applyFunction: f(a);
 
-myNewFunction: int b -> int;
+myNewFunction :: int b -> int;
 myNewFunction: applyFunction(7, \(int c -> int: b + c));
 
 myNewFunction(5);

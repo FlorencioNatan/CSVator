@@ -1,4 +1,4 @@
-repeticao: int a, int b, int i -> int;
+repeticao :: int a, int b, int i -> int;
 repeticao [i < 6] : repeticao(b * i + a, b * 10, i + 1);
 repeticao [i = 6] : a;
 

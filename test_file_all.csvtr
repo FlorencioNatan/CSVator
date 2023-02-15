@@ -15,14 +15,14 @@ b:=6;
 a + b;
 
 
-soma:int a, int b -> int;
+soma :: int a, int b -> int;
 soma: a + b;
 
 soma(8, 9);
 
 soma(12, 75);
 
-subMultESoma: int a, int b -> int;
+subMultESoma :: int a, int b -> int;
 subMultESoma: (a * b) - (a + b);
 
 subMultESoma(10, 10);
@@ -75,7 +75,7 @@ not false;
 3 <> 3;
 
 
-somaOuSubtrai:int a, int b -> int;
+somaOuSubtrai :: int a, int b -> int;
 somaOuSubtrai [a < b] : a + b;
 somaOuSubtrai [a > b] : a - b;
 somaOuSubtrai: 2;
@@ -85,14 +85,14 @@ somaOuSubtrai(2, 5);
 somaOuSubtrai(5, 2);
 somaOuSubtrai(5, 5);
 
-constante:-> int;
+constante :: -> int;
 constante: 7;
 
 constante();
 
 
 
-repeticao: int a, int b, int i -> int;
+repeticao :: int a, int b, int i -> int;
 repeticao [i < 6] : repeticao(b * i + a, b * 10, i + 1);
 repeticao [i = 6] : a;
 
@@ -149,29 +149,29 @@ ola ++ " " ++ mundo;
 "programming" >= "language";
 
 
-secondSoma: double a, double b -> double;
+secondSoma :: double a, double b -> double;
 secondSoma: a + b;
 
 secondSoma(1.0, 1);
 secondSoma(1.0, 1.1);
 
 
-sum: int a, int b -> int;
+sum :: int a, int b -> int;
 sum: a + b;
 
-higherOrderFunction: (int, int -> int) f, int a, int b -> int;
+higherOrderFunction :: (int, int -> int) f, int a, int b -> int;
 higherOrderFunction: f(a, b);
 
 higherOrderFunction(sum, 1, 2);
 
 
-sum: int a, int b -> int;
+sum :: int a, int b -> int;
 sum: a + b;
 
-sub: int a, int b -> int;
+sub :: int a, int b -> int;
 sub: a - b;
 
-firstOrSecond: bool first, (int, int -> int) f, (int, int -> int) s -> (int, int -> int);
+firstOrSecond :: bool first, (int, int -> int) f, (int, int -> int) s -> (int, int -> int);
 firstOrSecond [first] : f;
 firstOrSecond [not first] : s;
 
