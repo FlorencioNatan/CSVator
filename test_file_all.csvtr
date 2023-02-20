@@ -439,3 +439,16 @@ agePlusTen(5);
 agePlusTen(130);
 
 
+
+forall x in myVect | x >= 0;
+forall x in myList | x < 100;
+// myDict;
+forall x in mySet | x < 8;
+forall x in myStr | x >= " ";
+
+exists x in myVect | x = 0;
+exists x in myList | x > 80;
+// myDict;
+exists x in mySet | x = 5;
+ exists x in myStr | x = "W";
+

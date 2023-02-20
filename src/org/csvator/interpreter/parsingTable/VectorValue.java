@@ -264,4 +264,35 @@ public class VectorValue implements CollectionValueInterface {
 		return header;
 	}
 
+	@Override
+	public boolean universal(String variable, ValueInterface filter, Environment env) {
+		Environment local = env.clone();
+		boolean result = true;
+		String varName = variable;
+
+		for (ValueInterface elem : value) {
+			local.putValue(varName, elem);
+			BooleanValue filterResult = (BooleanValue) filter.evaluate(local);
+			result = result && filterResult.getBooleanValue();
+		}
+
+		return result;
+	}
+
+	@Override
+	public boolean existential(String variable, ValueInterface filter, Environment env) {
+		Environment local = env.clone();
+		String varName = variable;
+
+		for (ValueInterface elem : value) {
+			local.putValue(varName, elem);
+			BooleanValue filterResult = (BooleanValue) filter.evaluate(local);
+			if (filterResult.getBooleanValue()) {
+				return true;
+			}
+		}
+
+		return false;
+	}
+
 }

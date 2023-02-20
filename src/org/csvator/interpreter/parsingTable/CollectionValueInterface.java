@@ -1,5 +1,6 @@
 package org.csvator.interpreter.parsingTable;
 
+import org.csvator.interpreter.environment.Environment;
 import org.csvator.interpreter.parsingTable.function.FunctionValueInterface;
 
 public interface CollectionValueInterface extends ValueInterface {
@@ -31,6 +32,10 @@ public interface CollectionValueInterface extends ValueInterface {
 	public CollectionValueInterface filter(FunctionValueInterface filterFunction);
 
 	public ValueInterface reduce(FunctionValueInterface reduceFunction, ValueInterface reduceValue);
+
+	public boolean universal(String variable, ValueInterface filter, Environment env);
+
+	public boolean existential(String variable, ValueInterface filter, Environment env);
 
 	public String[][] buildTable();
 

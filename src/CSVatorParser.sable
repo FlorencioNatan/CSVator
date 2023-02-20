@@ -61,6 +61,9 @@ Tokens
 	kw_xor = 'xor';
 	kw_not = 'not';
 	kw_implies = 'implies';
+	kw_in = 'in';
+	kw_forall = 'forall';
+	kw_exists = 'exists';
 	kw_typeis = 'typeis';
 	kw_null = 'null';
 	kw_vector = 'vector';
@@ -129,7 +132,12 @@ Productions
 		and_expression {-> and_expression.expression};
 
 	and_expression {-> expression} =
-		{and} and_expression kw_and equal_expression {-> New expression.and(and_expression.expression, equal_expression.expression)} |
+		{and} and_expression kw_and quantification_expression {-> New expression.and(and_expression.expression, quantification_expression.expression)} |
+		quantification_expression {-> quantification_expression.expression};
+
+	quantification_expression {-> expression} =
+		{universal} kw_forall [variable]:identifier kw_in [collection]:equal_expression tok_pipe [filter]:equal_expression {-> New expression.universal_quantification(variable, collection.expression, filter.expression)}|
+		{existential} kw_exists [variable]:identifier kw_in [collection]:equal_expression tok_pipe [filter]:equal_expression {-> New expression.existential_quantification(variable, collection.expression, filter.expression)}|
 		equal_expression {-> equal_expression.expression};
 
 	equal_expression {-> expression} = 
@@ -290,6 +298,8 @@ Abstract Syntax Tree
 		{implies} [left]:expression [right]:expression |
 		{or} [left]:expression [right]:expression |
 		{and} [left]:expression [right]:expression |
+		{universal_quantification} [variable]:identifier [collection]:expression [filter]:expression |
+		{existential_quantification} [variable]:identifier [collection]:expression [filter]:expression |
 		{equal} [left]:expression [right]:expression |
 		{different} [left]:expression [right]:expression |
 		{greater} [left]:expression [right]:expression |

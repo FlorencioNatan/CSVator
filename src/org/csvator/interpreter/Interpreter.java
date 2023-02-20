@@ -19,11 +19,13 @@ import org.csvator.interpreter.environment.operators.arithmetic.Sub;
 import org.csvator.interpreter.environment.operators.arithmetic.Sum;
 import org.csvator.interpreter.environment.operators.collection.Concat;
 import org.csvator.interpreter.environment.operators.collection.Contains;
+import org.csvator.interpreter.environment.operators.collection.ExistentialQuantification;
 import org.csvator.interpreter.environment.operators.collection.Head;
 import org.csvator.interpreter.environment.operators.collection.Index;
 import org.csvator.interpreter.environment.operators.collection.Remove;
 import org.csvator.interpreter.environment.operators.collection.Size;
 import org.csvator.interpreter.environment.operators.collection.Tail;
+import org.csvator.interpreter.environment.operators.collection.UniversalQuantification;
 import org.csvator.interpreter.environment.operators.comparsion.Different;
 import org.csvator.interpreter.environment.operators.comparsion.Equal;
 import org.csvator.interpreter.environment.operators.comparsion.GreaterEqual;
@@ -104,6 +106,7 @@ import org.csvator.core.node.AEmptyListExpression;
 import org.csvator.core.node.AEmptySetExpression;
 import org.csvator.core.node.AEmptyVectorExpression;
 import org.csvator.core.node.AEqualExpression;
+import org.csvator.core.node.AExistentialQuantificationExpression;
 import org.csvator.core.node.AExpressionLineLine;
 import org.csvator.core.node.AFalseExpression;
 import org.csvator.core.node.AField;
@@ -148,6 +151,7 @@ import org.csvator.core.node.ATrueExpression;
 import org.csvator.core.node.ATypeisExpression;
 import org.csvator.core.node.AUnionType;
 import org.csvator.core.node.AUnionTypeTypeDefinition;
+import org.csvator.core.node.AUniversalQuantificationExpression;
 import org.csvator.core.node.AVarExpression;
 import org.csvator.core.node.AVariableDefinition;
 import org.csvator.core.node.AVectorExpression;
@@ -462,6 +466,26 @@ public class Interpreter extends DepthFirstAdapter {
 				new Implies());
 
 		parsingTable.putValue(node, expression);
+	}
+
+	@Override
+	public void outAUniversalQuantificationExpression(AUniversalQuantificationExpression node) {
+		super.outAUniversalQuantificationExpression(node);
+
+		ValueInterface collection = parsingTable.getValueOf(node.getCollection());
+		ValueInterface filter = parsingTable.getValueOf(node.getFilter());
+		UniversalQuantification universal = new UniversalQuantification(node.getVariable().getText(), collection, filter);
+		parsingTable.putValue(node, universal);
+	}
+
+	@Override
+	public void outAExistentialQuantificationExpression(AExistentialQuantificationExpression node) {
+		super.outAExistentialQuantificationExpression(node);
+
+		ValueInterface collection = parsingTable.getValueOf(node.getCollection());
+		ValueInterface filter = parsingTable.getValueOf(node.getFilter());
+		ExistentialQuantification existential = new ExistentialQuantification(node.getVariable().getText(), collection, filter);
+		parsingTable.putValue(node, existential);
 	}
 
 	@Override

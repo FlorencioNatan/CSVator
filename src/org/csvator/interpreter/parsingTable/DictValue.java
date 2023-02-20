@@ -228,4 +228,37 @@ public class DictValue implements CollectionValueInterface {
 		return header;
 	}
 
+	@Override
+	public boolean universal(String variable, ValueInterface filter, Environment env) {
+		Environment local = env.clone();
+		boolean result = true;
+		String varName = variable;
+
+		for (Map.Entry<ValueInterface, ValueInterface> set : value.entrySet()) {
+			KeyValueExpressionValue elem = new KeyValueExpressionValue("elem", set.getKey(), set.getValue());
+			local.putValue(varName, elem);
+			BooleanValue filterResult = (BooleanValue) filter.evaluate(local);
+			result = result && filterResult.getBooleanValue();
+		}
+
+		return result;
+	}
+
+	@Override
+	public boolean existential(String variable, ValueInterface filter, Environment env) {
+		Environment local = env.clone();
+		String varName = variable;
+
+		for (Map.Entry<ValueInterface, ValueInterface> set : value.entrySet()) {
+			KeyValueExpressionValue elem = new KeyValueExpressionValue("elem", set.getKey(), set.getValue());
+			local.putValue(varName, elem);
+			BooleanValue filterResult = (BooleanValue) filter.evaluate(local);
+			if (filterResult.getBooleanValue()) {
+				return true;
+			}
+		}
+
+		return false;
+	}
+
 }

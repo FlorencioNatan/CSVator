@@ -243,4 +243,37 @@ public class StringValue implements CollectionValueInterface {
 		return header;
 	}
 
+	@Override
+	public boolean universal(String variable, ValueInterface filter, Environment env) {
+		Environment local = env.clone();
+		boolean result = true;
+		String varName = variable;
+
+		for (char elem : value.toCharArray()) {
+			StringValue strElem = new StringValue(String.valueOf(elem), String.valueOf(elem));
+			local.putValue(varName, strElem);
+			BooleanValue filterResult = (BooleanValue) filter.evaluate(local);
+			result = result && filterResult.getBooleanValue();
+		}
+
+		return result;
+	}
+
+	@Override
+	public boolean existential(String variable, ValueInterface filter, Environment env) {
+		Environment local = env.clone();
+		String varName = variable;
+
+		for (char elem : value.toCharArray()) {
+			StringValue strElem = new StringValue(String.valueOf(elem), String.valueOf(elem));
+			local.putValue(varName, strElem);
+			BooleanValue filterResult = (BooleanValue) filter.evaluate(local);
+			if (filterResult.getBooleanValue()) {
+				return true;
+			}
+		}
+
+		return false;
+	}
+
 }
