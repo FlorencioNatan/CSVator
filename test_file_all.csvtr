@@ -422,3 +422,20 @@ funOnIntOrString [val typeis string] : "string";
 
 funOnIntOrString(1);
 funOnIntOrString("Name");
+
+
+type age := int invariants
+	$ >= 0,
+	$ <= 135,
+end;
+
+myAge := age(30);
+
+agePlusTen :: age a -> int;
+agePlusTen : a + 10;
+
+agePlusTen(myAge);
+agePlusTen(5);
+agePlusTen(130);
+
+

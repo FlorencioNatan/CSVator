@@ -65,6 +65,7 @@ import org.csvator.interpreter.parsingTable.typeValues.DictTypeValue;
 import org.csvator.interpreter.parsingTable.typeValues.DoubleTypeValue;
 import org.csvator.interpreter.parsingTable.typeValues.FunctionTypeValue;
 import org.csvator.interpreter.parsingTable.typeValues.IntTypeValue;
+import org.csvator.interpreter.parsingTable.typeValues.InvariantTypeValue;
 import org.csvator.interpreter.parsingTable.typeValues.ListTypeValue;
 import org.csvator.interpreter.parsingTable.typeValues.RecordTypeValue;
 import org.csvator.interpreter.parsingTable.typeValues.SetTypeValue;
@@ -117,6 +118,8 @@ import org.csvator.core.node.AImpliesExpression;
 import org.csvator.core.node.AIndexExpressionExpression;
 import org.csvator.core.node.AIntExpression;
 import org.csvator.core.node.AIntTypeSpecifier;
+import org.csvator.core.node.AInvariantType;
+import org.csvator.core.node.AInvariantTypeTypeDefinition;
 import org.csvator.core.node.AInvariantsDefinition;
 import org.csvator.core.node.AKeyValueExpression;
 import org.csvator.core.node.ALessEqualExpression;
@@ -653,6 +656,28 @@ public class Interpreter extends DepthFirstAdapter {
 
 		UnionTypeValue union = new UnionTypeValue(types);
 		parsingTable.putValue(node, union);
+	}
+
+	@Override
+	public void outAInvariantTypeTypeDefinition(AInvariantTypeTypeDefinition node) {
+		super.outAInvariantTypeTypeDefinition(node);
+
+		String typeName = node.getName().getText();
+		InvariantTypeValue invariant = (InvariantTypeValue) parsingTable.getValueOf(node.getInvariantType());
+		invariant.setId(typeName);
+		global.putValue(typeName, invariant);
+		parsingTable.putValue(node.getName(), invariant);
+	}
+
+	@Override
+	public void outAInvariantType(AInvariantType node) {
+		super.outAInvariantType(node);
+
+		TypeValueInterface type = (TypeValueInterface) parsingTable.getValueOf(node.getTypeSpecifier());
+		InvariantsDefinition invariants = (InvariantsDefinition) parsingTable.getValueOf(node.getInvariantsDefinition());
+		InvariantTypeValue invariant = new InvariantTypeValue(type, invariants.getInvariants());
+
+		parsingTable.putValue(node, invariant);
 	}
 
 	@Override

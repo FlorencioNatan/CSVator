@@ -12,6 +12,7 @@ import org.csvator.interpreter.parsingTable.ValueInterface;
 import org.csvator.interpreter.parsingTable.typeValues.DoubleTypeValue;
 import org.csvator.interpreter.parsingTable.typeValues.FunctionTypeValue;
 import org.csvator.interpreter.parsingTable.typeValues.IntTypeValue;
+import org.csvator.interpreter.parsingTable.typeValues.InvariantTypeValue;
 import org.csvator.interpreter.parsingTable.typeValues.TypeValueInterface;
 import org.csvator.interpreter.parsingTable.typeValues.VariableTypeValue;
 
@@ -77,6 +78,12 @@ public class UserDefinedFunctionValue implements FunctionValueInterface, Cloneab
 				} catch (InvalidParameterException exception) {
 					// do nothing
 				}
+			}
+
+			if (arguments.get(i).getType().getClass() == InvariantTypeValue.class) {
+				InvariantTypeValue argumentType = (InvariantTypeValue) arguments.get(i).getType();
+				parameterValue = parameterValue.evaluate(father);
+				parameterValue = argumentType.apply(parameterValue);
 			}
 
 			if (arguments.get(i).getType() == DoubleTypeValue.getInstance() && parameterValue.getType() == IntTypeValue.getInstance()) {

@@ -1,11 +1,13 @@
 package org.csvator.interpreter.parsingTable;
 
+import java.security.InvalidParameterException;
 import java.util.LinkedList;
 
 import org.csvator.interpreter.environment.Environment;
 import org.csvator.interpreter.parsingTable.function.FunctionValueInterface;
 import org.csvator.interpreter.parsingTable.function.TypeMismatchException;
 import org.csvator.interpreter.parsingTable.typeValues.FunctionTypeValue;
+import org.csvator.interpreter.parsingTable.typeValues.InvariantTypeValue;
 import org.csvator.interpreter.parsingTable.typeValues.TypeValueInterface;
 
 public class FunctionCallExpressionValue implements ValueInterface {
@@ -29,6 +31,12 @@ public class FunctionCallExpressionValue implements ValueInterface {
 		ValueInterface result = this.apply(local);
 
 		TypeValueInterface returnType = this.getReturnType(env);
+
+		if (returnType.getClass() == InvariantTypeValue.class) {
+			InvariantTypeValue argumentType = (InvariantTypeValue) returnType;
+			result = argumentType.apply(result);
+		}
+
 		if (!returnType.equalsToType(result.getType())) {
 			throw new TypeMismatchException("Type mismatch on function " + this.id.trim() + " return. Expected " + returnType + " found " + result.getType());
 		}
