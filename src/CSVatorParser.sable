@@ -61,6 +61,7 @@ Tokens
 	kw_xor = 'xor';
 	kw_not = 'not';
 	kw_implies = 'implies';
+	kw_typeis = 'typeis';
 	kw_null = 'null';
 	kw_vector = 'vector';
 	kw_dict = 'dict';
@@ -137,10 +138,14 @@ Productions
 		comparsion_expression {-> comparsion_expression.expression};
 
 	comparsion_expression {-> expression} = 
-		{greater} [left]:aditive_expression tok_greater [right]:aditive_expression {-> New expression.greater(left.expression, right.expression)} |
-		{greater_equal} [left]:aditive_expression tok_greater_equal [right]:aditive_expression {-> New expression.greater_equal(left.expression, right.expression)} |
-		{less} [left]:aditive_expression tok_less [right]:aditive_expression {-> New expression.less(left.expression, right.expression)} |
-		{less_equal} [left]:aditive_expression tok_less_equal [right]:aditive_expression {-> New expression.less_equal(left.expression, right.expression)} |
+		{greater} [left]:typeis_expression tok_greater [right]:typeis_expression {-> New expression.greater(left.expression, right.expression)} |
+		{greater_equal} [left]:typeis_expression tok_greater_equal [right]:typeis_expression {-> New expression.greater_equal(left.expression, right.expression)} |
+		{less} [left]:typeis_expression tok_less [right]:typeis_expression {-> New expression.less(left.expression, right.expression)} |
+		{less_equal} [left]:typeis_expression tok_less_equal [right]:typeis_expression {-> New expression.less_equal(left.expression, right.expression)} |
+		typeis_expression {-> typeis_expression.expression};
+
+	typeis_expression {-> expression} =
+		{typeis} [left]:aditive_expression kw_typeis [right]:type_specifier {-> New expression.typeis(left.expression, right.type_specifier)} |
 		aditive_expression {-> aditive_expression.expression};
 
 	aditive_expression {-> expression} = 
@@ -291,6 +296,7 @@ Abstract Syntax Tree
 		{greater_equal} [left]:expression [right]:expression |
 		{less} [left]:expression [right]:expression |
 		{less_equal} [left]:expression [right]:expression |
+		{typeis} [left]:expression [right]:type_specifier |
 		{true} kw_true |
 		{false} kw_false |
 		{null} kw_null |

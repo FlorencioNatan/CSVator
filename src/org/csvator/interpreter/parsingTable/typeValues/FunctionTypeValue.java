@@ -3,7 +3,6 @@ package org.csvator.interpreter.parsingTable.typeValues;
 import java.util.LinkedList;
 
 import org.csvator.interpreter.environment.Environment;
-import org.csvator.interpreter.parsingTable.EmptyValue;
 import org.csvator.interpreter.parsingTable.ValueInterface;
 
 public class FunctionTypeValue implements TypeValueInterface {
@@ -31,7 +30,7 @@ public class FunctionTypeValue implements TypeValueInterface {
 
 	@Override
 	public ValueInterface evaluate(Environment env) {
-		return new EmptyValue(this.id);
+		return this;
 	}
 
 	@Override

@@ -1,7 +1,6 @@
 package org.csvator.interpreter.parsingTable.typeValues;
 
 import org.csvator.interpreter.environment.Environment;
-import org.csvator.interpreter.parsingTable.EmptyValue;
 import org.csvator.interpreter.parsingTable.ListValue;
 import org.csvator.interpreter.parsingTable.ValueInterface;
 
@@ -28,7 +27,7 @@ public class ListTypeValue implements TypeValueInterface {
 
 	@Override
 	public ValueInterface evaluate(Environment env) {
-		return new EmptyValue(this.id);
+		return this;
 	}
 
 	@Override

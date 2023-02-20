@@ -2,7 +2,6 @@ package org.csvator.interpreter.environment.operators.comparsion;
 
 public class LessThan extends ComparsionOperator {
 
-
 	protected boolean operationOnInt(int lho, int rho) {
 		return lho < rho;
 	}

@@ -2,7 +2,6 @@ package org.csvator.interpreter.parsingTable.typeValues;
 
 import org.csvator.interpreter.environment.Environment;
 import org.csvator.interpreter.parsingTable.DoubleValue;
-import org.csvator.interpreter.parsingTable.EmptyValue;
 import org.csvator.interpreter.parsingTable.ValueInterface;
 
 public class DoubleTypeValue implements TypeValueInterface {
@@ -28,7 +27,7 @@ public class DoubleTypeValue implements TypeValueInterface {
 
 	@Override
 	public ValueInterface evaluate(Environment env) {
-		return new EmptyValue(this.id);
+		return this;
 	}
 
 	@Override

@@ -404,3 +404,9 @@ personName :: person p -> string;
 personName : p !! "name";
 
 personName(joe);
+
+
+1 typeis int;
+"Meu nome" typeis string;
+joe typeis person;
+null typeis void;

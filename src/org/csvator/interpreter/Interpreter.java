@@ -30,6 +30,7 @@ import org.csvator.interpreter.environment.operators.comparsion.GreaterEqual;
 import org.csvator.interpreter.environment.operators.comparsion.GreaterThan;
 import org.csvator.interpreter.environment.operators.comparsion.LessEqual;
 import org.csvator.interpreter.environment.operators.comparsion.LessThan;
+import org.csvator.interpreter.environment.operators.comparsion.TypeIs;
 import org.csvator.interpreter.parsingTable.AnonymousFunctionExpressionValue;
 import org.csvator.interpreter.parsingTable.ArgumentValue;
 import org.csvator.interpreter.parsingTable.BinaryExpressionValue;
@@ -70,6 +71,7 @@ import org.csvator.interpreter.parsingTable.typeValues.SetTypeValue;
 import org.csvator.interpreter.parsingTable.typeValues.StringTypeValue;
 import org.csvator.interpreter.parsingTable.typeValues.TypeValueInterface;
 import org.csvator.interpreter.parsingTable.typeValues.VectorTypeValue;
+import org.csvator.interpreter.parsingTable.typeValues.VoidTypeValue;
 import org.csvator.interpreter.tablePrinterStrategy.TablePrinterStrategy;
 import org.csvator.core.analysis.DepthFirstAdapter;
 import org.csvator.core.node.AAndExpression;
@@ -139,10 +141,12 @@ import org.csvator.core.node.ASubExpression;
 import org.csvator.core.node.ASumExpression;
 import org.csvator.core.node.ATailExpression;
 import org.csvator.core.node.ATrueExpression;
+import org.csvator.core.node.ATypeisExpression;
 import org.csvator.core.node.AVarExpression;
 import org.csvator.core.node.AVariableDefinition;
 import org.csvator.core.node.AVectorExpression;
 import org.csvator.core.node.AVectorTypeSpecifier;
+import org.csvator.core.node.AVoidTypeSpecifier;
 import org.csvator.core.node.AXorExpression;
 import org.csvator.core.node.Node;
 import org.csvator.core.node.PAnonymousFunctionBodyGuard;
@@ -515,6 +519,16 @@ public class Interpreter extends DepthFirstAdapter {
 	}
 
 	@Override
+	public void outATypeisExpression(ATypeisExpression node) {
+		super.outATypeisExpression(node);
+
+		BinaryExpressionValue expression = buildExpression(node.toString(), node.getLeft(), node.getRight(),
+				new TypeIs());
+
+		parsingTable.putValue(node, expression);
+	}
+
+	@Override
 	public void outAConcatExpressionExpression(AConcatExpressionExpression node) {
 		super.outAConcatExpressionExpression(node);
 
@@ -708,6 +722,14 @@ public class Interpreter extends DepthFirstAdapter {
 		super.outAListTypeSpecifier(node);
 
 		ListTypeValue type = ListTypeValue.getInstance();
+		parsingTable.putValue(node, type);
+	}
+
+	@Override
+	public void outAVoidTypeSpecifier(AVoidTypeSpecifier node) {
+		super.outAVoidTypeSpecifier(node);
+
+		VoidTypeValue type = VoidTypeValue.getInstance();
 		parsingTable.putValue(node, type);
 	}
 
