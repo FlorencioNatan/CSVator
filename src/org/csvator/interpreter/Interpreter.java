@@ -84,6 +84,7 @@ import org.csvator.core.node.ABodyGuardFunctionDefinition;
 import org.csvator.core.node.ABoolTypeSpecifier;
 import org.csvator.core.node.AConcatExpressionExpression;
 import org.csvator.core.node.AContainsExpressionExpression;
+import org.csvator.core.node.ACustomTypeSpecifier;
 import org.csvator.core.node.ADateTypeSpecifier;
 import org.csvator.core.node.ADatetimeTypeSpecifier;
 import org.csvator.core.node.ADeclarationFunctionDefinition;
@@ -590,6 +591,7 @@ public class Interpreter extends DepthFirstAdapter {
 		RecordTypeValue record = (RecordTypeValue) parsingTable.getValueOf(node.getRecordType());
 		record.setId(typeName);
 		global.putValue(typeName, record);
+		parsingTable.putValue(node.getName(), record);
 	}
 
 	@Override
@@ -706,6 +708,14 @@ public class Interpreter extends DepthFirstAdapter {
 		super.outAListTypeSpecifier(node);
 
 		ListTypeValue type = ListTypeValue.getInstance();
+		parsingTable.putValue(node, type);
+	}
+
+	@Override
+	public void outACustomTypeSpecifier(ACustomTypeSpecifier node) {
+		super.outACustomTypeSpecifier(node);
+
+		TypeValueInterface type = (TypeValueInterface) global.getValueOf(node.getIdentifier().getText());
 		parsingTable.putValue(node, type);
 	}
 
