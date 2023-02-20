@@ -81,7 +81,7 @@ Tokens
 	tok_attribution = ':=';
 	tok_lambda = '\';
 	tok_pipe = '|';
-	identifier = letter (letter | '_')*;
+	identifier = (letter (letter | '_')*) | '$';
 	string_literal = '"' string_char* '"';
 
 Ignored Tokens
@@ -254,7 +254,7 @@ Productions
 
 	record_type = kw_record kw_fields field+ [field_end]:kw_end invariants_definition? [record_end]:kw_end {-> New record_type([field], invariants_definition)};
 
-	invariant_type = invariants_definition {-> New invariant_type(invariants_definition)};
+	invariant_type = type_specifier invariants_definition {-> New invariant_type(type_specifier, invariants_definition)};
 
 	union_type = kw_union [types]:type_specifier_union_list+ kw_end {-> New union_type([types.type_specifier])};
 
@@ -362,7 +362,7 @@ Abstract Syntax Tree
 
 	record_type = [fields]:field* invariants_definition?;
 
-	invariant_type = invariants_definition;
+	invariant_type = type_specifier invariants_definition;
 
 	union_type = [types]:type_specifier*;
 
