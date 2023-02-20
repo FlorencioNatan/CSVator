@@ -407,6 +407,18 @@ personName(joe);
 
 
 1 typeis int;
-"Meu nome" typeis string;
+"My Name" typeis string;
 joe typeis person;
 null typeis void;
+
+type intOrString := union
+	int,
+	string,
+end;
+
+funOnIntOrString :: intOrString val -> string;
+funOnIntOrString [val typeis int] : "int";
+funOnIntOrString [val typeis string] : "string";
+
+funOnIntOrString(1);
+funOnIntOrString("Name");

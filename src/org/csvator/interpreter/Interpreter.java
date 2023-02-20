@@ -70,6 +70,7 @@ import org.csvator.interpreter.parsingTable.typeValues.RecordTypeValue;
 import org.csvator.interpreter.parsingTable.typeValues.SetTypeValue;
 import org.csvator.interpreter.parsingTable.typeValues.StringTypeValue;
 import org.csvator.interpreter.parsingTable.typeValues.TypeValueInterface;
+import org.csvator.interpreter.parsingTable.typeValues.UnionTypeValue;
 import org.csvator.interpreter.parsingTable.typeValues.VectorTypeValue;
 import org.csvator.interpreter.parsingTable.typeValues.VoidTypeValue;
 import org.csvator.interpreter.tablePrinterStrategy.TablePrinterStrategy;
@@ -142,6 +143,8 @@ import org.csvator.core.node.ASumExpression;
 import org.csvator.core.node.ATailExpression;
 import org.csvator.core.node.ATrueExpression;
 import org.csvator.core.node.ATypeisExpression;
+import org.csvator.core.node.AUnionType;
+import org.csvator.core.node.AUnionTypeTypeDefinition;
 import org.csvator.core.node.AVarExpression;
 import org.csvator.core.node.AVariableDefinition;
 import org.csvator.core.node.AVectorExpression;
@@ -625,6 +628,31 @@ public class Interpreter extends DepthFirstAdapter {
 		}
 
 		parsingTable.putValue(node, record);
+	}
+
+	@Override
+	public void outAUnionTypeTypeDefinition(AUnionTypeTypeDefinition node) {
+		super.outAUnionTypeTypeDefinition(node);
+
+		String typeName = node.getName().getText();
+		UnionTypeValue union = (UnionTypeValue) parsingTable.getValueOf(node.getUnionType());
+		union.setId(typeName);
+		global.putValue(typeName, union);
+		parsingTable.putValue(node.getName(), union);
+	}
+
+	@Override
+	public void outAUnionType(AUnionType node) {
+		super.outAUnionType(node);
+		LinkedList<TypeValueInterface> types = new LinkedList<TypeValueInterface>();
+		TypeValueInterface value;
+		for (PTypeSpecifier nodeType : node.getTypes()) {
+			value = (TypeValueInterface) parsingTable.getValueOf(nodeType);
+			types.add(value);
+		}
+
+		UnionTypeValue union = new UnionTypeValue(types);
+		parsingTable.putValue(node, union);
 	}
 
 	@Override
