@@ -19,14 +19,15 @@ import javax.swing.text.Utilities;
 
 public class CSVatorCodeEditorView extends PlainView {
 	private static String COMMENTS          = "(//.*|#.*)";
-	private static String GENERIC_KEYWORD   = "\\b(null|record|fields|type|invariants|end)\\b";
+	private static String GENERIC_KEYWORD   = "\\b(null|record|fields|type|invariant|invariants|union|end)\\b";
 	private static String TYPES             = "\\b(int|bool|double|string|date|datetime|void|any)\\b";
 	private static String NUMBER            = "(\\d+)";
 	private static String FLOAT             = "(\\d+\\.\\\\d+)";
 	private static String BOOLEANS          = "(true|false)";
 	private static String FUNCTION_SYMBOLS  = "(:|->|\\||\\[|\\])";
+	private static String DOLLAR_SYMBOL  = "(\\$)";
 	private static String SYMBOL_OPERATORS  = "(\\+\\+|--|!!|!\\?|!<|!>|!#|\\+|-|\\*|[^/]/|[^-]>|>=|<|<=|=|<>|:=)";
-	private static String KEYWORD_OPERATORS = "\\b(and|or|xor|not|implies)\\b";
+	private static String KEYWORD_OPERATORS = "\\b(and|or|xor|not|implies|typeis|forall|exists|in)\\b";
 	private static String COLLECTIONS       = "\\b(vector|dict|set|list)\\b";
 	private static String FUNCTIONS         = "\\b(sort|swap|update|map|filter|reduce|printTable|readCSVFile)\\b";
 	private static String STRING            = "(\"[^\\n\"]*\")";
@@ -43,6 +44,7 @@ public class CSVatorCodeEditorView extends PlainView {
 		patterns.add(new PatternColor(Pattern.compile(FLOAT), new Color(209, 154, 102))); // Dark Yellow
 		patterns.add(new PatternColor(Pattern.compile(BOOLEANS), new Color(209, 154, 102))); // Dark Yellow
 		patterns.add(new PatternColor(Pattern.compile(FUNCTION_SYMBOLS), new Color(86, 182, 194))); // Cyan
+		patterns.add(new PatternColor(Pattern.compile(DOLLAR_SYMBOL), new Color(218, 100, 241))); // Purple
 		patterns.add(new PatternColor(Pattern.compile(SYMBOL_OPERATORS), new Color(218, 100, 241))); // Purple
 		patterns.add(new PatternColor(Pattern.compile(KEYWORD_OPERATORS), new Color(218, 100, 241))); // Purple
 		patterns.add(new PatternColor(Pattern.compile(COLLECTIONS), new Color(97, 175, 239))); // Blue
