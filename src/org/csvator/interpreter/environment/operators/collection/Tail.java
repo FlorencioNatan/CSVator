@@ -2,6 +2,7 @@ package org.csvator.interpreter.environment.operators.collection;
 
 import org.csvator.interpreter.environment.Environment;
 import org.csvator.interpreter.parsingTable.CollectionValueInterface;
+import org.csvator.interpreter.parsingTable.KeyValueExpressionValue;
 import org.csvator.interpreter.parsingTable.ValueInterface;
 import org.csvator.interpreter.parsingTable.function.TypeMismatchException;
 
@@ -12,6 +13,11 @@ public class Tail extends CollectionOperator {
 		if (lho instanceof CollectionValueInterface) {
 			CollectionValueInterface colLho = this.castToCollection(lho);
 			return colLho.tail();
+		}
+
+		if (lho instanceof KeyValueExpressionValue) {
+			KeyValueExpressionValue keyValue = (KeyValueExpressionValue) lho;
+			return keyValue.getValue();
 		}
 
 		throw new TypeMismatchException("It's not possible index the data type " + lho.getType());
