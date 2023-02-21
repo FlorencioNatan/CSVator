@@ -452,3 +452,12 @@ exists x in myDict | !< x = "six";
 exists x in mySet | x = 5;
 exists x in myStr | x = "W";
 
+
+type vecGreaterThanTen := vector invariants
+	forall x in $ | x >= 10,
+end;
+
+
+vgtt := vecGreaterThanTen(vector(10,20,30,40,50));
+
+vgtt;

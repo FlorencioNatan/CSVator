@@ -5,6 +5,8 @@ import java.util.LinkedList;
 
 import org.csvator.interpreter.environment.Environment;
 import org.csvator.interpreter.parsingTable.BooleanValue;
+import org.csvator.interpreter.parsingTable.CollectionValueInterface;
+import org.csvator.interpreter.parsingTable.CollectionWithIvariantValue;
 import org.csvator.interpreter.parsingTable.DoubleValue;
 import org.csvator.interpreter.parsingTable.IntegerValue;
 import org.csvator.interpreter.parsingTable.ValueInterface;
@@ -136,7 +138,7 @@ public class InvariantTypeValue implements TypeValueInterface, FunctionValueInte
 
 	@Override
 	public TypeValueInterface getReturnType() {
-		return this;
+		return AnyTypeValue.getInstance();
 	}
 
 	@Override
@@ -144,6 +146,9 @@ public class InvariantTypeValue implements TypeValueInterface, FunctionValueInte
 		ValueInterface value = env.getValueOf("$");
 		this.checkInvariants(value);
 
+		if (value.getType().equalsToType(CollectionTypeValue.getInstance())) {
+			return new CollectionWithIvariantValue((CollectionValueInterface) value, this);
+		}
 		return value;
 	}
 
