@@ -216,6 +216,14 @@ public class Interpreter extends DepthFirstAdapter {
 		super.outAStringLiteralExpression(node);
 
 		String value = node.getString().getText();
+		value = value.replaceAll("\\\\b", "\b");
+		value = value.replaceAll("\\\\t", "\t");
+		value = value.replaceAll("\\\\n", "\n");
+		value = value.replaceAll("\\\\f", "\f");
+		value = value.replaceAll("\\\\r", "\r");
+		value = value.replaceAll("\\\\\"", "\"");
+		value = value.replaceAll("\\\\\'", "\'");
+		value = value.replaceAll("\\\\\\\\", "\\\\");
 		value = value.substring(1, value.length() - 1);
 		StringValue strVal = new StringValue(node.toString(), value);
 		NullaryExpressionValue expression = new NullaryExpressionValue(node.toString(), strVal);

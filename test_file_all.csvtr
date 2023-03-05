@@ -461,3 +461,7 @@ end;
 vgtt := vecGreaterThanTen(vector(10,20,30,40,50));
 
 vgtt;
+
+
+"My String now has escape \n\n\nYeah!";
+

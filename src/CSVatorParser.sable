@@ -14,7 +14,8 @@ Helpers
 	dot = '.';
 	letter = [['a' .. 'z'] + ['A' .. 'Z']];
 	not_eol = [all - [cr + lf]];
-	string_char = [all - '"'];
+	escape_sequence = '\b' | '\t' | '\n' | '\f' | '\r' | '\"' | '\' ''' | '\\';
+	string_char = [all - ['"' + '\']] | escape_sequence;
 
 Tokens
 	/* Our simple token definition(s). */
