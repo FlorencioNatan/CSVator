@@ -465,3 +465,8 @@ vgtt;
 
 "My String now has escape \n\n\nYeah!";
 
+
+regex_match("My texted text, is so texteded.", "text(ed)?");
+regex_match("My texted text, is so texteded.", "Text(ed)?", "i");
+regex_replace("01234567890", "(\\d{3})(\\d{3})(\\d{3})(\\d{2})", "$1.$2.$3-$4");
+
