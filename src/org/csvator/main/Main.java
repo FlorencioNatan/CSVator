@@ -15,6 +15,7 @@ import org.csvator.core.parser.Parser;
 import org.csvator.interpreter.Interpreter;
 import org.csvator.interpreter.tablePrinterStrategy.SimpleASCIITablePrinter;
 import org.csvator.main.gui.CSVatorIDE;
+import org.csvator.main.gui.ImportCSVFile;
 
 
 public class Main {
@@ -124,8 +125,18 @@ public class Main {
 		EventQueue.invokeLater(new Runnable() {
 			public void run() {
 				try {
+					String[] splitedName = args[1].split("\\.");
+					if (splitedName[splitedName.length - 1].equals("csv") ||
+						splitedName[splitedName.length - 1].equals("tsv")
+					) {
+						ImportCSVFile frame = new ImportCSVFile();
+						frame.setFilePath(args[1]);
+						frame.setVisible(true);
+						return;
+					}
 					CSVatorIDE frame = new CSVatorIDE();
 					frame.setVisible(true);
+					frame.openFile(args[1]);
 				} catch (Exception e) {
 					e.printStackTrace();
 				}
