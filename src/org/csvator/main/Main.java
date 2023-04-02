@@ -125,9 +125,13 @@ public class Main {
 		EventQueue.invokeLater(new Runnable() {
 			public void run() {
 				try {
-					String[] splitedName = args[1].split("\\.");
-					if (splitedName[splitedName.length - 1].equals("csv") ||
-						splitedName[splitedName.length - 1].equals("tsv")
+					String[] splitedName = null;
+					if (args.length > 1) {
+						splitedName = args[1].split("\\.");
+					}
+					if (splitedName != null &&
+						(splitedName[splitedName.length - 1].equals("csv") ||
+						splitedName[splitedName.length - 1].equals("tsv"))
 					) {
 						ImportCSVFile frame = new ImportCSVFile();
 						frame.setFilePath(args[1]);
@@ -136,7 +140,9 @@ public class Main {
 					}
 					CSVatorIDE frame = new CSVatorIDE();
 					frame.setVisible(true);
-					frame.openFile(args[1]);
+					if (args.length > 1) {
+						frame.openFile(args[1]);
+					}
 				} catch (Exception e) {
 					e.printStackTrace();
 				}
