@@ -102,7 +102,7 @@ public class ReadCSVFile implements FunctionValueInterface {
 		}
 
 		if (env.containsKey("separator")) {
-			enclosure = (StringValue) env.getValueOf("separator");
+			separator = (StringValue) env.getValueOf("separator");
 		}
 
 		if (env.containsKey("ignoreFirstLine")) {
