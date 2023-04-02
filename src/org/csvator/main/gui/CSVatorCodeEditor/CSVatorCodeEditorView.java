@@ -31,7 +31,7 @@ public class CSVatorCodeEditorView extends PlainView {
 	private static String COLLECTIONS       = "\\b(vector|dict|set|list)\\b";
 	private static String FUNCTIONS         = "\\b(sort|swap|update|map|filter|reduce|printTable|readCSVFile)\\b";
 	private static String STRING            = "(\"[^\\n\"]*\")";
-	private static String IDENTIFIER        = "\\b([a-zA-Z]([a-zA-Z_])*)\\b";
+	private static String IDENTIFIER        = "\\b([a-zA-Z]([a-zA-Z0-9_])*)\\b";
 
 	private static LinkedList<PatternColor> patterns = new LinkedList<PatternColor>();
 	private Color foregroundColor = new Color(171, 178, 191);

@@ -85,7 +85,7 @@ Tokens
 	tok_attribution = ':=';
 	tok_lambda = '\';
 	tok_pipe = '|';
-	identifier = (letter (letter | '_')*) | '$';
+	identifier = (letter (letter | '_' | digit)*) | '$';
 	string_literal = '"' string_char* '"';
 
 Ignored Tokens
