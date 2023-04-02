@@ -2,6 +2,7 @@ package org.csvator.main.gui;
 
 import java.awt.Color;
 import java.awt.Component;
+import java.awt.EventQueue;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
@@ -92,6 +93,8 @@ public class CSVatorIDE extends JFrame {
 	private LinkedList<FindMatch> findMacthes;
 	private ListIterator<FindMatch> findPos;
 	private boolean findDirectionNext = true;
+	private JSplitPane splitPane;
+	private JSplitPane splitPaneOutput;
 
 	private Interpreter interpreter;
 
@@ -147,6 +150,25 @@ public class CSVatorIDE extends JFrame {
 						mntmOpen.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_O, KeyEvent.CTRL_DOWN_MASK));
 						mnFile.add(mntmOpen);
 						
+						JMenuItem mntmImport = new JMenuItem("Import", KeyEvent.VK_I);
+						mntmImport.addActionListener(new ActionListener() {
+							public void actionPerformed(ActionEvent e) {
+								EventQueue.invokeLater(new Runnable() {
+									public void run() {
+										try {
+											ImportCSVFile frame = new ImportCSVFile();
+											frame.setVisible(true);
+											CSVatorIDE.this.dispose();
+										} catch (Exception e) {
+											e.printStackTrace();
+										}
+									}
+								});
+							}
+						});
+						mntmImport.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_I, KeyEvent.CTRL_DOWN_MASK));
+						mnFile.add(mntmImport);
+						
 						JMenuItem mntmSave = new JMenuItem("Save", KeyEvent.VK_S);
 						mntmSave.addActionListener(new ActionListener() {
 							public void actionPerformed(ActionEvent e) {
@@ -157,6 +179,7 @@ public class CSVatorIDE extends JFrame {
 								}
 							}
 						});
+						
 						mntmSave.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_S, KeyEvent.CTRL_DOWN_MASK));
 						mnFile.add(mntmSave);
 						
@@ -341,11 +364,11 @@ public class CSVatorIDE extends JFrame {
 		Component horizontalGlue = Box.createHorizontalGlue();
 		toolBar.add(horizontalGlue);
 
-		JSplitPane splitPane = new JSplitPane();
+		splitPane = new JSplitPane();
 		contentPane.add(splitPane);
 		splitPane.setOneTouchExpandable(true);
 
-		JSplitPane splitPaneOutput = new JSplitPane();
+		splitPaneOutput = new JSplitPane();
 		splitPaneOutput.setOrientation(JSplitPane.VERTICAL_SPLIT);
 		splitPane.setRightComponent(splitPaneOutput);
 		splitPaneOutput.setOneTouchExpandable(true);
@@ -563,10 +586,57 @@ public class CSVatorIDE extends JFrame {
 		interpreter = new Interpreter();
 		interpreter.setTablePrinter(new JTableTablePrinter(table));
 
+		this.setLocationRelativeTo(null);
+
 		TextPaneOutputStream textPaneOutputStream = new TextPaneOutputStream(textPaneOutput);
 		
 		System.setOut(new PrintStream(textPaneOutputStream));
 		System.setErr(new PrintStream(textPaneOutputStream));
+	}
+
+	public void setCode(String code) {
+		this.codeEditor.setText(code);
+		SwingUtilities.invokeLater(new Runnable() {
+			@Override
+			public void run() {
+				splitPane.setDividerLocation(0.5);
+				splitPane.setResizeWeight(0.5);
+
+				splitPaneOutput.setDividerLocation(0.7);
+				splitPaneOutput.setResizeWeight(0.7);
+			}
+		});
+	}
+
+	public void openFile(String fileName) {
+		File file = new File(fileName);
+		filePath = file.getAbsolutePath();
+		Path path = Paths.get(filePath);
+		StringBuilder fileContent = new StringBuilder();
+		try {
+			BufferedReader reader = Files.newBufferedReader(path, Charset.forName("UTF-8"));
+
+			String line = null;
+			while((line = reader.readLine()) != null){
+				fileContent.append(line);
+				fileContent.append("\n");
+			}
+		} catch (IOException e1) {
+			e1.printStackTrace();
+		}
+
+		codeEditor.setText(fileContent.toString());
+
+		SwingUtilities.invokeLater(new Runnable() {
+			@Override
+			public void run() {
+				splitPane.setDividerLocation(0.5);
+				splitPane.setResizeWeight(0.5);
+
+				splitPaneOutput.setDividerLocation(0.7);
+				splitPaneOutput.setResizeWeight(0.7);
+			}
+		});
 	}
 
 	private ActionListener mnRunFile() {
