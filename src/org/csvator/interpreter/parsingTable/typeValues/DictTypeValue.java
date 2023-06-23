@@ -59,7 +59,7 @@ public class DictTypeValue implements TypeValueInterface {
 
 	@Override
 	public ValueInterface createValue(String strValue) {
-		return new DictValue(strValue);
+		return new DictValue();
 	}
 
 }

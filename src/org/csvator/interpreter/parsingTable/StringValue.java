@@ -1,5 +1,7 @@
 package org.csvator.interpreter.parsingTable;
 
+import java.util.UUID;
+
 import org.csvator.interpreter.environment.Environment;
 import org.csvator.interpreter.environment.operators.InvalidOperationException;
 import org.csvator.interpreter.parsingTable.function.FunctionValueInterface;
@@ -14,8 +16,8 @@ public class StringValue implements CollectionValueInterface {
 	private String id;
 	private String value;
 
-	public StringValue(String id, String strValue) {
-		this.id = id;
+	public StringValue(String strValue) {
+		this.id = UUID.randomUUID().toString();
 		this.value = strValue;
 	}
 
@@ -48,7 +50,7 @@ public class StringValue implements CollectionValueInterface {
 		if (value instanceof StringValue) {
 			StringValue strVal = (StringValue) value;
 			String result = strVal.value + this.value;
-			return new StringValue(result, result);
+			return new StringValue(result);
 		}
 
 		throw new TypeMismatchException("It's not possible to concatenate a string with a " + value.getType());
@@ -59,7 +61,7 @@ public class StringValue implements CollectionValueInterface {
 		if (value instanceof StringValue) {
 			StringValue strVal = (StringValue) value;
 			String result = this.value + strVal.value;
-			return new StringValue(result, result);
+			return new StringValue(result);
 		}
 
 		throw new TypeMismatchException("It's not possible to concatenate a string with a " + value.getType());
@@ -95,7 +97,7 @@ public class StringValue implements CollectionValueInterface {
 		}
 
 		String character = String.valueOf(this.value.charAt(((IntegerValue) value).getIntValue()));
-		return new StringValue(character, character);
+		return new StringValue(character);
 	}
 
 	@Override
@@ -112,13 +114,13 @@ public class StringValue implements CollectionValueInterface {
 	@Override
 	public ValueInterface head() {
 		String newString = this.value.substring(0, 0);
-		return new StringValue(newString, newString);
+		return new StringValue(newString);
 	}
 
 	@Override
 	public ValueInterface tail() {
 		String newString = this.value.substring(1, this.value.length() - 1);
-		return new StringValue(newString, newString);
+		return new StringValue(newString);
 	}
 
 	@Override
@@ -180,7 +182,7 @@ public class StringValue implements CollectionValueInterface {
 	public CollectionValueInterface map(FunctionValueInterface mapFunction) {
 		StringBuilder mappedValue = new StringBuilder();
 		for (char elem : value.toCharArray()) {
-			ValueInterface result = mapFunction.apply(new StringValue(String.valueOf(elem), String.valueOf(elem)));
+			ValueInterface result = mapFunction.apply(new StringValue(String.valueOf(elem)));
 
 			if (! (result instanceof StringValue)) {
 				throw new TypeMismatchException("Map function must return a " + StringTypeValue.getInstance() + ". A " + result.getType() + " returned.");
@@ -191,7 +193,7 @@ public class StringValue implements CollectionValueInterface {
 		}
 
 		String strMapped = mappedValue.toString();
-		StringValue mappedStr = new StringValue(strMapped, strMapped);
+		StringValue mappedStr = new StringValue(strMapped);
 		return mappedStr;
 	}
 
@@ -199,7 +201,7 @@ public class StringValue implements CollectionValueInterface {
 	public CollectionValueInterface filter(FunctionValueInterface filterFunction) {
 		StringBuilder filteredValue = new StringBuilder();
 		for (char elem : value.toCharArray()) {
-			ValueInterface result = filterFunction.apply(new StringValue(String.valueOf(elem), String.valueOf(elem)));
+			ValueInterface result = filterFunction.apply(new StringValue(String.valueOf(elem)));
 
 			if (! (result instanceof BooleanValue)) {
 				throw new TypeMismatchException("Map function must return a " + BoolTypeValue.getInstance() + ". A " + result.getType() + " returned.");
@@ -212,7 +214,7 @@ public class StringValue implements CollectionValueInterface {
 		}
 
 		String strFiltered = filteredValue.toString();
-		StringValue mappedStr = new StringValue(strFiltered, strFiltered);
+		StringValue mappedStr = new StringValue(strFiltered);
 		return mappedStr;
 	}
 
@@ -220,7 +222,7 @@ public class StringValue implements CollectionValueInterface {
 	public ValueInterface reduce(FunctionValueInterface reduceFunction, ValueInterface reduceValue) {
 		ValueInterface reducedValue = reduceValue;
 		for (char elem : value.toCharArray()) {
-			reducedValue = reduceFunction.apply(new StringValue(String.valueOf(elem), String.valueOf(elem)), reducedValue);
+			reducedValue = reduceFunction.apply(new StringValue(String.valueOf(elem)), reducedValue);
 		}
 		return reducedValue;
 	}
@@ -250,7 +252,7 @@ public class StringValue implements CollectionValueInterface {
 		String varName = variable;
 
 		for (char elem : value.toCharArray()) {
-			StringValue strElem = new StringValue(String.valueOf(elem), String.valueOf(elem));
+			StringValue strElem = new StringValue(String.valueOf(elem));
 			local.putValue(varName, strElem);
 			BooleanValue filterResult = (BooleanValue) filter.evaluate(local);
 			result = result && filterResult.getBooleanValue();
@@ -265,7 +267,7 @@ public class StringValue implements CollectionValueInterface {
 		String varName = variable;
 
 		for (char elem : value.toCharArray()) {
-			StringValue strElem = new StringValue(String.valueOf(elem), String.valueOf(elem));
+			StringValue strElem = new StringValue(String.valueOf(elem));
 			local.putValue(varName, strElem);
 			BooleanValue filterResult = (BooleanValue) filter.evaluate(local);
 			if (filterResult.getBooleanValue()) {

@@ -59,7 +59,7 @@ public class VectorTypeValue implements TypeValueInterface {
 
 	@Override
 	public ValueInterface createValue(String strValue) {
-		return new VectorValue(strValue);
+		return new VectorValue();
 	}
 
 }

@@ -225,7 +225,7 @@ public class Interpreter extends DepthFirstAdapter {
 		value = value.replaceAll("\\\\\'", "\'");
 		value = value.replaceAll("\\\\\\\\", "\\\\");
 		value = value.substring(1, value.length() - 1);
-		StringValue strVal = new StringValue(node.toString(), value);
+		StringValue strVal = new StringValue(value);
 		NullaryExpressionValue expression = new NullaryExpressionValue(node.toString(), strVal);
 		parsingTable.putValue(node, expression);
 	}
@@ -252,7 +252,7 @@ public class Interpreter extends DepthFirstAdapter {
 	public void outAEmptyVectorExpression(AEmptyVectorExpression node) {
 		super.outAEmptyVectorExpression(node);
 
-		VectorValue vector = new VectorValue(node.toString());
+		VectorValue vector = new VectorValue();
 		parsingTable.putValue(node, vector);
 	}
 
@@ -269,7 +269,7 @@ public class Interpreter extends DepthFirstAdapter {
 			vectorValues.add(value);
 		}
 
-		VectorValue vector = new VectorValue(node.toString(), vectorValues);
+		VectorValue vector = new VectorValue(vectorValues);
 		parsingTable.putValue(node, vector);
 	}
 
@@ -277,7 +277,7 @@ public class Interpreter extends DepthFirstAdapter {
 	public void outAEmptyListExpression(AEmptyListExpression node) {
 		super.outAEmptyListExpression(node);
 
-		ListValue list = new ListValue(node.toString());
+		ListValue list = new ListValue();
 		parsingTable.putValue(node, list);
 	}
 
@@ -294,7 +294,7 @@ public class Interpreter extends DepthFirstAdapter {
 			listValues.add(value);
 		}
 
-		ListValue list = new ListValue(node.toString(), listValues);
+		ListValue list = new ListValue(listValues);
 		parsingTable.putValue(node, list);
 	}
 
@@ -302,7 +302,7 @@ public class Interpreter extends DepthFirstAdapter {
 	public void outAEmptyDictExpression(AEmptyDictExpression node) {
 		super.outAEmptyDictExpression(node);
 
-		DictValue list = new DictValue(node.toString());
+		DictValue list = new DictValue();
 		parsingTable.putValue(node, list);
 	}
 
@@ -319,7 +319,7 @@ public class Interpreter extends DepthFirstAdapter {
 			dictValues.put(value.getKey(), value.getValue());
 		}
 
-		DictValue list = new DictValue(node.toString(), dictValues);
+		DictValue list = new DictValue(dictValues);
 		parsingTable.putValue(node, list);
 	}
 
@@ -327,7 +327,7 @@ public class Interpreter extends DepthFirstAdapter {
 	public void outAEmptySetExpression(AEmptySetExpression node) {
 		super.outAEmptySetExpression(node);
 
-		SetValue list = new SetValue(node.toString());
+		SetValue list = new SetValue();
 		parsingTable.putValue(node, list);
 	}
 
@@ -344,7 +344,7 @@ public class Interpreter extends DepthFirstAdapter {
 			setValues.add(value);
 		}
 
-		SetValue list = new SetValue(node.toString(), setValues);
+		SetValue list = new SetValue(setValues);
 		parsingTable.putValue(node, list);
 	}
 

@@ -59,7 +59,7 @@ public class ListTypeValue implements TypeValueInterface {
 
 	@Override
 	public ValueInterface createValue(String strValue) {
-		return new ListValue(strValue);
+		return new ListValue();
 	}
 
 }

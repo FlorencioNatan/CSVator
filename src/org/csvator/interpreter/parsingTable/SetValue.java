@@ -2,6 +2,7 @@ package org.csvator.interpreter.parsingTable;
 
 
 import java.util.HashSet;
+import java.util.UUID;
 
 import org.csvator.interpreter.environment.Environment;
 import org.csvator.interpreter.environment.operators.InvalidOperationException;
@@ -16,13 +17,13 @@ public class SetValue implements CollectionValueInterface {
 	private String id;
 	private HashSet<ValueInterface> value;
 
-	public SetValue(String id) {
-		this.id = id;
+	public SetValue() {
+		this.id = UUID.randomUUID().toString();
 		this.value = new HashSet<ValueInterface>();
 	}
 
-	public SetValue(String id, HashSet<ValueInterface> value) {
-		this.id = id;
+	public SetValue(HashSet<ValueInterface> value) {
+		this.id = UUID.randomUUID().toString();
 		this.value = value;
 	}
 
@@ -58,7 +59,7 @@ public class SetValue implements CollectionValueInterface {
 			result.addAll(listVal.value);
 			result.addAll(this.value);
 
-			return new SetValue(listVal.id + this.id, result);
+			return new SetValue(result);
 		}
 
 		this.value.add(value);
@@ -125,7 +126,7 @@ public class SetValue implements CollectionValueInterface {
 			mappedValue.add(mapFunction.apply(elem));
 		}
 
-		SetValue mappedSet = new SetValue(id, mappedValue);
+		SetValue mappedSet = new SetValue(mappedValue);
 		return mappedSet;
 	}
 
@@ -145,7 +146,7 @@ public class SetValue implements CollectionValueInterface {
 			}
 		}
 
-		SetValue mappedSet = new SetValue(id, filteredValue);
+		SetValue mappedSet = new SetValue(filteredValue);
 		return mappedSet;
 	}
 

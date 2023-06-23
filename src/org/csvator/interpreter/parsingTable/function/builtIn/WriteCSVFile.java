@@ -85,9 +85,9 @@ public class WriteCSVFile implements FunctionValueInterface {
 	public ValueInterface apply(Environment env) {
 		StringValue file = (StringValue) env.getValueOf("file");
 		CollectionValueInterface collection = (CollectionValueInterface) env.getValueOf("collection");
-		StringValue separator = new StringValue(",",",");
-		StringValue enclosure = new StringValue("\"","\"");
-		StringValue charset = new StringValue("UTF-8", "UTF-8");
+		StringValue separator = new StringValue(",");
+		StringValue enclosure = new StringValue("\"");
+		StringValue charset = new StringValue("UTF-8");
 
 		if (env.containsKey("enclosure")) {
 			enclosure = (StringValue) env.getValueOf("enclosure");

@@ -66,7 +66,7 @@ public class DateTime implements FunctionValueInterface {
 			return new DateTimeValue("now", LocalDateTime.now());
 		}
 
-		StringValue format = new StringValue("","yyyy-MM-dd H:m:s");
+		StringValue format = new StringValue("yyyy-MM-dd H:m:s");
 		if (env.containsKey("format")) {
 			format = (StringValue) env.getValueOf("format");
 		}

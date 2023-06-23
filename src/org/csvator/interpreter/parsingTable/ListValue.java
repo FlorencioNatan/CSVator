@@ -1,6 +1,7 @@
 package org.csvator.interpreter.parsingTable;
 
 import java.util.LinkedList;
+import java.util.UUID;
 
 import org.csvator.interpreter.environment.Environment;
 import org.csvator.interpreter.parsingTable.function.FunctionValueInterface;
@@ -15,13 +16,13 @@ public class ListValue implements CollectionValueInterface {
 	private String id;
 	private LinkedList<ValueInterface> value;
 
-	public ListValue(String id) {
-		this.id = id;
+	public ListValue() {
+		this.id = UUID.randomUUID().toString();
 		this.value = new LinkedList<ValueInterface>();
 	}
 
-	public ListValue(String id, LinkedList<ValueInterface> value) {
-		this.id = id;
+	public ListValue(LinkedList<ValueInterface> value) {
+		this.id = UUID.randomUUID().toString();
 		this.value = value;
 	}
 
@@ -57,7 +58,7 @@ public class ListValue implements CollectionValueInterface {
 			result.addAll(listVal.value);
 			result.addAll(this.value);
 
-			return new ListValue(listVal.id + this.id, result);
+			return new ListValue(result);
 		}
 
 		if (value instanceof KeyValueExpressionValue) {
@@ -79,7 +80,7 @@ public class ListValue implements CollectionValueInterface {
 			result.addAll(this.value);
 			result.addAll(listVal.value);
 
-			return new ListValue(listVal.id + this.id, result);
+			return new ListValue(result);
 		}
 
 		if (value instanceof KeyValueExpressionValue) {
@@ -130,7 +131,7 @@ public class ListValue implements CollectionValueInterface {
 			result.add(element);
 		}
 
-		return new ListValue(this.id, result);
+		return new ListValue(result);
 	}
 
 	@Override
@@ -188,7 +189,7 @@ public class ListValue implements CollectionValueInterface {
 			mappedValue.add(mapFunction.apply(elem));
 		}
 
-		ListValue mappedList = new ListValue(id, mappedValue);
+		ListValue mappedList = new ListValue(mappedValue);
 		return mappedList;
 	}
 
@@ -208,7 +209,7 @@ public class ListValue implements CollectionValueInterface {
 			}
 		}
 
-		ListValue filteredList = new ListValue(id, filteredValue);
+		ListValue filteredList = new ListValue(filteredValue);
 		return filteredList;
 	}
 

@@ -92,10 +92,10 @@ public class ReadCSVFile implements FunctionValueInterface {
 	public ValueInterface apply(Environment env) {
 		StringValue file = (StringValue) env.getValueOf("file");
 		RecordTypeValue record = (RecordTypeValue) env.getValueOf("record");
-		StringValue separator = new StringValue(",",",");
-		StringValue enclosure = new StringValue(",","\"");
+		StringValue separator = new StringValue(",");
+		StringValue enclosure = new StringValue("\"");
 		BooleanValue ignoreFirstLine = new BooleanValue("true", true);
-		StringValue charset = new StringValue("UTF-8", "UTF-8");
+		StringValue charset = new StringValue("UTF-8");
 
 		if (env.containsKey("enclosure")) {
 			enclosure = (StringValue) env.getValueOf("enclosure");
@@ -113,7 +113,7 @@ public class ReadCSVFile implements FunctionValueInterface {
 			charset = (StringValue) env.getValueOf("charset");
 		}
 
-		VectorValue vector = new VectorValue(file.getStrValue());
+		VectorValue vector = new VectorValue();
 
 		Path path = Paths.get(file.getStrValue());
 		try {

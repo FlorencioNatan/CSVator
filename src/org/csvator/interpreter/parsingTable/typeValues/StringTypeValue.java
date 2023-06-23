@@ -59,7 +59,7 @@ public class StringTypeValue implements TypeValueInterface {
 
 	@Override
 	public ValueInterface createValue(String strValue) {
-		return new StringValue(strValue, strValue);
+		return new StringValue(strValue);
 	}
 
 }

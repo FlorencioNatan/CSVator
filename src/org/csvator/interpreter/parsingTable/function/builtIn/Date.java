@@ -66,7 +66,7 @@ public class Date implements FunctionValueInterface {
 			return new DateValue("now", LocalDate.now());
 		}
 
-		StringValue format = new StringValue("","yyyy-MM-dd");
+		StringValue format = new StringValue("yyyy-MM-dd");
 		if (env.containsKey("format")) {
 			format = (StringValue) env.getValueOf("format");
 		}

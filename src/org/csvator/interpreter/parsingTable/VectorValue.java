@@ -1,5 +1,6 @@
 package org.csvator.interpreter.parsingTable;
 
+import java.util.UUID;
 import java.util.Vector;
 
 import org.csvator.interpreter.environment.Environment;
@@ -15,13 +16,13 @@ public class VectorValue implements CollectionValueInterface {
 	private String id;
 	private Vector<ValueInterface> value;
 
-	public VectorValue(String id) {
-		this.id = id;
+	public VectorValue() {
+		this.id = UUID.randomUUID().toString();
 		this.value = new Vector<ValueInterface>();
 	}
 
-	public VectorValue(String id, Vector<ValueInterface> value) {
-		this.id = id;
+	public VectorValue(Vector<ValueInterface> value) {
+		this.id = UUID.randomUUID().toString();
 		this.value = value;
 	}
 
@@ -57,7 +58,7 @@ public class VectorValue implements CollectionValueInterface {
 			result.addAll(vecVal.value);
 			result.addAll(this.value);
 
-			return new VectorValue(vecVal.id + this.id, result);
+			return new VectorValue(result);
 		}
 
 		if (value instanceof KeyValueExpressionValue) {
@@ -79,7 +80,7 @@ public class VectorValue implements CollectionValueInterface {
 			result.addAll(this.value);
 			result.addAll(vecVal.value);
 
-			return new VectorValue(vecVal.id + this.id, result);
+			return new VectorValue(result);
 		}
 
 		if (value instanceof KeyValueExpressionValue) {
@@ -130,7 +131,7 @@ public class VectorValue implements CollectionValueInterface {
 			result.add(element);
 		}
 
-		return new VectorValue(this.id, result);
+		return new VectorValue(result);
 	}
 
 	@Override
@@ -189,7 +190,7 @@ public class VectorValue implements CollectionValueInterface {
 			mappedValue.add(mapFunction.apply(elem));
 		}
 
-		VectorValue mappedVec = new VectorValue(id, mappedValue);
+		VectorValue mappedVec = new VectorValue(mappedValue);
 		return mappedVec;
 	}
 
@@ -209,7 +210,7 @@ public class VectorValue implements CollectionValueInterface {
 			}
 		}
 
-		VectorValue filteredVec = new VectorValue(id, filteredValue);
+		VectorValue filteredVec = new VectorValue(filteredValue);
 		return filteredVec;
 	}
 

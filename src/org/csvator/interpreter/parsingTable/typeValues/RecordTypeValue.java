@@ -36,7 +36,7 @@ public class RecordTypeValue implements TypeValueInterface, FunctionValueInterfa
 	public void checkInvariants(HashMap<ValueInterface, ValueInterface> value) {
 		LinkedList<ValueInterface> valueList = new LinkedList<ValueInterface>();
 		for (FieldValue fieldValue : fields) {
-			StringValue identifier = new StringValue(fieldValue.getIdVariable(), fieldValue.getIdVariable());
+			StringValue identifier = new StringValue(fieldValue.getIdVariable());
 			valueList.add(value.get(identifier));
 		}
 
@@ -172,12 +172,12 @@ public class RecordTypeValue implements TypeValueInterface, FunctionValueInterfa
 
 	@Override
 	public ValueInterface apply(Environment env) {
-		RecordValue record = new RecordValue(id, fields);
+		RecordValue record = new RecordValue(fields);
 		record.setType(this);
 
 		for (FieldValue fieldValue : fields) {
 			String fieldVariable = fieldValue.getIdVariable();
-			StringValue key = new StringValue(fieldVariable, fieldVariable);
+			StringValue key = new StringValue(fieldVariable);
 			ValueInterface value = env.getValueOf(fieldVariable);
 			KeyValueExpressionValue keyValue = new KeyValueExpressionValue(fieldVariable, key, value);
 			record.concatAtTail(keyValue);

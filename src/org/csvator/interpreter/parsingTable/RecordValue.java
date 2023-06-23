@@ -16,18 +16,18 @@ public class RecordValue extends DictValue {
 	private HashMap<String, FieldValue> fieldsMap;
 	private RecordTypeValue type;
 
-	public RecordValue(String id) {
-		super(id);
+	public RecordValue() {
+		super();
 		throw new InvalidOperationException("Its not possible create a record with a custom HashMap.");
 	}
 
-	public RecordValue(String id, HashMap<ValueInterface, ValueInterface> value) {
-		super(id);
+	public RecordValue(HashMap<ValueInterface, ValueInterface> value) {
+		super();
 		throw new InvalidOperationException("Its not possible create a record with a custom HashMap.");
 	}
 
-	public RecordValue(String id, LinkedList<FieldValue> fields) {
-		super(id);
+	public RecordValue(LinkedList<FieldValue> fields) {
+		super();
 		this.fields = fields;
 		this.fieldsMap = new HashMap<String, FieldValue>();
 
@@ -119,7 +119,7 @@ public class RecordValue extends DictValue {
 		int i = 0;
 		for (FieldValue field : this.fields) {
 			String idVariable = field.getIdVariable();
-			StringValue fieldKey = new StringValue(idVariable, idVariable);
+			StringValue fieldKey = new StringValue(idVariable);
 			ValueInterface fieldValue = this.get(fieldKey);
 
 			table[i] = new String[1];
@@ -141,7 +141,7 @@ public class RecordValue extends DictValue {
 		int i = 0;
 		for (FieldValue field : this.fields) {
 			String idVariable = field.getIdVariable();
-			StringValue fieldKey = new StringValue(idVariable, idVariable);
+			StringValue fieldKey = new StringValue(idVariable);
 			ValueInterface fieldValue = this.get(fieldKey);
 
 			line[i] = fieldValue.toString();

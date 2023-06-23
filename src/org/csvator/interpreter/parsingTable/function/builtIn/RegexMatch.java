@@ -66,7 +66,7 @@ public class RegexMatch implements FunctionValueInterface {
 		StringValue text = (StringValue) env.getValueOf("text");
 		StringValue regex = (StringValue) env.getValueOf("regex");
 		String flags = "";
-		VectorValue vector = new VectorValue("match");
+		VectorValue vector = new VectorValue();
 
 		if (env.containsKey("flags")) {
 			flags = ((StringValue) env.getValueOf("flags")).getStrValue();
@@ -77,7 +77,7 @@ public class RegexMatch implements FunctionValueInterface {
 		Matcher matcher = pattern.matcher(strText);
 		while(matcher.find()) {
 			String strMatch = strText.substring(matcher.start(), matcher.end());
-			StringValue match = new StringValue(strMatch, strMatch);
+			StringValue match = new StringValue(strMatch);
 			vector.getVectorValue().add(match);
 		}
 

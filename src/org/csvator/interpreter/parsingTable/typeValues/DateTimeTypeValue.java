@@ -58,7 +58,7 @@ public class DateTimeTypeValue implements TypeValueInterface {
 	@Override
 	public ValueInterface createValue(String strValue) {
 		DateTime dateTime = new DateTime();
-		StringValue value = new StringValue(strValue, strValue);
+		StringValue value = new StringValue(strValue);
 
 		return dateTime.apply(value);
 	}

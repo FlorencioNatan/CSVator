@@ -2,6 +2,7 @@ package org.csvator.interpreter.parsingTable;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.UUID;
 
 import org.csvator.interpreter.environment.Environment;
 import org.csvator.interpreter.environment.operators.InvalidOperationException;
@@ -17,13 +18,13 @@ public class DictValue implements CollectionValueInterface {
 	private String id;
 	private HashMap<ValueInterface, ValueInterface> value;
 
-	public DictValue(String id) {
-		this.id = id;
+	public DictValue() {
+		this.id = UUID.randomUUID().toString();
 		this.value = new HashMap<ValueInterface, ValueInterface>();
 	}
 
-	public DictValue(String id, HashMap<ValueInterface, ValueInterface> value) {
-		this.id = id;
+	public DictValue(HashMap<ValueInterface, ValueInterface> value) {
+		this.id = UUID.randomUUID().toString();
 		this.value = value;
 	}
 
@@ -59,7 +60,7 @@ public class DictValue implements CollectionValueInterface {
 			result.putAll(vecVal.value);
 			result.putAll(this.value);
 
-			return new DictValue(vecVal.id + this.id, result);
+			return new DictValue(result);
 		}
 
 		if (value instanceof KeyValueExpressionValue) {
@@ -79,7 +80,7 @@ public class DictValue implements CollectionValueInterface {
 			result.putAll(this.value);
 			result.putAll(vecVal.value);
 
-			return new DictValue(vecVal.id + this.id, result);
+			return new DictValue(result);
 		}
 
 		if (value instanceof KeyValueExpressionValue) {
@@ -158,7 +159,7 @@ public class DictValue implements CollectionValueInterface {
 			mappedValue.put(keyValue.getKey(), keyValue.getValue());
 		}
 
-		DictValue mappedDict = new DictValue(id, mappedValue);
+		DictValue mappedDict = new DictValue(mappedValue);
 		return mappedDict;
 	}
 
@@ -179,7 +180,7 @@ public class DictValue implements CollectionValueInterface {
 			}
 		}
 
-		DictValue mappedDict = new DictValue(id, filteredValue);
+		DictValue mappedDict = new DictValue(filteredValue);
 		return mappedDict;
 	}
 

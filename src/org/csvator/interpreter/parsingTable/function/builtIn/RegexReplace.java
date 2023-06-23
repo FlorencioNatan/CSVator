@@ -78,7 +78,7 @@ public class RegexReplace implements FunctionValueInterface {
 		Matcher matcher = pattern.matcher(strText);
 		String result = matcher.replaceAll(replace.getStrValue());
 
-		return new StringValue(result, result);
+		return new StringValue(result);
 	}
 
 	private int parseFlags(String flags) {

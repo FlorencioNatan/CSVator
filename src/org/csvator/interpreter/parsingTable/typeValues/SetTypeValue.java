@@ -59,7 +59,7 @@ public class SetTypeValue implements TypeValueInterface {
 
 	@Override
 	public ValueInterface createValue(String strValue) {
-		return new SetValue(strValue);
+		return new SetValue();
 	}
 
 
