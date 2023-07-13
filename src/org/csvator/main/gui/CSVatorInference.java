@@ -174,63 +174,63 @@ public class CSVatorInference {
 	private String typeOfData(String data) {
 		Pattern regex;
 		Matcher matcher;
-		regex = Pattern.compile("\\d+\\.\\d+");
+		regex = Pattern.compile("^\\d+\\.\\d+$");
 		matcher = regex.matcher(data);
 		if (matcher.find()) {
 			return "double";
 		}
 
-		regex = Pattern.compile("\\d+");
+		regex = Pattern.compile("^\\d+$");
 		matcher = regex.matcher(data);
 		if (matcher.find()) {
 			return "int";
 		}
 
-		regex = Pattern.compile("null");
+		regex = Pattern.compile("^null$");
 		matcher = regex.matcher(data);
 		if (matcher.find()) {
 			return "void";
 		}
 
-		regex = Pattern.compile("true");
+		regex = Pattern.compile("^true$");
 		matcher = regex.matcher(data);
 		if (matcher.find()) {
 			return "boolean";
 		}
 
-		regex = Pattern.compile("false");
+		regex = Pattern.compile("^false$");
 		matcher = regex.matcher(data);
 		if (matcher.find()) {
 			return "boolean";
 		}
 
-		regex = Pattern.compile("\\d{4}-\\d{2}-\\d{2}T?\\d{2}:\\d{2}:\\d{2}");
+		regex = Pattern.compile("^\\d{4}-\\d{2}-\\d{2}T?\\d{2}:\\d{2}:\\d{2}$");
 		matcher = regex.matcher(data);
 		if (matcher.find()) {
 			return "datetime";
 		}
-		regex = Pattern.compile("\\d{2}-\\d{2}-\\d{4}T?\\d{2}:\\d{2}:\\d{2}");
+		regex = Pattern.compile("^\\d{2}-\\d{2}-\\d{4}T?\\d{2}:\\d{2}:\\d{2}$");
 		matcher = regex.matcher(data);
 		if (matcher.find()) {
 			return "datetime";
 		}
-		regex = Pattern.compile("\\d{2}/\\d{2}/\\d{4}T?\\d{2}:\\d{2}:\\d{2}");
+		regex = Pattern.compile("^\\d{2}/\\d{2}/\\d{4}T?\\d{2}:\\d{2}:\\d{2}$");
 		matcher = regex.matcher(data);
 		if (matcher.find()) {
 			return "datetime";
 		}
 
-		regex = Pattern.compile("\\d{4}-\\d{2}-\\d{2}");
+		regex = Pattern.compile("^\\d{4}-\\d{2}-\\d{2}$");
 		matcher = regex.matcher(data);
 		if (matcher.find()) {
 			return "date";
 		}
-		regex = Pattern.compile("\\d{2}-\\d{2}-\\d{4}");
+		regex = Pattern.compile("^\\d{2}-\\d{2}-\\d{4}$");
 		matcher = regex.matcher(data);
 		if (matcher.find()) {
 			return "date";
 		}
-		regex = Pattern.compile("\\d{2}/\\d{2}/\\d{4}");
+		regex = Pattern.compile("^\\d{2}/\\d{2}/\\d{4}$");
 		matcher = regex.matcher(data);
 		if (matcher.find()) {
 			return "date";
