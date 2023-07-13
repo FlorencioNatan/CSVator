@@ -256,6 +256,10 @@ public class VectorValue implements CollectionValueInterface {
 
 	@Override
 	public String[] buildTableHeader() {
+		if (this.value.isEmpty()) {
+			String[] emptyHeader = {"Col 1"};
+			return emptyHeader;
+		}
 		ValueInterface first = this.value.firstElement();
 		if (first instanceof CollectionValueInterface) {
 			return ((CollectionValueInterface) first).buildTableHeader();
