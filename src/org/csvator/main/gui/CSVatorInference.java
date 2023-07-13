@@ -8,8 +8,11 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.security.InvalidParameterException;
 import java.text.Normalizer;
+import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
+
+import org.csvator.helpers.RFC4180Parser;
 
 public class CSVatorInference {
 
@@ -79,42 +82,50 @@ public class CSVatorInference {
 	private String[] processFields() {
 		String[] fieldNames = null;
 		String[] fieldTypes = null;
-		Path path = Paths.get(filePath);
-		try {
-			BufferedReader reader = Files.newBufferedReader(path, Charset.forName(this.charset));
+		boolean firstLine = true;
+		int lineNumber = 0;
 
-			String line = null;
-			boolean firstLine = true;
-			int lineNumber = 0;
-			while((line = reader.readLine()) != null){
-				if (firstLine && ignoreFirstLine) {
-					firstLine = false;
-					fieldNames = line.split(separator);
-					for (int i = 0; i < fieldNames.length; i++) {
-						fieldNames[i] = fieldNames[i].replaceAll("\\s", "_");
-						fieldNames[i] = Normalizer.normalize(fieldNames[i], Normalizer.Form.NFKD).replaceAll("\\p{M}", "");
-					}
-					continue;
-				} else if (firstLine) {
-					fieldNames = line.split(separator);
-					for (int i = 0; i < fieldNames.length; i++) {
-						fieldNames[i] = "Col_" + i;
-					}
-				}
+		RFC4180Parser parser = new RFC4180Parser(
+			delimiter,
+			separator,
+			false,
+			charset
+		);
+		List<List<String>> parsedTable = parser.parse(filePath);
 
-				if (!useWholeFile && lineNumber < useNLines) {
-					break;
+		for (List<String> line: parsedTable) {
+			if (firstLine && ignoreFirstLine) {
+				firstLine = false;
+				fieldNames = new String[line.size()];
+				int i = 0;
+				for (String fieldName : line) {
+					fieldNames[i] = fieldName.replaceAll("\\s", "_");
+					fieldNames[i] = Normalizer.normalize(fieldNames[i], Normalizer.Form.NFKD).replaceAll("\\p{M}", "");
+					i++;
 				}
-
-				String[] lineData = line.split(separator);
-				if (fieldTypes == null) {
-					fieldTypes = new String[lineData.length];
+				continue;
+			} else if (firstLine) {
+				fieldNames = new String[line.size()];
+				for (int i = 0; i < fieldNames.length; i++) {
+					fieldNames[i] = "Col_" + i;
 				}
-				fieldTypes = inferTypes(lineData, fieldTypes);
-				lineNumber++;
 			}
-		} catch (IOException e1) {
-			e1.printStackTrace();
+
+			if (!useWholeFile && lineNumber < useNLines) {
+				break;
+			}
+
+			String[] lineData = new String[line.size()];
+			int i = 0;
+			for (String dataValue : line) {
+				lineData[i] = dataValue;
+				i++;
+			}
+			if (fieldTypes == null) {
+				fieldTypes = new String[lineData.length];
+			}
+			fieldTypes = inferTypes(lineData, fieldTypes);
+			lineNumber++;
 		}
 
 		return concatFieldTypeAndName(fieldNames, fieldTypes);

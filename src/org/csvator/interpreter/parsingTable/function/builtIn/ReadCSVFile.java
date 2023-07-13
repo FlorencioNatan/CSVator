@@ -8,7 +8,9 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.Iterator;
 import java.util.LinkedList;
+import java.util.List;
 
+import org.csvator.helpers.RFC4180Parser;
 import org.csvator.interpreter.environment.Environment;
 import org.csvator.interpreter.parsingTable.BooleanValue;
 import org.csvator.interpreter.parsingTable.FieldValue;
@@ -115,35 +117,27 @@ public class ReadCSVFile implements FunctionValueInterface {
 
 		VectorValue vector = new VectorValue();
 
-		Path path = Paths.get(file.getStrValue());
-		try {
-			BufferedReader reader;
-			reader = Files.newBufferedReader(path, Charset.forName(charset.getStrValue()));
-
-			String line = null;
-			boolean firstLine = true;
-			while((line = reader.readLine()) != null){
-				if (firstLine && ignoreFirstLine.getBooleanValue()) {
-					firstLine = false;
-					continue;
-				}
-				String[] lineData = line.split(separator.getStrValue());
-				vector.concatAtTail(this.createRecord(record, lineData));
-			}
-		}catch(IOException ex){
-			ex.printStackTrace();
+		RFC4180Parser parser = new RFC4180Parser(
+			enclosure.getStrValue(),
+			separator.getStrValue(),
+			ignoreFirstLine.getBooleanValue(),
+			charset.getStrValue()
+		);
+		List<List<String>> parsedTable = parser.parse(file.getStrValue());
+		for (List<String> line: parsedTable) {
+			vector.concatAtTail(this.createRecord(record, line));
 		}
 
 		return vector;
 	}
 
-	private RecordValue createRecord(RecordTypeValue recordType, String[] lineData) {
+	private RecordValue createRecord(RecordTypeValue recordType, List<String> lineData) {
 		LinkedList<FieldValue> fieldList = recordType.getFields();
-		ValueInterface[] arguments = new ValueInterface[lineData.length];
+		ValueInterface[] arguments = new ValueInterface[lineData.size()];
 		Iterator<FieldValue> fieldIterator = fieldList.iterator();
-		for(int i = 0; i < lineData.length; i++) {
+		for(int i = 0; i < lineData.size(); i++) {
 			FieldValue field = fieldIterator.next();
-			arguments[i] = field.getType().createValue(lineData[i]);
+			arguments[i] = field.getType().createValue(lineData.get(i));
 		}
 
 		return (RecordValue) recordType.apply(arguments);
