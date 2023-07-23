@@ -163,14 +163,21 @@ Productions
 		{multiplicative_expression} multiplicative_expression {-> multiplicative_expression.expression};
 
 	multiplicative_expression {-> expression} = 
-		{mult} multiplicative_expression tok_mult postfix_expression {-> New expression.mult(multiplicative_expression.expression, postfix_expression.expression)} |
-		{div} multiplicative_expression tok_div postfix_expression {-> New expression.div(multiplicative_expression.expression, postfix_expression.expression)} |
-		postfix_expression {-> postfix_expression.expression};
+		{mult} multiplicative_expression tok_mult unary_expression {-> New expression.mult(multiplicative_expression.expression, unary_expression.expression)} |
+		{div} multiplicative_expression tok_div unary_expression {-> New expression.div(multiplicative_expression.expression, unary_expression.expression)} |
+		unary_expression {-> unary_expression.expression};
+
+	unary_expression {-> expression} =
+		{negative} tok_min postfix_expression {-> New expression.negative(postfix_expression.expression)} |
+		{head} tok_excl_gt postfix_expression {-> New expression.head(postfix_expression.expression)} |
+		{tail} tok_excl_lt postfix_expression {-> New expression.tail(postfix_expression.expression)} |
+		{size} tok_excl_nb postfix_expression {-> New expression.size(postfix_expression.expression)} |
+		{postfix_expression} postfix_expression {-> postfix_expression.expression};
 
 	postfix_expression {-> expression} =
 		{collection_initialization_expression} collection_initialization_expression {-> collection_initialization_expression.expression} |
 		{function_application_expression} function_application_expression {-> function_application_expression.expression} |
-		{unary_expression} unary_expression {-> unary_expression.expression};
+		{primitive_expression} primitive_expression {-> primitive_expression.expression};
 
 	function_application_expression {-> expression} =
 		{with_argument} [function_identifier]:identifier tok_op_paren expression expression_list* tok_cl_paren {-> New expression.function_application_with_argument(function_identifier, expression, [expression_list.expression])} |
@@ -187,13 +194,6 @@ Productions
 		{list} kw_list tok_op_paren expression expression_list* tok_cl_paren {-> New expression.list(expression, [expression_list.expression])};
 
 	key_value_list {-> expression} = tok_comma key_value_expression {-> key_value_expression.expression};
-
-	unary_expression {-> expression} =
-		{negative} tok_min primitive_expression {-> New expression.negative(primitive_expression.expression)} |
-		{head} tok_excl_gt primitive_expression {-> New expression.head(primitive_expression.expression)} |
-		{tail} tok_excl_lt primitive_expression {-> New expression.tail(primitive_expression.expression)} |
-		{size} tok_excl_nb primitive_expression {-> New expression.size(primitive_expression.expression)} |
-		{primitive_expression} primitive_expression {-> primitive_expression.expression};
 
 	primitive_expression {-> expression} = 
 		{paren} tok_op_paren expression tok_cl_paren {-> New expression.paren(expression)} |
