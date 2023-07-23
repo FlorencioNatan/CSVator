@@ -22,7 +22,11 @@ public class AnonymousFunctionExpressionValue implements ValueInterface {
 
 	@Override
 	public ValueInterface evaluate(Environment env) {
-		return function.clone();
+		UserDefinedFunctionValue anonymousFunction = function.clone();
+		Environment clausure = env.clone();
+		clausure.setFatherEnvironment(null);
+		anonymousFunction.setClosure(clausure);
+		return anonymousFunction;
 	}
 
 	@Override

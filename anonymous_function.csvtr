@@ -33,3 +33,9 @@ myNewFunction :: int b -> int;
 myNewFunction: applyFunction(7, \(int c -> int: b + c));
 
 myNewFunction(5);
+
+
+vec := vector("My text", "Not my text", "Random");
+mapped := map(vec, \(string val -> bool : !# (regex_match(val, "text")) > 0));
+mapped;
+

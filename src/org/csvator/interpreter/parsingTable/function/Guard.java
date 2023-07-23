@@ -21,13 +21,6 @@ public class Guard {
 	}
 
 	public ValueInterface evaluate(Environment env) {
-		if (this.result.getClass() == AnonymousFunctionExpressionValue.class) {
-			UserDefinedFunctionValue anonymousFunction = (UserDefinedFunctionValue) this.result.evaluate(env);
-			Environment closure = env.clone();
-			closure.setFatherEnvironment(null);
-			anonymousFunction.setClosure(closure);
-			return anonymousFunction;
-		}
 		return this.result.evaluate(env);
 	}
 
