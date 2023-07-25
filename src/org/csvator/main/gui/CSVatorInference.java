@@ -99,8 +99,9 @@ public class CSVatorInference {
 				fieldNames = new String[line.size()];
 				int i = 0;
 				for (String fieldName : line) {
-					fieldNames[i] = fieldName.replaceAll("\\s", "_");
-					fieldNames[i] = Normalizer.normalize(fieldNames[i], Normalizer.Form.NFKD).replaceAll("\\p{M}", "");
+					fieldName = Normalizer.normalize(fieldName, Normalizer.Form.NFKD).replaceAll("\\p{M}", "");
+					fieldName = fieldName.replaceAll("[^a-zA-Z _]", "");
+					fieldNames[i] = fieldName.replaceAll("\\s+", "_");
 					i++;
 				}
 				continue;
