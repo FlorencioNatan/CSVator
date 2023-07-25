@@ -29,7 +29,7 @@ public class CSVatorCodeEditorView extends PlainView {
 	private static String SYMBOL_OPERATORS  = "(\\+\\+|--|!!|!\\?|!<|!>|!#|\\+|-|\\*|[^/]/|[^-]>|>=|<|<=|=|<>|:=)";
 	private static String KEYWORD_OPERATORS = "\\b(and|or|xor|not|implies|typeis|forall|exists|in)\\b";
 	private static String COLLECTIONS       = "\\b(vector|dict|set|list)\\b";
-	private static String FUNCTIONS         = "\\b(sort|swap|update|map|filter|reduce|printTable|readCSVFile|writeCSVFile)\\b";
+	private static String FUNCTIONS         = "\\b(sort|swap|update|map|filter|reduce|printTable|readCSVFile|writeCSVFile|Date|DateTime|regex_match|regex_replace)\\b";
 	private static String STRING            = "(\"(?:(?:\\\\\\\")|[^\"])*[^\\\\]\")";
 	private static String IDENTIFIER        = "\\b([a-zA-Z]([a-zA-Z0-9_])*)\\b";
 
